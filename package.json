@@ -11,6 +11,7 @@
     "build:stocks": "npm run build -w playground-stocks-app",
     "build:profiles": "npm run build -w playground-profiles-app",
     "merge-builds": "node scripts/merge-builds.js",
+    "start": "npx serve dist",
     "dev:stocks": "npm run dev -w playground-stocks-app",
     "dev:profiles": "npm run dev -w playground-profiles-app"
   }
