@@ -1,0 +1,17 @@
+{
+  "name": "myop-playground",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces && npm run merge-builds",
+    "build:stocks": "npm run build -w playground-stocks-app",
+    "build:profiles": "npm run build -w playground-profiles-app",
+    "merge-builds": "node scripts/merge-builds.js",
+    "dev:stocks": "npm run dev -w playground-stocks-app",
+    "dev:profiles": "npm run dev -w playground-profiles-app"
+  }
+}

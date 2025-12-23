@@ -1,0 +1,115 @@
+body {
+    margin: 0;
+}
+
+.header {
+    height: 91px;
+}
+
+
+.main {
+    display: flex;
+    flex-direction: row;
+}
+
+.stocks-list {
+    width: 30vw;
+    height: calc(65vh - 91px - 34px);
+}
+
+.stock-graph {
+    width: 70vw;
+    height: calc(65vh - 91px - 34px);
+}
+
+.portfolio {
+    height: 35vh;
+}
+
+.footer {
+    height: 34px;
+}
+
+.loader {
+    height: 100%;
+    width: 100%;
+    background-color: #1a1a1a;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    width: 510px;
+    height: 650px;
+}
+
+.confirmation-modal-content {
+    width: 510px;
+    height: 418px;
+}
+
+.profile-popover-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+}
+
+.profile-popover-container {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    width: 300px;
+    height: 520px;
+    z-index: 10000;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: fadeIn 0.2s ease-out forwards;
+}
+
+.profile-popover-container.fade-in {
+    animation: fadeIn 0.2s ease-out forwards;
+}
+
+.profile-popover-container.fade-out {
+    animation: fadeOut 0.2s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.profile-popover-container.fade-out {
+    animation: fadeOut 0.1s ease-out forwards;
+}

@@ -1,0 +1,33 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: dist
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+      - packages/playground-stocks-app/node_modules/**/*
+      - packages/playground-profiles-app/node_modules/**/*
+
+customHeaders:
+  - pattern: '**/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=31536000, immutable'
+  - pattern: '*.html'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=0, must-revalidate'
+
+# Rewrites for SPA routing - configure in Amplify Console:
+# /stocks/<*> -> /stocks/index.html (200 rewrite)
+# /profiles/<*> -> /profiles/index.html (200 rewrite)
+# Or use the customRules below (note: these go in Amplify Console Rewrites/Redirects settings)

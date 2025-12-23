@@ -1,0 +1,237 @@
+export type TeamMember =  {
+    id: string;
+    initials: string;
+    name: string;
+    title: string;
+    location: string;
+    tenure: string;
+    experience: string;
+    skills: string[];
+    role: string;
+    avatarColor: string;
+    profileImage: string | null;
+    email: string;
+    phone: string;
+    about: string;
+    relationship: string;
+    relationshipType: string;
+}
+
+export const teamMembersData: TeamMember[] = [
+    {
+        id: '1',
+        initials: 'AR',
+        name: 'Alex Rivera',
+        title: 'Design Director',
+        location: 'San Francisco, CA',
+        tenure: '5.2y',
+        experience: '12y',
+        skills: ['Design Leadership', 'Strategy', 'Team Management'],
+        role: 'Manager',
+        avatarColor: '#9B59B6',
+        profileImage: null,
+        email: 'alex.rivera@company.com',
+        phone: '+1 (415) 555-0101',
+        about: 'Passionate design leader with over a decade of experience building and scaling design teams. Focused on creating user-centered products that drive business impact.',
+        relationship: 'Alex leads the design team',
+        relationshipType: 'Team lead'
+    },
+    {
+        id: '2',
+        initials: 'JP',
+        name: 'Jamie Park',
+        title: 'Product Designer',
+        location: 'Seattle, WA',
+        tenure: '1.5y',
+        experience: '3y',
+        skills: ['UI Design', 'Mobile Design', 'Prototyping'],
+        role: 'Team',
+        avatarColor: '#3498DB',
+        profileImage: null,
+        email: 'jamie.park@company.com',
+        phone: '+1 (206) 555-0102',
+        about: 'Creative product designer specializing in mobile experiences. Love turning complex problems into simple, intuitive interfaces.',
+        relationship: 'Jamie reports to Alex Rivera',
+        relationshipType: 'Team member'
+    },
+    {
+        id: '3',
+        initials: 'SF',
+        name: 'Sam Foster',
+        title: 'UX Researcher',
+        location: 'Austin, TX',
+        tenure: '2.1y',
+        experience: '4y',
+        skills: ['User Research', 'Data Analysis', 'Usability Testing'],
+        role: 'Team',
+        avatarColor: '#1ABC9C',
+        profileImage: null,
+        email: 'sam.foster@company.com',
+        phone: '+1 (512) 555-0103',
+        about: 'Data-driven UX researcher dedicated to understanding user behavior. Combines qualitative and quantitative methods to uncover actionable insights.',
+        relationship: 'Sam reports to Alex Rivera',
+        relationshipType: 'Team member'
+    },
+    {
+        id: '4',
+        initials: 'RK',
+        name: 'Riley Kim',
+        title: 'Senior Product Designer',
+        location: 'New York, NY',
+        tenure: '3.5y',
+        experience: '7y',
+        skills: ['Product Design', 'Design Systems', 'Accessibility'],
+        role: 'Senior Member',
+        avatarColor: '#E74C3C',
+        profileImage: null,
+        email: 'riley.kim@company.com',
+        phone: '+1 (212) 555-0104',
+        about: 'Senior designer passionate about design systems and accessibility. Believes great design should be inclusive and scalable.',
+        relationship: 'Riley is a senior team member',
+        relationshipType: 'Senior contributor'
+    },
+    {
+        id: '5',
+        initials: 'TB',
+        name: 'Taylor Brooks',
+        title: 'Senior UX Designer',
+        location: 'Remote',
+        tenure: '2.3y',
+        experience: '5.5y',
+        skills: ['UX Design', 'Information Architecture', 'Wireframing'],
+        role: 'Senior Member',
+        avatarColor: '#F39C12',
+        profileImage: null,
+        email: 'taylor.brooks@company.com',
+        phone: '+1 (555) 555-0105',
+        about: 'Remote-first UX designer focused on information architecture and user flows. Expert at structuring complex applications for clarity.',
+        relationship: 'Taylor is a senior team member',
+        relationshipType: 'Senior contributor'
+    },
+    {
+        id: '6',
+        initials: 'MC',
+        name: 'Morgan Chen',
+        title: 'UI/UX Designer',
+        location: 'Los Angeles, CA',
+        tenure: '1.8y',
+        experience: '4y',
+        skills: ['Visual Design', 'Branding', 'Illustration', 'Animation'],
+        role: 'Team',
+        avatarColor: '#F1C40F',
+        profileImage: null,
+        email: 'morgan.chen@company.com',
+        phone: '+1 (310) 555-0106',
+        about: 'Visual designer with a background in illustration and animation. Brings brands to life through thoughtful, expressive design.',
+        relationship: 'Morgan reports to Alex Rivera',
+        relationshipType: 'Team member'
+    },
+    {
+        id: '7',
+        initials: 'JD',
+        name: 'Jordan Davis',
+        title: 'Product Manager',
+        location: 'Boston, MA',
+        tenure: '4.2y',
+        experience: '9y',
+        skills: ['Product Strategy', 'Roadmapping', 'Stakeholder Management'],
+        role: 'Manager',
+        avatarColor: '#2ECC71',
+        profileImage: null,
+        email: 'jordan.davis@company.com',
+        phone: '+1 (617) 555-0107',
+        about: 'Strategic product manager with expertise in roadmapping and cross-functional collaboration. Driven by delivering value to users and the business.',
+        relationship: 'Jordan leads product strategy',
+        relationshipType: 'Product lead'
+    },
+    {
+        id: '8',
+        initials: 'AS',
+        name: 'Avery Smith',
+        title: 'Design Researcher',
+        location: 'Chicago, IL',
+        tenure: '0.9y',
+        experience: '2y',
+        skills: ['Qualitative Research', 'Ethnography', 'Workshop Facilitation'],
+        role: 'Team',
+        avatarColor: '#E67E22',
+        profileImage: null,
+        email: 'avery.smith@company.com',
+        phone: '+1 (312) 555-0108',
+        about: 'Emerging researcher with a passion for ethnographic studies. Loves facilitating workshops that bring teams closer to their users.',
+        relationship: 'Avery reports to Sam Foster',
+        relationshipType: 'Team member'
+    },
+    {
+        id: '9',
+        initials: 'CM',
+        name: 'Casey Martinez',
+        title: 'Interaction Designer',
+        location: 'Denver, CO',
+        tenure: '2.7y',
+        experience: '6y',
+        skills: ['Interaction Design', 'Motion Design', 'Micro-interactions', 'Figma'],
+        role: 'Team',
+        avatarColor: '#16A085',
+        profileImage: null,
+        email: 'casey.martinez@company.com',
+        phone: '+1 (720) 555-0109',
+        about: 'Interaction designer obsessed with motion and micro-interactions. Creates delightful experiences that feel natural and responsive.',
+        relationship: 'Casey reports to Riley Kim',
+        relationshipType: 'Team member'
+    },
+    {
+        id: '10',
+        initials: 'PS',
+        name: 'Peyton Sullivan',
+        title: 'Content Designer',
+        location: 'Portland, OR',
+        tenure: '1.3y',
+        experience: '3.5y',
+        skills: ['UX Writing', 'Content Strategy', 'Voice & Tone'],
+        role: 'Team',
+        avatarColor: '#8E44AD',
+        profileImage: null,
+        email: 'peyton.sullivan@company.com',
+        phone: '+1 (503) 555-0110',
+        about: 'Content designer crafting clear, human-centered copy. Specializes in developing voice and tone guidelines that resonate with users.',
+        relationship: 'Peyton reports to Alex Rivera',
+        relationshipType: 'Team member'
+    },
+    {
+        id: '11',
+        initials: 'DR',
+        name: 'Dakota Reed',
+        title: 'Design Engineer',
+        location: 'San Diego, CA',
+        tenure: '3.1y',
+        experience: '8y',
+        skills: ['Front-end Development', 'React', 'CSS', 'Prototyping'],
+        role: 'Senior Member',
+        avatarColor: '#D35400',
+        profileImage: null,
+        email: 'dakota.reed@company.com',
+        phone: '+1 (619) 555-0111',
+        about: 'Design engineer bridging the gap between design and development. Builds high-fidelity prototypes and production-ready components.',
+        relationship: 'Dakota is a senior team member',
+        relationshipType: 'Senior contributor'
+    },
+    {
+        id: '12',
+        initials: 'EW',
+        name: 'Emerson Wong',
+        title: 'UX Strategist',
+        location: 'Miami, FL',
+        tenure: '4.5y',
+        experience: '10y',
+        skills: ['UX Strategy', 'Service Design', 'Business Analysis', 'Workshops'],
+        role: 'Senior Member',
+        avatarColor: '#27AE60',
+        profileImage: null,
+        email: 'emerson.wong@company.com',
+        phone: '+1 (305) 555-0112',
+        about: 'Seasoned UX strategist with deep expertise in service design. Connects business goals with user needs to drive meaningful outcomes.',
+        relationship: 'Emerson is a senior team member',
+        relationshipType: 'Senior contributor'
+    }
+];
