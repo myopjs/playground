@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="myop:size" content='{"width":"100%","height":"100%","minHeight":500}'>
+  <title>Playground Landing</title>
+
+  <!-- Type Definitions -->
+  <script type="myop/types">
+    // =============================================================================
+    // MYOP COMPONENT TYPE DEFINITIONS
+    // =============================================================================
+
+    /**
+     * Area configuration
+     */
+    interface AreaConfig {
+        id: string;
+        name: string;
+        description: string;
+        previewImage?: string;
+        icon?: 'stocks' | 'profile';
+    }
+
+    /**
+     * Data structure passed to myop_init_interface(data)
+     */
+    interface MyopInitData {
+        areas: AreaConfig[];
+        title?: string;
+        subtitle?: string;
+    }
+
+    /**
+     * Actions and payloads for myop_cta_handler(action, payload)
+     */
+    interface MyopCtaPayloads {
+        'area_selected': { areaId: string; areaName: string };
+        'size-requested': {
+            width?: number | null;
+            height?: number | null;
+            minWidth?: number | null;
+            maxWidth?: number | null;
+            minHeight?: number | null;
+            maxHeight?: number | null;
+            required?: boolean;
+        };
+    }
+
+    // =============================================================================
+    // DO NOT EDIT BELOW - Standard Myop type declarations
+    // =============================================================================
+
+    declare function myop_init_interface(): MyopInitData;
+    declare function myop_init_interface(data: MyopInitData): void;
+
+    declare function myop_cta_handler<K extends keyof MyopCtaPayloads>(
+        action: K,
+        payload: MyopCtaPayloads[K]
+    ): void;
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Base Styles - Required for Myop components */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #ffffff;
+      color: #1a1a1a;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    #app-root {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    /* Header Section */
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      text-align: center;
+      overflow: visible;
+    }
+
+    .header-logo {
+      width: 80px;
+      height: 80px;
+      flex-shrink: 0;
+      overflow: visible;
+    }
+
+    .header-logo svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    /* Star blink animations */
+    @keyframes starBlink1 {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    @keyframes starBlink2 {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.15; }
+    }
+
+    @keyframes starBlink3 {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.25; }
+    }
+
+    @keyframes starBlink4 {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.1; }
+    }
+
+    .header-logo svg path[fill^="url(#paint5"] {
+      animation: starBlink1 2.5s ease-in-out infinite;
+    }
+
+    .header-logo svg path[fill^="url(#paint6"] {
+      animation: starBlink2 3s ease-in-out infinite;
+    }
+
+    .header-logo svg path[fill^="url(#paint7"] {
+      animation: starBlink3 2.8s ease-in-out infinite;
+    }
+
+    .header-logo svg path[fill^="url(#paint8"] {
+      animation: starBlink4 3.5s ease-in-out infinite;
+    }
+
+    .header-text {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .header-title {
+      color: #1C1B1F;
+      font-family: "DM Sans", sans-serif;
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 40px;
+      letter-spacing: -0.5px;
+    }
+
+    .header-subtitle {
+      color: #5E5D5E;
+      font-family: "DM Sans", sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 28px;
+      max-width: 500px;
+    }
+
+    /* Cards Section */
+    .cards-section {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .section-label {
+      color: #5E5D5E;
+      font-family: "DM Sans", sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .cards-grid {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Area Card */
+    .area-card {
+      display: flex;
+      width: 320px;
+      max-width: 100%;
+      padding: 24px;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      border-radius: 16px;
+      border: 1px solid #E5E4E4;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .area-card:hover {
+      border-color: #8039FD;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(128, 57, 253, 0.15);
+    }
+
+    .area-card-preview {
+      width: 100%;
+      height: 180px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #F9F9F9;
+      position: relative;
+    }
+
+    .area-card-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top left;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .area-card-preview img.loaded {
+      opacity: 1;
+    }
+
+    /* Dark preview for stocks */
+    .area-card[data-id="stocks"] .area-card-preview {
+      background: #040404;
+    }
+
+    .area-card-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
+    }
+
+    .area-card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+    }
+
+    .area-card-icon.stocks {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+
+    .area-card-icon.profile {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .area-card-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .area-card-name {
+      color: #1C1B1F;
+      font-family: "DM Sans", sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 28px;
+    }
+
+    .area-card-description {
+      color: #5E5D5E;
+      font-family: "DM Sans", sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+      max-width: 280px;
+    }
+
+    /* Arrow indicator */
+    .area-card-arrow {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #F5F5F5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      margin-top: 8px;
+    }
+
+    .area-card:hover .area-card-arrow {
+      background: #8039FD;
+    }
+
+    .area-card-arrow svg {
+      width: 16px;
+      height: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .area-card-arrow svg path {
+      stroke: #5E5D5E;
+      transition: stroke 0.3s ease;
+    }
+
+    .area-card:hover .area-card-arrow svg path {
+      stroke: #ffffff;
+    }
+
+    /* Gradient border on hover */
+    .area-card::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 17px;
+      padding: 1px;
+      background: linear-gradient(135deg, #FF7133, #7C69FD);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .area-card {
+      position: relative;
+    }
+
+    .area-card:hover::before {
+      opacity: 1;
+    }
+
+    .area-card:hover {
+      border-color: transparent;
+    }
+
+    /* Area Card Link */
+    .area-card-link {
+      text-decoration: none;
+      color: inherit;
+      max-width: 100%;
+    }
+
+    /* Footer */
+    .footer {
+      color: #9E9E9E;
+      font-family: "DM Sans", sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 20px;
+      text-align: center;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      #app-root {
+        padding: 24px 16px;
+        justify-content: flex-start;
+      }
+
+      .container {
+        gap: 24px;
+      }
+
+      .header {
+        gap: 16px;
+      }
+
+      .header-logo {
+        width: 64px;
+        height: 64px;
+      }
+
+      .header-title {
+        font-size: 24px;
+        line-height: 32px;
+      }
+
+      .header-subtitle {
+        font-size: 15px;
+        line-height: 24px;
+      }
+
+      .section-label {
+        font-size: 12px;
+        margin-bottom: 16px;
+      }
+
+      .cards-grid {
+        gap: 16px;
+        width: 100%;
+      }
+
+      .area-card-link {
+        width: 100%;
+      }
+
+      .area-card {
+        width: 100%;
+        padding: 16px;
+        gap: 16px;
+      }
+
+      .area-card-preview {
+        height: 140px;
+      }
+
+      .area-card-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+      }
+
+      .area-card-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .area-card-name {
+        font-size: 18px;
+        line-height: 24px;
+      }
+
+      .area-card-description {
+        font-size: 13px;
+        line-height: 20px;
+      }
+
+      .area-card-arrow {
+        width: 28px;
+        height: 28px;
+      }
+
+      .footer {
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #app-root {
+        padding: 20px 12px;
+      }
+
+      .header-logo {
+        width: 56px;
+        height: 56px;
+      }
+
+      .header-title {
+        font-size: 22px;
+        line-height: 28px;
+      }
+
+      .header-subtitle {
+        font-size: 14px;
+        line-height: 22px;
+      }
+
+      .area-card-preview {
+        height: 120px;
+      }
+    }
+
+    /* Large screens - ensure content doesn't overflow */
+    @media (min-width: 769px) {
+      #app-root {
+        padding: 40px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="app-root">
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 63 63" fill="none">
+          <path d="M37.5633 6.36425C34.049 2.84996 28.3512 2.84996 24.8369 6.36425L15.6001 15.6011L8.48528 22.7159C3.79899 27.4022 3.79898 35.0002 8.48527 39.6864L22.7148 53.916C27.4011 58.6023 34.9991 58.6023 39.6854 53.916L53.9149 39.6865C58.6012 35.0002 58.6012 27.4022 53.9149 22.7159L46.8002 15.6011L42.9001 11.7011" stroke="url(#paint0_linear_1362_3019)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="12.7983" y="31.2012" width="17.2544" height="17.2544" rx="8" transform="rotate(-45 12.7983 31.2012)" fill="url(#paint1_linear_1362_3019)" fill-opacity="0.4"/>
+          <rect opacity="0.4" x="6" y="31.2012" width="35.6382" height="35.6382" rx="8" transform="rotate(-45 6 31.2012)" fill="url(#paint2_linear_1362_3019)"/>
+          <path opacity="0.4" d="M20.0568 36.858C16.9326 33.7338 16.9326 28.6685 20.0568 25.5443L25.543 20.058C28.6672 16.9338 33.7326 16.9338 36.8568 20.058L42.343 25.5443C45.4672 28.6685 45.4672 33.7338 42.343 36.858L36.8568 42.3443C33.7326 45.4685 28.6672 45.4685 25.543 42.3443L20.0568 36.858Z" fill="url(#paint3_linear_1362_3019)"/>
+          <rect opacity="0.4" x="22.1997" y="31.2012" width="12.7279" height="12.7279" rx="6" transform="rotate(-45 22.1997 31.2012)" fill="url(#paint4_linear_1362_3019)"/>
+          <path d="M39.6002 13.4408C39.1228 13.4408 38.665 13.2322 38.3274 12.8609C37.9898 12.4895 37.8002 11.9859 37.8002 11.4608C37.8002 11.2857 37.737 11.1179 37.6245 10.9941C37.5119 10.8703 37.3593 10.8008 37.2002 10.8008C37.0411 10.8008 36.8885 10.8703 36.7759 10.9941C36.6634 11.1179 36.6002 11.2857 36.6002 11.4608C36.6002 11.9859 36.4106 12.4895 36.073 12.8609C35.7354 13.2322 35.2776 13.4408 34.8002 13.4408C34.6411 13.4408 34.4885 13.5103 34.3759 13.6341C34.2634 13.7579 34.2002 13.9257 34.2002 14.1008C34.2002 14.2758 34.2634 14.4437 34.3759 14.5675C34.4885 14.6912 34.6411 14.7608 34.8002 14.7608C35.2776 14.7608 35.7354 14.9694 36.073 15.3407C36.4106 15.712 36.6002 16.2157 36.6002 16.7408C36.6002 16.9158 36.6634 17.0837 36.7759 17.2075C36.8885 17.3312 37.0411 17.4008 37.2002 17.4008C37.3593 17.4008 37.5119 17.3312 37.6245 17.2075C37.737 17.0837 37.8002 16.9158 37.8002 16.7408C37.8002 16.2157 37.9898 15.712 38.3274 15.3407C38.665 14.9694 39.1228 14.7608 39.6002 14.7608C39.7593 14.7608 39.9119 14.6912 40.0245 14.5675C40.137 14.4437 40.2002 14.2758 40.2002 14.1008C40.2002 13.9257 40.137 13.7579 40.0245 13.6341C39.9119 13.5103 39.7593 13.4408 39.6002 13.4408Z" fill="url(#paint5_linear_1362_3019)"/>
+          <path d="M57.0001 50.64C56.5227 50.64 56.0649 50.4314 55.7273 50.0601C55.3897 49.6887 55.2001 49.1851 55.2001 48.66C55.2001 48.485 55.1369 48.3171 55.0244 48.1933C54.9118 48.0695 54.7592 48 54.6001 48C54.441 48 54.2884 48.0695 54.1758 48.1933C54.0633 48.3171 54.0001 48.485 54.0001 48.66C54.0001 49.1851 53.8105 49.6887 53.4729 50.0601C53.1353 50.4314 52.6775 50.64 52.2001 50.64C52.041 50.64 51.8884 50.7095 51.7758 50.8333C51.6633 50.9571 51.6001 51.125 51.6001 51.3C51.6001 51.475 51.6633 51.6429 51.7758 51.7667C51.8884 51.8905 52.041 51.96 52.2001 51.96C52.6775 51.96 53.1353 52.1686 53.4729 52.5399C53.8105 52.9113 54.0001 53.4149 54.0001 53.94C54.0001 54.115 54.0633 54.2829 54.1758 54.4067C54.2884 54.5305 54.441 54.6 54.6001 54.6C54.7592 54.6 54.9118 54.5305 55.0244 54.4067C55.1369 54.2829 55.2001 54.115 55.2001 53.94C55.2001 53.4149 55.3897 52.9113 55.7273 52.5399C56.0649 52.1686 56.5227 51.96 57.0001 51.96C57.1592 51.96 57.3118 51.8905 57.4244 51.7667C57.5369 51.6429 57.6001 51.475 57.6001 51.3C57.6001 51.125 57.5369 50.9571 57.4244 50.8333C57.3118 50.7095 57.1592 50.64 57.0001 50.64Z" fill="url(#paint6_linear_1362_3019)"/>
+          <path d="M13.7999 27.2396C13.3225 27.2396 12.8647 27.031 12.5271 26.6597C12.1895 26.2884 11.9999 25.7847 11.9999 25.2596C11.9999 25.0846 11.9367 24.9167 11.8242 24.7929C11.7116 24.6691 11.559 24.5996 11.3999 24.5996C11.2408 24.5996 11.0882 24.6691 10.9756 24.7929C10.8631 24.9167 10.7999 25.0846 10.7999 25.2596C10.7999 25.7847 10.6103 26.2884 10.2727 26.6597C9.93513 27.031 9.47729 27.2396 8.9999 27.2396C8.84077 27.2396 8.68816 27.3091 8.57564 27.4329C8.46312 27.5567 8.3999 27.7246 8.3999 27.8996C8.3999 28.0747 8.46312 28.2425 8.57564 28.3663C8.68816 28.4901 8.84077 28.5596 8.9999 28.5596C9.47729 28.5596 9.93513 28.7682 10.2727 29.1395C10.6103 29.5109 10.7999 30.0145 10.7999 30.5396C10.7999 30.7147 10.8631 30.8825 10.9756 31.0063C11.0882 31.1301 11.2408 31.1996 11.3999 31.1996C11.559 31.1996 11.7116 31.1301 11.8242 31.0063C11.9367 30.8825 11.9999 30.7147 11.9999 30.5396C11.9999 30.0145 12.1895 29.5109 12.5271 29.1395C12.8647 28.7682 13.3225 28.5596 13.7999 28.5596C13.959 28.5596 14.1116 28.4901 14.2242 28.3663C14.3367 28.2425 14.3999 28.0747 14.3999 27.8996C14.3999 27.7246 14.3367 27.5567 14.2242 27.4329C14.1116 27.3091 13.959 27.2396 13.7999 27.2396Z" fill="url(#paint7_linear_1362_3019)"/>
+          <path d="M53.7001 5.04117C52.984 5.04117 52.2973 4.73774 51.7909 4.19764C51.2846 3.65754 51.0001 2.925 51.0001 2.16117C51.0001 1.90656 50.9053 1.66238 50.7365 1.48235C50.5677 1.30231 50.3388 1.20117 50.1001 1.20117C49.8614 1.20117 49.6325 1.30231 49.4637 1.48235C49.2949 1.66238 49.2001 1.90656 49.2001 2.16117C49.2001 2.925 48.9156 3.65754 48.4093 4.19764C47.9029 4.73774 47.2162 5.04117 46.5001 5.04117C46.2614 5.04117 46.0325 5.14231 45.8637 5.32235C45.6949 5.50238 45.6001 5.74656 45.6001 6.00117C45.6001 6.25578 45.6949 6.49996 45.8637 6.68C46.0325 6.86003 46.2614 6.96117 46.5001 6.96117C47.2162 6.96117 47.9029 7.2646 48.4093 7.8047C48.9156 8.34481 49.2001 9.07735 49.2001 9.84117C49.2001 10.0958 49.2949 10.34 49.4637 10.52C49.6325 10.7 49.8614 10.8012 50.1001 10.8012C50.3388 10.8012 50.5677 10.7 50.7365 10.52C50.9053 10.34 51.0001 10.0958 51.0001 9.84117C51.0001 9.07735 51.2846 8.34481 51.7909 7.8047C52.2973 7.2646 52.984 6.96117 53.7001 6.96117C53.9388 6.96117 54.1677 6.86003 54.3365 6.68C54.5053 6.49996 54.6001 6.25578 54.6001 6.00117C54.6001 5.74656 54.5053 5.50238 54.3365 5.32235C54.1677 5.14231 53.9388 5.04117 53.7001 5.04117Z" fill="url(#paint8_linear_1362_3019)"/>
+          <defs>
+            <linearGradient id="paint0_linear_1362_3019" x1="56.8002" y1="16.0011" x2="48.837" y2="53.3099" gradientUnits="userSpaceOnUse">
+              <stop offset="0.045" stop-color="#FF7133"/>
+              <stop offset="0.945" stop-color="#7C69FD"/>
+            </linearGradient>
+            <linearGradient id="paint1_linear_1362_3019" x1="11.6624" y1="48.4556" x2="31.0249" y2="47.1543" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#F0E8FF"/>
+              <stop offset="0.783654" stop-color="white"/>
+              <stop offset="0.966346" stop-color="#FFEDE7"/>
+            </linearGradient>
+            <linearGradient id="paint2_linear_1362_3019" x1="42.3212" y1="49.0203" x2="21.9771" y2="68.6318" gradientUnits="userSpaceOnUse">
+              <stop offset="0.08" stop-color="#FF8651"/>
+              <stop offset="0.515337" stop-color="#FFBEA8"/>
+              <stop offset="0.945" stop-color="#A397F5"/>
+            </linearGradient>
+            <linearGradient id="paint3_linear_1362_3019" x1="39.9219" y1="22.4792" x2="39.5766" y2="41.3144" gradientUnits="userSpaceOnUse">
+              <stop offset="0.08" stop-color="#FF8651"/>
+              <stop offset="0.515337" stop-color="#FFBEA8"/>
+              <stop offset="0.945" stop-color="#A397F5"/>
+            </linearGradient>
+            <linearGradient id="paint4_linear_1362_3019" x1="42.1401" y1="51.1416" x2="19.7638" y2="47.872" gradientUnits="userSpaceOnUse">
+              <stop offset="0.08" stop-color="#FF8651"/>
+              <stop offset="0.515337" stop-color="#FFBEA8"/>
+              <stop offset="0.945" stop-color="#A397F5"/>
+            </linearGradient>
+            <linearGradient id="paint5_linear_1362_3019" x1="41.1233" y1="15.2008" x2="36.5346" y2="17.9048" gradientUnits="userSpaceOnUse">
+              <stop offset="0.045" stop-color="#FF7133"/>
+              <stop offset="0.945" stop-color="#7C69FD"/>
+            </linearGradient>
+            <linearGradient id="paint6_linear_1362_3019" x1="58.5232" y1="52.4" x2="53.9345" y2="55.104" gradientUnits="userSpaceOnUse">
+              <stop offset="0.045" stop-color="#FF7133"/>
+              <stop offset="0.945" stop-color="#7C69FD"/>
+            </linearGradient>
+            <linearGradient id="paint7_linear_1362_3019" x1="15.323" y1="28.9996" x2="10.7343" y2="31.7036" gradientUnits="userSpaceOnUse">
+              <stop offset="0.045" stop-color="#FF7133"/>
+              <stop offset="0.945" stop-color="#7C69FD"/>
+            </linearGradient>
+            <linearGradient id="paint8_linear_1362_3019" x1="55.9847" y1="7.60117" x2="49.2125" y2="11.7166" gradientUnits="userSpaceOnUse">
+              <stop offset="0.045" stop-color="#FF7133"/>
+              <stop offset="0.945" stop-color="#7C69FD"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div class="header-text">
+        <h1 class="header-title" id="header-title">Myop Playground</h1>
+        <p class="header-subtitle" id="header-subtitle">Choose an area to practice. Vibe-code changes and see them live through Myop.</p>
+      </div>
+    </div>
+
+    <!-- Cards Section -->
+    <div class="cards-section">
+      <div class="section-label">Choose your playground</div>
+      <div class="cards-grid" id="cards-container">
+        <!-- Cards will be rendered here -->
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      No developer needed. Just pick, build, and see your changes instantly.
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // Private state
+    let playgroundData = {
+      areas: [],
+      title: 'Myop Playground',
+      subtitle: 'Choose an area to practice. Vibe-code changes and see them live through Myop.'
+    };
+    let isInitialized = false;
+
+    // DOM references
+    const cardsContainer = document.getElementById('cards-container');
+    const headerTitle = document.getElementById('header-title');
+    const headerSubtitle = document.getElementById('header-subtitle');
+
+    // SVG Icons
+    const ICONS = {
+      stocks: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                    <polyline points="16 7 22 7 22 13"></polyline>
+                </svg>`,
+      profile: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>`,
+      arrow: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>`
+    };
+
+    function renderAreaCard(area) {
+      const icon = ICONS[area.icon] || ICONS.profile;
+      const iconClass = area.icon || 'profile';
+
+      let previewContent = '';
+      if (area.previewImage) {
+        previewContent = `<img src="${area.previewImage}" alt="${area.name}" onload="this.classList.add('loaded')">`;
+      }
+
+      return `
+                    <a href="/${area.id}" class="area-card-link">
+                        <div class="area-card" data-id="${area.id}">
+                            <div class="area-card-preview">${previewContent}</div>
+                            <div class="area-card-content">
+                                <div class="area-card-icon ${iconClass}">${icon}</div>
+                                <div class="area-card-name">${area.name}</div>
+                                <div class="area-card-description">${area.description}</div>
+                                <div class="area-card-arrow">${ICONS.arrow}</div>
+                            </div>
+                        </div>
+                    </a>
+                `;
+    }
+
+    function render() {
+      // Update header
+      headerTitle.textContent = playgroundData.title;
+      headerSubtitle.textContent = playgroundData.subtitle;
+
+      // Render cards
+      const cardsHTML = playgroundData.areas.map(area => renderAreaCard(area)).join('');
+      cardsContainer.innerHTML = cardsHTML;
+    }
+
+    function attachEventListeners() {
+      cardsContainer.addEventListener('click', (e) => {
+        const card = e.target.closest('.area-card');
+        if (!card) return;
+
+        const areaId = card.dataset.id;
+        const area = playgroundData.areas.find(a => a.id === areaId);
+
+        if (area) {
+          window.myop_cta_handler('area_selected', {
+            areaId: area.id,
+            areaName: area.name
+          });
+        }
+      });
+    }
+
+    function initialize(data) {
+      playgroundData = {
+        areas: data.areas || [],
+        title: data.title || playgroundData.title,
+        subtitle: data.subtitle || playgroundData.subtitle
+      };
+
+      if (!isInitialized) {
+        attachEventListeners();
+        isInitialized = true;
+      }
+
+      render();
+    }
+
+    // Public API
+    window.myop_init_interface = function(data) {
+      if (!data) {
+        return { ...playgroundData };
+      }
+      initialize(data);
+    };
+
+    window.myop_cta_handler = function(action_id, payload) {
+      console.log('[Playground Landing CTA]', action_id, payload);
+    };
+
+    console.log('[Playground Landing] Component ready');
+  })();
+</script>
+
+<!-- Preview script - replaced in production -->
+<script id="myop_preview">
+  window.myop_init_interface({
+    title: 'Myop Playground',
+    subtitle: 'Choose an area to practice. Vibe-code changes and see them live through Myop.',
+    areas: [
+      {
+        id: 'stocks',
+        name: 'Stocks',
+        description: 'Build an investment tracking app with real-time charts, portfolio management, and trading modals.',
+        icon: 'stocks',
+        previewImage: 'https://user-components-assets.s3.eu-south-1.amazonaws.com/myop2/1766309198372-investment-app.png'
+      },
+      {
+        id: 'profiles',
+        name: 'Profiles',
+        description: 'Create a user management system with signup flows, profile cards, analytics dashboards, and more.',
+        icon: 'profile',
+        previewImage: 'https://user-components-assets.s3.eu-south-1.amazonaws.com/myop2/1766309198372-profiles-app.png'
+      }
+    ]
+  });
+</script>
+</body>
+</html>
