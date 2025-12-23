@@ -1,4 +1,4 @@
-import { cpSync, mkdirSync, existsSync, rmSync } from 'fs';
+import { cpSync, mkdirSync, existsSync, rmSync, readFileSync, writeFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -33,60 +33,8 @@ if (existsSync(profilesDist)) {
   process.exit(1);
 }
 
-// Create a simple index.html at root that redirects or shows links
-const indexHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Playground Apps</title>
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      background: #f5f5f5;
-    }
-    .container {
-      text-align: center;
-    }
-    h1 {
-      color: #333;
-    }
-    .links {
-      display: flex;
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-    a {
-      padding: 1rem 2rem;
-      background: #007bff;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      font-size: 1.1rem;
-    }
-    a:hover {
-      background: #0056b3;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Playground Apps</h1>
-    <div class="links">
-      <a href="/stocks/">Stocks App</a>
-      <a href="/profiles/">Profiles App</a>
-    </div>
-  </div>
-</body>
-</html>`;
-
-import { writeFileSync } from 'fs';
+// Copy index.html template to dist root
+const indexHtml = readFileSync(join(__dirname, 'index-template.html'), 'utf-8');
 writeFileSync(join(distDir, 'index.html'), indexHtml);
 console.log('Created root index.html');
 
