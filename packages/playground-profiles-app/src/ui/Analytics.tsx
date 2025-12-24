@@ -13,7 +13,7 @@ export const Analytics = () => {
     };
 
     return (
-        <div style={{ width: '100%', height: '100%', overflow: 'auto' }}>
+        <div className="analytics-container">
             <MyopComponent
                 componentId={getComponentId(QUERY_PARAMS.analytics)}
                 data={analyticsData}

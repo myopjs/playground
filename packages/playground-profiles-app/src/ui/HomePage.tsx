@@ -153,9 +153,9 @@ export const HomePage = ({userData}:{ userData: UserData}) => {
         isEditing: false
     });
 
-    return  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+    return  <div className="homepage-container">
         {/* Header Insights */}
-        <div style={{ height: '244px', paddingRight: '24px', paddingLeft: '24px' }}>
+        <div className="homepage-header-insights">
             <MyopComponent
                 componentId={getComponentId(QUERY_PARAMS.headerInsights)}
                 data={{ userName: userData.name, stats: headerStats, ...headerInsightsAction }}
@@ -164,14 +164,14 @@ export const HomePage = ({userData}:{ userData: UserData}) => {
         </div>
 
         {/* Content Header */}
-        <div style={{  paddingRight: '24px', paddingLeft: '24px', paddingBottom: '16px', height: '40px' }} >
+        <div className="homepage-content-header">
             <MyopComponent
                 componentId={getComponentId(QUERY_PARAMS.tableHeader)}
                 on={handleCta as any}
             />
 
         </div>
-        <div style={{ flex: 1, overflow: 'auto', padding: '0 24px 24px' }}>
+        <div className="homepage-content-area">
             {isTableReady && (
                 view === 'table' ?
                     <MyopComponent key={`table-v${membersVersion}`} componentId={getComponentId(QUERY_PARAMS.table)} data={members} on={handleMemberClick as any} />:
@@ -182,30 +182,11 @@ export const HomePage = ({userData}:{ userData: UserData}) => {
         {/* Edit Profile Modal */}
         {isProfileOpen && selectedMember && (
             <div
-                style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    backgroundColor: isProfileVisible ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 0)',
-                    backdropFilter: isProfileVisible ? 'blur(4px)' : 'blur(0px)',
-                    WebkitBackdropFilter: isProfileVisible ? 'blur(4px)' : 'blur(0px)',
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    zIndex: 1000,
-                    transition: 'background-color 300ms ease-out, backdrop-filter 300ms ease-out',
-                }}
+                className={`homepage-modal-overlay${isProfileVisible ? ' visible' : ''}`}
                 onClick={closeProfile}
             >
                 <div
-                    style={{
-                        width: '384px',
-                        height: '100%',
-                        backgroundColor: '#fff',
-                        transform: isProfileVisible ? 'translateX(0)' : 'translateX(100%)',
-                        transition: 'transform 300ms ease-out',
-                    }}
+                    className={`homepage-modal-panel${isProfileVisible ? ' visible' : ''}`}
                     onClick={(e) => e.stopPropagation()}
                 >
                     <MyopComponent

@@ -33,7 +33,7 @@ export const ProfilePopover = ({ userData, onClose, onLogout }: ProfilePopoverPr
     };
 
     return <>
-        <div style={{ width: '300px', height: '500px' }}>
+        <div className="profile-popover-container">
             <MyopComponent
                 componentId={getComponentId(QUERY_PARAMS.profilePopover)}
                 data={{ userData }}

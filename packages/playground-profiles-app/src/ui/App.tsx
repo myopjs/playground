@@ -51,7 +51,7 @@ function App() {
 
   if (!currentUser) {
 
-    return (<div style={{ height: '100vh', width: '100vw' }}>
+    return (<div className="app-signup-container">
         <MyopComponent
           componentId={getComponentId(QUERY_PARAMS.signup)}
           on={(actionId: string) => {
@@ -65,11 +65,11 @@ function App() {
     )
   }
 
-  return (<div style={{ display: 'flex', width: '100vw', height: '100vh' }}>
-          <aside style={{ width: '280px', height: '100%', position: 'relative' }}>
+  return (<div className="app-layout">
+          <aside className="app-sidebar">
              <SideBar userData={currentUser} activeNavItem={activeNavItem} onLogout={handleLogout} onNavigate={handleNavigate} />
           </aside>
-          <main style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
+          <main className="app-main">
               <Routes>
                   <Route path="/" element={<HomePage userData={currentUser} />} />
                   <Route path="/analytics" element={<Analytics />} />
