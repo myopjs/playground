@@ -52,26 +52,10 @@ export const SideBar = ({ userData, activeNavItem, onLogout, onNavigate }: SideB
         {isOpen && (
             <>
                 <div
-                    style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        zIndex: 9998,
-                        opacity: isVisible ? 1 : 0,
-                        transition: 'opacity 200ms ease-out'
-                    }}
+                    className={`sidebar-overlay${isVisible ? ' visible' : ''}`}
                     onClick={closePopover}
                 />
-                <div style={{
-                    position: 'fixed',
-                    bottom: '10px',
-                    left: '100px',
-                    zIndex: 9999,
-                    opacity: isVisible ? 1 : 0,
-                    transition: 'opacity 200ms ease-out'
-                }}>
+                <div className={`sidebar-popover${isVisible ? ' visible' : ''}`}>
                     <ProfilePopover
                         userData={userData}
                         onClose={closePopover}
