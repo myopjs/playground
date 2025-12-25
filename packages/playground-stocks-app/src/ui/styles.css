@@ -1,9 +1,15 @@
+:root {
+    --header-height: 68px;
+    --footer-height: 34px;
+}
+
 body {
     margin: 0;
 }
 
 .header {
-    height: 91px;
+    height: var(--header-height);
+    border-bottom: 1px solid #262626;
 }
 
 
@@ -14,12 +20,12 @@ body {
 
 .stocks-list {
     width: 30vw;
-    height: calc(65vh - 91px - 34px);
+    height: calc(65vh - var(--header-height) - var(--footer-height));
 }
 
 .stock-graph {
     width: 70vw;
-    height: calc(65vh - 91px - 34px);
+    height: calc(65vh - var(--header-height) - var(--footer-height));
 }
 
 .portfolio {
@@ -27,7 +33,7 @@ body {
 }
 
 .footer {
-    height: 34px;
+    height: var(--footer-height);
 }
 
 .loader {
