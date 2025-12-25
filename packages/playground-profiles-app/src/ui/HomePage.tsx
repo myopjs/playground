@@ -6,6 +6,9 @@ import type {TeamMember} from '../data/teamMembers.ts';
 import type {UserData} from "../data/mockUsers.ts";
 import {Toast} from "./Toast.tsx";
 
+type ViewType = 'table' | 'cards' | 'tree';
+
+
 interface HomePageProps {
     userData: UserData;
     members: TeamMember[];
@@ -16,7 +19,7 @@ interface HomePageProps {
 export const HomePage = ({userData, members, onUpdateMember, onDeleteMember}: HomePageProps) => {
     const navigate = useNavigate();
 
-    const [view, setView] = useState('table')
+    const [view, setView] = useState<ViewType>('table')
     const [membersVersion, setMembersVersion] = useState(0)
     const [isTableReady, setIsTableReady] = useState(true)
     const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null)
@@ -87,8 +90,8 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember}: Ho
         }
     };
 
-    const handleCta = (action: string, payload: any) => {
-        if (action === 'view-changed' && payload) {
+    const handleCta = (action: string, payload: { view: ViewType }) => {
+        if (action === 'view-changed' && payload?.view) {
             setView(payload.view);
         }
     };
@@ -190,15 +193,19 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember}: Ho
         <div className="homepage-content-header">
             <MyopComponent
                 componentId={getComponentId(QUERY_PARAMS.tableHeader)}
+                data={{ title: 'Your Team', activeView: view }}
                 on={handleCta as any}
             />
-
         </div>
         <div className="homepage-content-area">
-            {isTableReady && (
-                view === 'table' ?
-                    <MyopComponent key={`table-v${membersVersion}`} componentId={getComponentId(QUERY_PARAMS.table)} data={members} on={handleMemberClick as any} />:
-                    <MyopComponent key={`cards-v${membersVersion}`} componentId={getComponentId(QUERY_PARAMS.cardsView)} data={members} on={handleMemberClick as any} />
+            {isTableReady && view === 'table' && (
+                <MyopComponent key={`table-v${membersVersion}`} componentId={getComponentId(QUERY_PARAMS.table)} data={members} on={handleMemberClick as any} />
+            )}
+            {isTableReady && view === 'cards' && (
+                <MyopComponent key={`cards-v${membersVersion}`} componentId={getComponentId(QUERY_PARAMS.cardsView)} data={members} on={handleMemberClick as any} />
+            )}
+            {isTableReady && view === 'tree' && (
+                <MyopComponent key={`tree-v${membersVersion}`} componentId={getComponentId(QUERY_PARAMS.treeView)} data={members} on={handleMemberClick as any} />
             )}
         </div>
 
