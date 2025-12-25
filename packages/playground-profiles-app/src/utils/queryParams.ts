@@ -6,6 +6,7 @@ export const QUERY_PARAMS = {
     headerInsights: 'headerInsights',
     sidebar: 'sidebar',
     cardsView: 'cardsView',
+    treeView: 'treeView',
     profilePopover: 'profilePopover',
     tableHeader: 'tableHeader',
     editProfile: 'editProfile',
