@@ -27,8 +27,9 @@ A stock trading simulation app featuring:
 A team management app featuring:
 - User authentication with session persistence
 - Team members display (table/cards view)
+- Add new team members with full profile details
 - Profile editing with slide-in modals
-- Analytics dashboard with team insights
+- Analytics dashboard with team insights (dynamically updates with team changes)
 - Navigation sidebar with user profile menu
 
 ## Getting Started
@@ -247,6 +248,7 @@ http://localhost:5173/profiles/?sidebar=your-component-id
 | `headerInsights` | Welcome header |
 | `tableHeader` | View toggle controls |
 | `editProfile` | Profile editor modal |
+| `addProfile` | Add new member form |
 | `analytics` | Analytics dashboard |
 | `profilePopover` | User profile dropdown |
 
