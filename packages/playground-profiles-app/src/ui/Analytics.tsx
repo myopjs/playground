@@ -1,10 +1,18 @@
 import {MyopComponent} from "@myop/react";
 import {getComponentId, QUERY_PARAMS} from "../utils/queryParams.ts";
 import {useNavigate} from "react-router-dom";
-import {analyticsData} from "../data/analyticsData.ts";
+import {useMemo} from "react";
+import {generateAnalyticsData} from "../data/analyticsData.ts";
+import type {TeamMember} from "../data/teamMembers.ts";
 
-export const Analytics = () => {
+interface AnalyticsProps {
+    members: TeamMember[];
+}
+
+export const Analytics = ({members}: AnalyticsProps) => {
     const navigate = useNavigate();
+
+    const analyticsData = useMemo(() => generateAnalyticsData(members), [members]);
 
     const handleCta = (actionId: string) => {
         if (actionId === 'back_clicked') {

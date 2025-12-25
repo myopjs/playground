@@ -1,25 +1,25 @@
 import {MyopComponent} from "@myop/react";
 import {getComponentId, QUERY_PARAMS} from "../utils/queryParams.ts";
-import {useState, useEffect, useCallback, useMemo} from "react";
+import {useState, useEffect, useMemo} from "react";
 import {useNavigate} from "react-router-dom";
-import {teamMembersData, type TeamMember} from '../data/teamMembers.ts';
+import type {TeamMember} from '../data/teamMembers.ts';
 import type {UserData} from "../data/mockUsers.ts";
-import {Toast} from "./Toast.tsx";
 
+interface HomePageProps {
+    userData: UserData;
+    members: TeamMember[];
+    onUpdateMember: (updatedMember: Partial<TeamMember> & { id: string }) => void;
+}
 
-export const HomePage = ({userData}:{ userData: UserData}) => {
+export const HomePage = ({userData, members, onUpdateMember}: HomePageProps) => {
     const navigate = useNavigate();
 
     const [view, setView] = useState('table')
-    const [members, setMembers] = useState<TeamMember[]>(teamMembersData)
     const [membersVersion, setMembersVersion] = useState(0)
     const [isTableReady, setIsTableReady] = useState(true)
     const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null)
     const [isProfileOpen, setIsProfileOpen] = useState(false)
     const [isProfileVisible, setIsProfileVisible] = useState(false)
-    const [toastOpen, setToastOpen] = useState(false)
-
-    const closeToast = useCallback(() => setToastOpen(false), []);
 
     const headerStats = useMemo(() => {
         const totalExperience = members.reduce((sum, m) => sum + parseFloat(m.experience), 0);
@@ -70,7 +70,7 @@ export const HomePage = ({userData}:{ userData: UserData}) => {
                 navigate('/analytics');
             }
             if (payload?.action === 'addMember') {
-                setToastOpen(true);
+                navigate('/add-member');
             }
             if (payload?.action === 'shareTeam') {
                 navigator.clipboard.writeText(window.location.href).then(() => {
@@ -101,29 +101,19 @@ export const HomePage = ({userData}:{ userData: UserData}) => {
         if (action === 'save' && payload?.profile) {
             const updatedProfile = payload.profile;
             console.log('Updating members with:', updatedProfile);
-            setMembers(prevMembers => {
-                const newMembers = prevMembers.map(member => {
-                    if (String(member.id) === String(updatedProfile.id)) {
-                        console.log('Found match, updating:', member.name, '->', updatedProfile.name);
-                        return {
-                            ...member,
-                            name: updatedProfile.name ?? member.name,
-                            title: updatedProfile.title ?? member.title,
-                            initials: updatedProfile.initials ?? member.initials,
-                            email: updatedProfile.email ?? member.email,
-                            phone: updatedProfile.phone ?? member.phone,
-                            location: updatedProfile.location ?? member.location,
-                            skills: updatedProfile.skills ?? member.skills,
-                            about: updatedProfile.about ?? member.about,
-                            experience: updatedProfile.experience ?? member.experience,
-                            tenure: updatedProfile.tenure ?? member.tenure,
-                            profileImage: updatedProfile.profileImage,
-                        };
-                    }
-                    return member;
-                });
-                console.log('New members array:', newMembers);
-                return newMembers;
+            onUpdateMember({
+                id: updatedProfile.id,
+                name: updatedProfile.name,
+                title: updatedProfile.title,
+                initials: updatedProfile.initials,
+                email: updatedProfile.email,
+                phone: updatedProfile.phone,
+                location: updatedProfile.location,
+                skills: updatedProfile.skills,
+                about: updatedProfile.about,
+                experience: updatedProfile.experience,
+                tenure: updatedProfile.tenure,
+                profileImage: updatedProfile.profileImage,
             });
             setSelectedMember(prev => prev ? { ...prev, ...updatedProfile } : null);
             setMembersVersion(v => v + 1);
@@ -131,27 +121,41 @@ export const HomePage = ({userData}:{ userData: UserData}) => {
         }
     };
 
-    const mapMemberToProfile = (member: TeamMember) => ({
-        profile: {
-            id: member.id,
-            initials: member.initials,
-            name: member.name,
-            title: member.title,
-            experience: member.experience,
-            tenure: member.tenure,
-            location: member.location,
-            skills: member.skills,
-            profileImage: member.profileImage,
-            avatarColor: member.avatarColor,
-            badge: member.role,
-            email: member.email,
-            phone: member.phone,
-            about: member.about,
-            relationship: member.relationship,
-            relationshipType: member.relationshipType,
-        },
-        isEditing: false
-    });
+    const mapMemberToProfile = (member: TeamMember) => {
+        const teamSize = members.filter(m =>
+            m.relationship.toLowerCase().includes(`reports to ${member.name.toLowerCase()}`)
+        ).length;
+
+        // Calculate tenure rank (1st = longest tenure)
+        const sortedByTenure = [...members].sort((a, b) =>
+            parseFloat(b.tenure) - parseFloat(a.tenure)
+        );
+        const tenureRank = sortedByTenure.findIndex(m => m.id === member.id) + 1;
+
+        return {
+            profile: {
+                id: member.id,
+                initials: member.initials,
+                name: member.name,
+                title: member.title,
+                experience: member.experience,
+                tenure: member.tenure,
+                location: member.location,
+                skills: member.skills,
+                profileImage: member.profileImage,
+                avatarColor: member.avatarColor,
+                badge: member.role,
+                email: member.email,
+                phone: member.phone,
+                about: member.about,
+                relationship: member.relationship,
+                relationshipType: member.relationshipType,
+                teamSize,
+                tenureRank,
+            },
+            isEditing: false
+        };
+    };
 
     return  <div className="homepage-container">
         {/* Header Insights */}
@@ -197,11 +201,5 @@ export const HomePage = ({userData}:{ userData: UserData}) => {
                 </div>
             </div>
         )}
-
-        <Toast
-            message="Add Member feature coming soon!"
-            isOpen={toastOpen}
-            onClose={closeToast}
-        />
     </div>
 }
