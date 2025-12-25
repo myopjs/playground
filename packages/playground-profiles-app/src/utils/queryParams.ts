@@ -10,7 +10,8 @@ export const QUERY_PARAMS = {
     tableHeader: 'tableHeader',
     editProfile: 'editProfile',
     analytics: 'analytics',
-    addProfile: 'addProfile'
+    addProfile: 'addProfile',
+    treeView: 'treeView',
 } as const;
 
 type ComponentKey = keyof typeof QUERY_PARAMS;
