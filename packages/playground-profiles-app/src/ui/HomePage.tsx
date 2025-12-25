@@ -1,17 +1,19 @@
 import {MyopComponent} from "@myop/react";
 import {getComponentId, QUERY_PARAMS} from "../utils/queryParams.ts";
-import {useState, useEffect, useMemo} from "react";
+import {useState, useEffect, useMemo, useCallback} from "react";
 import {useNavigate} from "react-router-dom";
 import type {TeamMember} from '../data/teamMembers.ts';
 import type {UserData} from "../data/mockUsers.ts";
+import {Toast} from "./Toast.tsx";
 
 interface HomePageProps {
     userData: UserData;
     members: TeamMember[];
     onUpdateMember: (updatedMember: Partial<TeamMember> & { id: string }) => void;
+    onDeleteMember: (memberId: string) => void;
 }
 
-export const HomePage = ({userData, members, onUpdateMember}: HomePageProps) => {
+export const HomePage = ({userData, members, onUpdateMember, onDeleteMember}: HomePageProps) => {
     const navigate = useNavigate();
 
     const [view, setView] = useState('table')
@@ -20,6 +22,10 @@ export const HomePage = ({userData, members, onUpdateMember}: HomePageProps) => 
     const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null)
     const [isProfileOpen, setIsProfileOpen] = useState(false)
     const [isProfileVisible, setIsProfileVisible] = useState(false)
+    const [toastOpen, setToastOpen] = useState(false)
+    const [toastMessage, setToastMessage] = useState('')
+
+    const closeToast = useCallback(() => setToastOpen(false), [])
 
     const headerStats = useMemo(() => {
         const totalExperience = members.reduce((sum, m) => sum + parseFloat(m.experience), 0);
@@ -91,12 +97,25 @@ export const HomePage = ({userData, members, onUpdateMember}: HomePageProps) => 
         if (action === 'member_clicked' && payload?.member) {
             setSelectedMember(payload.member);
         }
+        if (action === 'addMember') {
+            navigate('/add-member');
+        }
     };
 
     const handleEditProfileCta = (action: string, payload: any) => {
         console.log('handleEditProfileCta called:', action, payload);
         if (action === 'close') {
             closeProfile();
+        }
+        if (action === 'delete' && payload?.profile) {
+            const profileId = payload.profile.id;
+            const profileName = payload.profile.name;
+            console.log('Deleting member:', profileId);
+            onDeleteMember(profileId);
+            closeProfile();
+            setMembersVersion(v => v + 1);
+            setToastMessage(`${profileName} has been removed from the team`);
+            setToastOpen(true);
         }
         if (action === 'save' && payload?.profile) {
             const updatedProfile = payload.profile;
@@ -201,5 +220,11 @@ export const HomePage = ({userData, members, onUpdateMember}: HomePageProps) => 
                 </div>
             </div>
         )}
+
+        <Toast
+            message={toastMessage}
+            isOpen={toastOpen}
+            onClose={closeToast}
+        />
     </div>
 }
