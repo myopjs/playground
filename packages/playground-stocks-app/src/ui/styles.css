@@ -20,7 +20,27 @@ body {
 
 .stocks-list {
     width: 30vw;
+    min-width: 320px;
     height: calc(65vh - var(--header-height) - var(--footer-height));
+}
+
+@media (max-width: 900px) {
+    .stocks-list {
+        width: 40vw;
+    }
+    .stock-graph {
+        width: 60vw;
+    }
+}
+
+@media (max-width: 600px) {
+    .stocks-list {
+        width: 100vw;
+        min-width: unset;
+    }
+    .stock-graph {
+        display: none;
+    }
 }
 
 .stock-graph {
