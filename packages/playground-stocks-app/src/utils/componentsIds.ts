@@ -8,4 +8,5 @@ export const COMPONENTS_IDS = {
     confirmationModal: 'fc6e9b5d-2180-47b3-b0d0-0d6d9dfc96ae', //confirmationModal.html
     confirmationSellModal: '69a98ff0-f3b3-4a2b-8fab-50d072138c16', //confirmationSell.html
     profilePopover: 'a62bb61b-e2f6-4c83-965e-49c6da7de6c2', //
+    bottomNav: 'ca19025d-f2da-4c60-996a-0ae184397262', //bottomNav.html
 }
