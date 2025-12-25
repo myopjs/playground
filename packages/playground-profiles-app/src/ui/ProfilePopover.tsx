@@ -27,9 +27,6 @@ export const ProfilePopover = ({ userData, onClose, onLogout }: ProfilePopoverPr
             currentUrl.searchParams.set(payload.selectedComponent, payload.componentId);
             window.open(currentUrl.toString(), '_blank');
         }
-        if (actionId === 'settings_clicked') {
-            setToastOpen(true);
-        }
     };
 
     return <>

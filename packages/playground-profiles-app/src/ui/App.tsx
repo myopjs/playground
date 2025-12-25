@@ -36,6 +36,10 @@ function App() {
     ));
   }, []);
 
+  const handleDeleteMember = useCallback((memberId: string) => {
+    setMembers(prev => prev.filter(member => String(member.id) !== String(memberId)));
+  }, []);
+
     const handleSignIn = () => {
       const user = getRandomUser();
       sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(user));
@@ -86,7 +90,7 @@ function App() {
           </aside>
           <main className="app-main">
               <Routes>
-                  <Route path="/" element={<HomePage userData={currentUser} members={members} onUpdateMember={handleUpdateMember} />} />
+                  <Route path="/" element={<HomePage userData={currentUser} members={members} onUpdateMember={handleUpdateMember} onDeleteMember={handleDeleteMember} />} />
                   <Route path="/analytics" element={<Analytics members={members} />} />
                   <Route path="/add-member" element={<AddMember members={members} onAddMember={handleAddMember} />} />
               </Routes>
