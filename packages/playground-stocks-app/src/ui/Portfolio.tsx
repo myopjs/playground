@@ -51,6 +51,8 @@ export const Portfolio = ({ data, onHoldingClicked }: PortfolioProps) => {
         }
     }, [onHoldingClicked]);
 
+    console.log('Portfolio rendering with data:', data);
+
     return <div className='portfolio'>
         <MyopComponent
             componentId={getComponentId(QUERY_PARAMS.portfolio)}

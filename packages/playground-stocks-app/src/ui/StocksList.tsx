@@ -24,9 +24,10 @@ interface StocksListProps {
     selectedStock: Stock | null;
     onStockSelected: (stock: Stock | null) => void;
     onStockClicked: (stock: Stock) => void;
+    activeTab?: string;
 }
 
-export const StocksList = ({ stocks, portfolioHoldings, selectedStock, onStockSelected, onStockClicked }: StocksListProps) => {
+export const StocksList = ({ stocks, portfolioHoldings, selectedStock, onStockSelected, onStockClicked, activeTab }: StocksListProps) => {
 
     // Generate a random recent timestamp (within the last 5 minutes)
     const getRandomRecentTime = () => {
@@ -64,9 +65,10 @@ export const StocksList = ({ stocks, portfolioHoldings, selectedStock, onStockSe
         return {
             stocks: transformedStocks,
             portfolioStocks,
-            selectedSymbol: selectedStock?.ticker || ''
+            selectedSymbol: selectedStock?.ticker || '',
+            showTabsAndSearch: activeTab === 'stocks'
         };
-    }, [stocks, portfolioHoldings, selectedStock]);
+    }, [stocks, portfolioHoldings, selectedStock, activeTab]);
 
     // Handle CTA from stocksList.html
     const handleCta = useCallback((action: string, payload: any) => {
@@ -86,6 +88,7 @@ export const StocksList = ({ stocks, portfolioHoldings, selectedStock, onStockSe
 
     return <div className='stocks-list'>
         <MyopComponent
+            key={`stocks-list-${activeTab}`}
             componentId={getComponentId(QUERY_PARAMS.stockList)}
             data={stocksData}
             on={handleCta as any}

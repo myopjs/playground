@@ -11,8 +11,10 @@ import {Loader} from "../ui/Loader";
 import {TradeModal} from "./TradeModal";
 import {TopBar} from "./TopBar";
 import {ConfirmationSellModal} from "./ConfirmationSellModal";
+import {BottomNav} from "./BottomNav";
 
 const INITIAL_CASH = 100000;
+const MOBILE_BREAKPOINT = 700;
 
 export function App() {
 
@@ -21,6 +23,8 @@ export function App() {
     const [selected, setSelected] = useState<Stock | null>(initialMarket[0] || null);
     const [modalStock, setModalStock] = useState<Stock | null>(null);
     const [sellHolding, setSellHolding] = useState<Holding | null>(null);
+    const [activeTab, setActiveTab] = useState<string>('home');
+    const [isMobileView, setIsMobileView] = useState<boolean>(window.innerWidth <= MOBILE_BREAKPOINT);
     const [portfolio, setPortfolio] = useState<PortfolioData>({
         cash: INITIAL_CASH,
         holdingsValue: 0,
@@ -35,6 +39,18 @@ export function App() {
     useEffect(() => {
         preloadComponents(Object.values(COMPONENTS_IDS), 'production').then(() => console.log('all components loaded successfully!'));
     }, [])
+
+    useEffect(() => {
+        const handleResize = () => {
+            const newIsMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+            if (newIsMobile !== isMobileView) {
+                setIsMobileView(newIsMobile);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [isMobileView])
 
     const handleStockSelected = useCallback((stock: Stock | null) => {
         console.log('App: Stock selected (double-click):', stock);
@@ -224,22 +240,27 @@ export function App() {
         });
     }, [sellHolding, handleSell]);
 
+    const handleTabChanged = useCallback((tabId: string) => {
+        console.log('Tab changed to:', tabId);
+        setActiveTab(tabId);
+    }, []);
 
     return (
-        <div>
+        <div className={`app-container mobile-tab-${activeTab}`}>
             <header className="header">
                 <TopBar portfolio={portfolio}/>
             </header>
             <main>
                 <div className="main">
-                    <StocksList stocks={stocks} portfolioHoldings={portfolio.holdings} selectedStock={selected} onStockSelected={handleStockSelected} onStockClicked={handleStockClicked}/>
-                    <StocksGraph selectedStock={selected}/>
+                    <StocksList stocks={stocks} portfolioHoldings={portfolio.holdings} selectedStock={selected} onStockSelected={handleStockSelected} onStockClicked={handleStockClicked} activeTab={activeTab}/>
+                    <StocksGraph selectedStock={selected} key={`graph-${isMobileView}`}/>
                 </div>
-                <Portfolio data={portfolio} onHoldingClicked={handleHoldingClicked}/>
+                <Portfolio data={portfolio} onHoldingClicked={handleHoldingClicked} key={`portfolio-${isMobileView}`}/>
             </main>
-            <footer className="footer">
+            <footer className="footer" key={`footer-${isMobileView}`}>
                 <MyopComponent componentId={getComponentId(QUERY_PARAMS.footer)} loader={<Loader/>}/>
             </footer>
+            <BottomNav onTabChanged={handleTabChanged} activeTab={activeTab} key={`bottomnav-${isMobileView}`}/>
             {modalStock && (
                 <TradeModal
                     stock={modalStock}

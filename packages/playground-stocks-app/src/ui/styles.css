@@ -1,6 +1,8 @@
 :root {
     --header-height: 68px;
     --footer-height: 34px;
+    --main-height: calc(50px + 50vh);
+    --portfolio-height: calc(100vh - var(--main-height) - var(--header-height) - var(--footer-height));
 }
 
 body {
@@ -9,9 +11,7 @@ body {
 
 .header {
     height: var(--header-height);
-    border-bottom: 1px solid #262626;
 }
-
 
 .main {
     display: flex;
@@ -19,37 +19,104 @@ body {
 }
 
 .stocks-list {
-    width: 30vw;
-    min-width: 320px;
-    height: calc(65vh - var(--header-height) - var(--footer-height));
+    flex: 3;
+    min-width: 0;
+    height: var(--main-height);
+}
+
+.stock-graph {
+    flex: 7;
+    min-width: 0;
+    height: var(--main-height);
 }
 
 @media (max-width: 900px) {
     .stocks-list {
-        width: 40vw;
+        flex: 4;
     }
     .stock-graph {
-        width: 60vw;
+        flex: 6;
     }
 }
 
-@media (max-width: 600px) {
+.bottom-nav-container {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 110px;
+    z-index: 100;
+}
+
+@media (max-width: 700px) {
+    .main {
+        flex-direction: column;
+        height: calc(100vh - var(--header-height) - 50px);
+    }
     .stocks-list {
         width: 100vw;
         min-width: unset;
+        height: 100%;
     }
     .stock-graph {
         display: none;
     }
-}
+    .portfolio {
+        display: none;
+    }
+    .bottom-nav-container {
+        display: block !important;
+    }
+    .footer {
+        display: none;
+    }
 
-.stock-graph {
-    width: 70vw;
-    height: calc(65vh - var(--header-height) - var(--footer-height));
+    /* Home tab mobile layout - show graph above stocks list */
+    .mobile-tab-home .stock-graph {
+        display: block;
+        width: 100vw;
+        height: 40%;
+        flex-shrink: 0;
+        order: 1;
+    }
+    .mobile-tab-home .stocks-list {
+        height: 60%;
+        order: 2;
+    }
+
+    /* Stocks tab mobile layout - show only stocks list */
+    .mobile-tab-stocks .stocks-list {
+        height: 100%;
+    }
+
+    /* Portfolio tab mobile layout - show only portfolio */
+    .mobile-tab-portfolio .main {
+        display: none !important;
+    }
+    .mobile-tab-portfolio main {
+        height: calc(100vh - var(--header-height) - 50px);
+    }
+    .mobile-tab-portfolio .portfolio {
+        display: block !important;
+        width: 100vw !important;
+        height: 100% !important;
+        min-height: 100% !important;
+        background: #1a1a1a;
+    }
+
+    .mobile-tab-portfolio .portfolio > div,
+    .mobile-tab-portfolio .portfolio > div > div,
+    .mobile-tab-portfolio .portfolio iframe {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 100% !important;
+    }
+
 }
 
 .portfolio {
-    height: 35vh;
+    height: var(--portfolio-height);
 }
 
 .footer {
