@@ -11,7 +11,6 @@ body {
 
 .header {
     height: var(--header-height);
-    border-bottom: 1px solid #262626;
 }
 
 .main {
