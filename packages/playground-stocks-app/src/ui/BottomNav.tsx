@@ -23,8 +23,7 @@ export function BottomNav({onTabChanged, activeTab = 'home'}: BottomNavProps) {
                     tabs: [
                         {id: 'home', label: 'Home', icon: 'home'},
                         {id: 'stocks', label: 'Stocks', icon: 'trendingUp'},
-                        {id: 'portfolio', label: 'Portfolio', icon: 'briefcase'},
-                        {id: 'profile', label: 'Profile', icon: 'user'}
+                        {id: 'portfolio', label: 'Portfolio', icon: 'briefcase'}
                     ],
                     activeTabId: activeTab
                 }}

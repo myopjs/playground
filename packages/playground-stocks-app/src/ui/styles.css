@@ -104,13 +104,6 @@ body {
         height: 100% !important;
     }
 
-    /* Profile tab mobile layout */
-    .mobile-tab-profile .main {
-        display: none;
-    }
-    .mobile-tab-profile .portfolio {
-        display: none;
-    }
 }
 
 .stock-graph {
