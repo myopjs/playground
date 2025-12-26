@@ -1,7 +1,7 @@
 :root {
     --header-height: 68px;
     --footer-height: 34px;
-    --main-height: calc(50px + 55vh);
+    --main-height: calc(50px + 50vh);
     --portfolio-height: calc(100vh - var(--main-height) - var(--header-height) - var(--footer-height));
 }
 
