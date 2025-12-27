@@ -80,7 +80,7 @@ button:focus-visible {
 }
 
 .app-sidebar {
-  width: 280px;
+  width: clamp(200px, 22vw, 280px);
   height: 100%;
   position: relative;
 }
