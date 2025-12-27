@@ -12,6 +12,7 @@ interface ProfilePopoverProps {
     onClose: () => void;
     onOpenComponent?: (componentId: string, selectedComponent: string) => void;
     onShare?: () => void;
+    isMobileView?: boolean;
 }
 
 export const ProfilePopover = ({
@@ -21,7 +22,8 @@ export const ProfilePopover = ({
     userInitials,
     onClose,
     onOpenComponent,
-    onShare
+    onShare,
+    isMobileView
 }: ProfilePopoverProps) => {
     const popoverRef = useRef<HTMLDivElement>(null);
     const [shouldRender, setShouldRender] = useState(isVisible);
@@ -51,8 +53,9 @@ export const ProfilePopover = ({
             isVisible: true
         },
         selectedComponent: 'stockList',
-        componentId: ''
-    }), [userName, userEmail, userInitials]);
+        componentId: '',
+        isMobileView
+    }), [userName, userEmail, userInitials, isMobileView]);
 
     const handleCta = useCallback((action: string, payload: any) => {
         console.log('ProfilePopover CTA:', action, payload);

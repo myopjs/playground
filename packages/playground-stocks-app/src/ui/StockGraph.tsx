@@ -7,16 +7,17 @@ import {Loader} from "../ui/Loader";
 
 interface StocksGraphProps {
     selectedStock: Stock | null;
+    isMobileView?: boolean;
 }
 
-export const StocksGraph = ({ selectedStock }: StocksGraphProps) => {
+export const StocksGraph = ({ selectedStock, isMobileView }: StocksGraphProps) => {
 
     const stockData = useMemo(() => {
         if (!selectedStock) {
-            return { action: 'clear' };
+            return { action: 'clear', isMobileView };
         }
-        return generateStockGraphDataAllRanges(selectedStock, '1Y');
-    }, [selectedStock]);
+        return {...generateStockGraphDataAllRanges(selectedStock, '1Y'), isMobileView};
+    }, [selectedStock, isMobileView]);
 
     return <div className='stock-graph'>
         <MyopComponent componentId={getComponentId(QUERY_PARAMS.stockGraph)} data={stockData} loader={<Loader/>}/>

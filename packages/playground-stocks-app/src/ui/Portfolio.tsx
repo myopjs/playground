@@ -29,9 +29,10 @@ export interface PortfolioData {
 interface PortfolioProps {
     data: PortfolioData;
     onHoldingClicked?: (holding: Holding) => void;
+    isMobileView?: boolean;
 }
 
-export const Portfolio = ({ data, onHoldingClicked }: PortfolioProps) => {
+export const Portfolio = ({ data, onHoldingClicked, isMobileView }: PortfolioProps) => {
 
     const handleCta = useCallback((action: string, payload: any) => {
         console.log('Portfolio CTA:', action, payload);
@@ -56,7 +57,7 @@ export const Portfolio = ({ data, onHoldingClicked }: PortfolioProps) => {
     return <div className='portfolio'>
         <MyopComponent
             componentId={getComponentId(QUERY_PARAMS.portfolio)}
-            data={data}
+            data={{...data, isMobileView}}
             on={handleCta as any}
             loader={<Loader/>}
         />

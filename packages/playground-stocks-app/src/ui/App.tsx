@@ -248,19 +248,19 @@ export function App() {
     return (
         <div className={`app-container mobile-tab-${activeTab}`}>
             <header className="header">
-                <TopBar portfolio={portfolio}/>
+                <TopBar portfolio={portfolio} isMobileView={isMobileView}/>
             </header>
             <main>
                 <div className="main">
-                    <StocksList stocks={stocks} portfolioHoldings={portfolio.holdings} selectedStock={selected} onStockSelected={handleStockSelected} onStockClicked={handleStockClicked} activeTab={activeTab}/>
-                    <StocksGraph selectedStock={selected} key={`graph-${isMobileView}`}/>
+                    <StocksList stocks={stocks} portfolioHoldings={portfolio.holdings} selectedStock={selected} onStockSelected={handleStockSelected} onStockClicked={handleStockClicked} showTabsAndSearch={activeTab === 'stocks'} isMobileView={isMobileView}/>
+                    <StocksGraph selectedStock={selected} isMobileView={isMobileView} key={`graph-${isMobileView}`}/>
                 </div>
-                <Portfolio data={portfolio} onHoldingClicked={handleHoldingClicked} key={`portfolio-${isMobileView}`}/>
+                <Portfolio data={portfolio} onHoldingClicked={handleHoldingClicked} isMobileView={isMobileView} key={`portfolio-${isMobileView}`}/>
             </main>
             <footer className="footer" key={`footer-${isMobileView}`}>
                 <MyopComponent componentId={getComponentId(QUERY_PARAMS.footer)} loader={<Loader/>}/>
             </footer>
-            <BottomNav onTabChanged={handleTabChanged} activeTab={activeTab} key={`bottomnav-${isMobileView}`}/>
+            {isMobileView && <BottomNav onTabChanged={handleTabChanged} activeTab={activeTab} key={`bottomnav-${isMobileView}`}/>}
             {modalStock && (
                 <TradeModal
                     stock={modalStock}
@@ -269,6 +269,7 @@ export function App() {
                     onClose={handleCloseModal}
                     onPurchase={handlePurchase}
                     onSell={handleSell}
+                    isMobileView={isMobileView}
                 />
             )}
             {sellHolding && (
@@ -279,6 +280,7 @@ export function App() {
                     quantity={sellHolding.quantity}
                     onConfirm={handlePortfolioSellConfirm}
                     onCancel={handleCloseSellModal}
+                    isMobileView={isMobileView}
                 />
             )}
         </div>

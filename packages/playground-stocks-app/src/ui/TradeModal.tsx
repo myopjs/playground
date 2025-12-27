@@ -29,6 +29,7 @@ interface TradeModalProps {
     onClose: () => void;
     onPurchase: (data: PurchaseData) => void;
     onSell: (data: SellData) => void;
+    isMobileView?: boolean;
 }
 
 interface TradeDetails {
@@ -36,7 +37,7 @@ interface TradeDetails {
     price: number;
 }
 
-export const TradeModal = ({ stock, availableCash, ownedShares, onClose, onPurchase, onSell }: TradeModalProps) => {
+export const TradeModal = ({ stock, availableCash, ownedShares, onClose, onPurchase, onSell, isMobileView }: TradeModalProps) => {
     const [showBuyConfirmation, setShowBuyConfirmation] = useState(false);
     const [showSellConfirmation, setShowSellConfirmation] = useState(false);
     const [tradeDetails, setTradeDetails] = useState<TradeDetails | null>(null);
@@ -55,8 +56,9 @@ export const TradeModal = ({ stock, availableCash, ownedShares, onClose, onPurch
             availableCash,
             ownedShares
         },
-        quantity: 1
-    }), [stock, availableCash, ownedShares]);
+        quantity: 1,
+        isMobileView
+    }), [stock, availableCash, ownedShares, isMobileView]);
 
     const handleCta = useCallback((action: string, payload: any) => {
         console.log('TradeModal CTA:', action, payload);
@@ -111,6 +113,7 @@ export const TradeModal = ({ stock, availableCash, ownedShares, onClose, onPurch
                 actionType="buy"
                 onConfirm={handleConfirm}
                 onCancel={handleCancelConfirmation}
+                isMobileView={isMobileView}
             />
         );
     }
@@ -124,6 +127,7 @@ export const TradeModal = ({ stock, availableCash, ownedShares, onClose, onPurch
                 quantity={tradeDetails.quantity}
                 onConfirm={handleSellConfirm}
                 onCancel={handleCancelConfirmation}
+                isMobileView={isMobileView}
             />
         );
     }

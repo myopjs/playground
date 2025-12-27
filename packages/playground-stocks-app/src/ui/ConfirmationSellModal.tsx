@@ -10,6 +10,7 @@ interface ConfirmationSellModalProps {
     quantity: number;
     onConfirm: (payload: { stockSymbol: string; quantity: number; pricePerShare: number; totalProceeds: number }) => void;
     onCancel: () => void;
+    isMobileView?: boolean;
 }
 
 export const ConfirmationSellModal = ({
@@ -18,15 +19,17 @@ export const ConfirmationSellModal = ({
     pricePerShare,
     quantity,
     onConfirm,
-    onCancel
+    onCancel,
+    isMobileView
 }: ConfirmationSellModalProps) => {
 
     const modalData = useMemo(() => ({
         stockSymbol,
         stockName,
         pricePerShare,
-        quantity
-    }), [stockSymbol, stockName, pricePerShare, quantity]);
+        quantity,
+        isMobileView
+    }), [stockSymbol, stockName, pricePerShare, quantity, isMobileView]);
 
     const handleCta = useCallback((action: string, payload: any) => {
         console.log('ConfirmationSellModal CTA:', action, payload);

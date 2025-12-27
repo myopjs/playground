@@ -10,9 +10,10 @@ interface TopBarProps {
     userName?: string;
     userInitials?: string;
     userEmail?: string;
+    isMobileView?: boolean;
 }
 
-export const TopBar = ({ portfolio, userName = "Demo User", userInitials = "DU", userEmail = "demo@example.com" }: TopBarProps) => {
+export const TopBar = ({ portfolio, userName = "Demo User", userInitials = "DU", userEmail = "demo@example.com", isMobileView }: TopBarProps) => {
     const [showPopover, setShowPopover] = useState(false);
 
     const topBarData = useMemo(() => ({
@@ -23,8 +24,9 @@ export const TopBar = ({ portfolio, userName = "Demo User", userInitials = "DU",
         dailyChange: portfolio.dailyChange,
         dailyChangePercent: portfolio.dailyChangePercent,
         userInitials,
-        userName
-    }), [portfolio.cash, portfolio.totalValue, portfolio.dailyChange, portfolio.dailyChangePercent, userName, userInitials]);
+        userName,
+        isMobileView
+    }), [portfolio.cash, portfolio.totalValue, portfolio.dailyChange, portfolio.dailyChangePercent, userName, userInitials, isMobileView]);
 
     const handleCta = useCallback((action: string, payload: any) => {
         console.log('TopBar CTA:', action, payload);
@@ -68,6 +70,7 @@ export const TopBar = ({ portfolio, userName = "Demo User", userInitials = "DU",
                 onClose={handleClosePopover}
                 onOpenComponent={handleOpenComponent}
                 onShare={handleShare}
+                isMobileView={isMobileView}
             />
         </>
     );
