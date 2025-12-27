@@ -11,6 +11,7 @@ import {getRandomUser, type UserData} from "../data/mockUsers.ts";
 import {teamMembersData, type TeamMember} from "../data/teamMembers.ts";
 
 const SESSION_STORAGE_KEY = 'currentUser';
+const MOBILE_BREAKPOINT = 700;
 
 function App() {
   const [currentUser, setCurrentUser] = useState<UserData | null>(() => {
@@ -19,6 +20,8 @@ function App() {
   });
   const [donePreload, setDonePreload] = useState(false);
   const [members, setMembers] = useState<TeamMember[]>(teamMembersData);
+  const [isMobileView, setIsMobileView] = useState<boolean>(window.innerWidth <= MOBILE_BREAKPOINT);
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -63,6 +66,17 @@ function App() {
         preloadComponents(Object.values(COMPONENTS_IDS), 'production').then(() => setDonePreload(true));
     }, [])
 
+    useEffect(() => {
+        const handleResize = () => {
+            const newIsMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+            if (newIsMobile !== isMobileView) {
+                setIsMobileView(newIsMobile);
+            }
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [isMobileView]);
+
 
     if(!donePreload) {
         return (<div/>)
@@ -84,15 +98,15 @@ function App() {
     )
   }
 
-  return (<div className="app-layout">
-          <aside className="app-sidebar">
-             <SideBar userData={currentUser} activeNavItem={activeNavItem} onLogout={handleLogout} onNavigate={handleNavigate} />
+  return (<div className={`app-layout${isMobileView ? ' mobile' : ''}`}>
+          <aside className={`app-sidebar${isSidebarExpanded ? ' expanded' : ''}`}>
+             <SideBar userData={currentUser} activeNavItem={activeNavItem} onLogout={handleLogout} onNavigate={handleNavigate} isMobileView={isMobileView} onSidebarToggle={setIsSidebarExpanded} />
           </aside>
           <main className="app-main">
               <Routes>
-                  <Route path="/" element={<HomePage userData={currentUser} members={members} onUpdateMember={handleUpdateMember} onDeleteMember={handleDeleteMember} />} />
-                  <Route path="/analytics" element={<Analytics members={members} />} />
-                  <Route path="/add-member" element={<AddMember members={members} onAddMember={handleAddMember} />} />
+                  <Route path="/" element={<HomePage userData={currentUser} members={members} onUpdateMember={handleUpdateMember} onDeleteMember={handleDeleteMember} isMobileView={isMobileView} />} />
+                  <Route path="/analytics" element={<Analytics members={members} isMobileView={isMobileView} />} />
+                  <Route path="/add-member" element={<AddMember members={members} onAddMember={handleAddMember} isMobileView={isMobileView} />} />
               </Routes>
           </main>
       </div>
