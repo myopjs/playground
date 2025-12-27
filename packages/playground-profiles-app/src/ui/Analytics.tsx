@@ -7,9 +7,10 @@ import type {TeamMember} from "../data/teamMembers.ts";
 
 interface AnalyticsProps {
     members: TeamMember[];
+    isMobileView: boolean;
 }
 
-export const Analytics = ({members}: AnalyticsProps) => {
+export const Analytics = ({members, isMobileView}: AnalyticsProps) => {
     const navigate = useNavigate();
 
     const analyticsData = useMemo(() => generateAnalyticsData(members), [members]);
@@ -24,7 +25,7 @@ export const Analytics = ({members}: AnalyticsProps) => {
         <div className="analytics-container">
             <MyopComponent
                 componentId={getComponentId(QUERY_PARAMS.analytics)}
-                data={analyticsData}
+                data={{ ...analyticsData, isMobileView }}
                 on={handleCta as any}
             />
         </div>

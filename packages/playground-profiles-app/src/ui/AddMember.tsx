@@ -7,9 +7,10 @@ import type {TeamMember} from '../data/teamMembers.ts';
 interface AddMemberProps {
     members: TeamMember[];
     onAddMember: (member: TeamMember) => void;
+    isMobileView: boolean;
 }
 
-export const AddMember = ({members, onAddMember}: AddMemberProps) => {
+export const AddMember = ({members, onAddMember, isMobileView}: AddMemberProps) => {
     const navigate = useNavigate();
 
     const managersList = useMemo(() => {
@@ -52,7 +53,7 @@ export const AddMember = ({members, onAddMember}: AddMemberProps) => {
         <div className="add-member-container">
             <MyopComponent
                 componentId={getComponentId(QUERY_PARAMS.addProfile)}
-                data={{ managersList }}
+                data={{ managersList, isMobileView }}
                 on={handleAddProfileCta as any}
             />
         </div>

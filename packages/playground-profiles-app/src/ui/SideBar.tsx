@@ -9,9 +9,11 @@ type SideBarProps = {
     activeNavItem: string;
     onLogout: () => void;
     onNavigate: (navId: string) => void;
+    isMobileView: boolean;
+    onSidebarToggle?: (expanded: boolean) => void;
 }
 
-export const SideBar = ({ userData, activeNavItem, onLogout, onNavigate }: SideBarProps) => {
+export const SideBar = ({ userData, activeNavItem, onLogout, onNavigate, isMobileView, onSidebarToggle }: SideBarProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
 
@@ -41,12 +43,15 @@ export const SideBar = ({ userData, activeNavItem, onLogout, onNavigate }: SideB
         if (actionId === 'nav_clicked' && payload?.navId) {
             onNavigate(payload.navId);
         }
+        if (actionId === 'sidebar_toggled' && onSidebarToggle) {
+            onSidebarToggle(payload?.expanded ?? false);
+        }
     };
 
     return <>
         <MyopComponent
             componentId={getComponentId(QUERY_PARAMS.sidebar)}
-            data={{ userData: sidebarUserData, activeNavItem }}
+            data={{ userData: sidebarUserData, activeNavItem, isMobileView }}
             on={handleCta as any}
         />
         {isOpen && (
