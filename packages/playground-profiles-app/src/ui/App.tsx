@@ -63,7 +63,29 @@ function App() {
     };
 
     useEffect(() => {
-        preloadComponents(Object.values(COMPONENTS_IDS), 'production').then(() => setDonePreload(true));
+        const params = new URLSearchParams(window.location.search);
+
+        // Separate IDs into default (from COMPONENTS_IDS) and override (from URL params)
+        const defaultIds: string[] = [];
+        const overrideIds: string[] = [];
+
+        Object.entries(QUERY_PARAMS).forEach(([key, paramName]) => {
+            const overrideId = params.get(paramName);
+            if (overrideId) {
+                overrideIds.push(overrideId);
+            } else {
+                const defaultId = COMPONENTS_IDS[key as keyof typeof COMPONENTS_IDS];
+                if (defaultId) {
+                    defaultIds.push(defaultId);
+                }
+            }
+        });
+
+        // Preload default IDs without preview, override IDs with preview=true
+        Promise.all([
+            defaultIds.length > 0 ? preloadComponents(defaultIds, 'production') : Promise.resolve(),
+            overrideIds.length > 0 ? preloadComponents(overrideIds, 'production', true) : Promise.resolve()
+        ]).then(() => setDonePreload(true));
     }, [])
 
     useEffect(() => {
