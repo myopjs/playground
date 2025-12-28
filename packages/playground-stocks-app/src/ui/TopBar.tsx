@@ -10,9 +10,10 @@ interface TopBarProps {
     portfolio: PortfolioData;
     userData: UserData;
     isMobileView?: boolean;
+    isCompactView?: boolean;
 }
 
-export const TopBar = ({ portfolio, userData, isMobileView }: TopBarProps) => {
+export const TopBar = ({ portfolio, userData, isMobileView, isCompactView }: TopBarProps) => {
     const [showPopover, setShowPopover] = useState(false);
 
     const topBarData = useMemo(() => ({
@@ -70,6 +71,7 @@ export const TopBar = ({ portfolio, userData, isMobileView }: TopBarProps) => {
                 onOpenComponent={handleOpenComponent}
                 onShare={handleShare}
                 isMobileView={isMobileView}
+                isCompactView={isCompactView}
             />
         </>
     );

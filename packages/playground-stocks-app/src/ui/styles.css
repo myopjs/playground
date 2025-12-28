@@ -11,6 +11,8 @@ body {
 
 .header {
     height: var(--header-height);
+    position: relative;
+    z-index: 10002;
 }
 
 .main {
@@ -166,11 +168,19 @@ body {
     top: 70px;
     right: 20px;
     width: 300px;
-    height: auto;
-    z-index: 10000;
+    height: 260px;
+    z-index: 10001;
     opacity: 0;
     transform: translateY(-10px);
     animation: fadeIn 0.2s ease-out forwards;
+}
+
+/* Compact view container (700-900px) */
+@media (min-width: 701px) and (max-width: 900px) {
+    .profile-popover-container {
+        width: 260px;
+        height: 220px;
+    }
 }
 
 .profile-popover-container.fade-in {
@@ -211,6 +221,7 @@ body {
 @media (max-width: 700px) {
     .profile-popover-backdrop {
         background-color: rgba(0, 0, 0, 0.5);
+        z-index: 10000;
     }
 
     .profile-popover-container {
@@ -224,6 +235,7 @@ body {
         transform: none;
         animation: none;
         opacity: 1;
+        z-index: 10001;
     }
 
     .profile-popover-container.fade-in {

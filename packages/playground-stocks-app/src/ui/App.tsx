@@ -15,6 +15,7 @@ import {BottomNav} from "./BottomNav";
 
 const INITIAL_CASH = 100000;
 const MOBILE_BREAKPOINT = 700;
+const COMPACT_BREAKPOINT = 900;
 
 export type UserData = {
     name: string;
@@ -37,6 +38,7 @@ export function App() {
     const [sellHolding, setSellHolding] = useState<Holding | null>(null);
     const [activeTab, setActiveTab] = useState<string>('home');
     const [isMobileView, setIsMobileView] = useState<boolean>(window.innerWidth <= MOBILE_BREAKPOINT);
+    const [isCompactView, setIsCompactView] = useState<boolean>(window.innerWidth > MOBILE_BREAKPOINT && window.innerWidth <= COMPACT_BREAKPOINT);
     const [userData] = useState<UserData>(DEFAULT_USER);
     const [portfolio, setPortfolio] = useState<PortfolioData>({
         cash: INITIAL_CASH,
@@ -77,15 +79,20 @@ export function App() {
 
     useEffect(() => {
         const handleResize = () => {
-            const newIsMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+            const width = window.innerWidth;
+            const newIsMobile = width <= MOBILE_BREAKPOINT;
+            const newIsCompact = width > MOBILE_BREAKPOINT && width <= COMPACT_BREAKPOINT;
             if (newIsMobile !== isMobileView) {
                 setIsMobileView(newIsMobile);
+            }
+            if (newIsCompact !== isCompactView) {
+                setIsCompactView(newIsCompact);
             }
         };
 
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, [isMobileView])
+    }, [isMobileView, isCompactView])
 
     const handleStockSelected = useCallback((stock: Stock | null) => {
         console.log('App: Stock selected (double-click):', stock);
@@ -283,7 +290,7 @@ export function App() {
     return (
         <div className={`app-container mobile-tab-${activeTab}`}>
             <header className="header">
-                <TopBar portfolio={portfolio} isMobileView={isMobileView} userData={userData}/>
+                <TopBar portfolio={portfolio} isMobileView={isMobileView} isCompactView={isCompactView} userData={userData}/>
             </header>
             <main>
                 <div className="main">
