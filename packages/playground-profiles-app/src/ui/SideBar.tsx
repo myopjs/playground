@@ -3,6 +3,7 @@ import {getComponentId, QUERY_PARAMS} from "../utils/queryParams.ts";
 import {type UserData} from "../data/mockUsers.ts";
 import {ProfilePopover} from "./ProfilePopover.tsx";
 import {useState, useEffect} from "react";
+import {createPortal} from "react-dom";
 
 type SideBarProps = {
     userData: UserData;
@@ -48,27 +49,32 @@ export const SideBar = ({ userData, activeNavItem, onLogout, onNavigate, isMobil
         }
     };
 
+    const popoverContent = isOpen && (
+        <>
+            <div
+                className={`sidebar-overlay${isVisible ? ' visible' : ''}`}
+                onClick={closePopover}
+            />
+            <div className={`sidebar-popover${isVisible ? ' visible' : ''}${isMobileView ? ' mobile' : ''}`}>
+                <ProfilePopover
+                    userData={userData}
+                    onClose={closePopover}
+                    onLogout={onLogout}
+                    isMobileView={isMobileView}
+                />
+            </div>
+        </>
+    );
+
     return <>
         <MyopComponent
             componentId={getComponentId(QUERY_PARAMS.sidebar)}
             data={{ userData: sidebarUserData, activeNavItem, isMobileView }}
             on={handleCta as any}
         />
-        {isOpen && (
-            <>
-                <div
-                    className={`sidebar-overlay${isVisible ? ' visible' : ''}`}
-                    onClick={closePopover}
-                />
-                <div className={`sidebar-popover${isVisible ? ' visible' : ''}`}>
-                    <ProfilePopover
-                        userData={userData}
-                        onClose={closePopover}
-                        onLogout={onLogout}
-                        isMobileView={isMobileView}
-                    />
-                </div>
-            </>
-        )}
+        {isMobileView
+            ? popoverContent && createPortal(popoverContent, document.body)
+            : popoverContent
+        }
     </>
 }
