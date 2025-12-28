@@ -196,6 +196,9 @@ button:focus-visible {
   right: 0;
   bottom: 0;
   top: auto;
+  /* Override opacity - let internal component handle slide animation */
+  opacity: 1;
+  transition: none;
 }
 
 .sidebar-popover.mobile .profile-popover-container {
