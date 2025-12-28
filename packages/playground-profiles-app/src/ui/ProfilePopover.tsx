@@ -20,7 +20,7 @@ export const ProfilePopover = ({ userData, onClose, onLogout, isMobileView }: Pr
         if (actionId === 'logout_clicked') {
             onLogout();
         }
-        if (actionId === 'click_outside' || actionId === 'escape_pressed') {
+        if (actionId === 'click_outside' || actionId === 'escape_pressed' || actionId === 'drag_closed') {
             onClose();
         }
         if (actionId === 'open_clicked' && payload?.componentId && payload?.selectedComponent) {
