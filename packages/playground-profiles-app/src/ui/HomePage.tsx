@@ -21,8 +21,6 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
     const navigate = useNavigate();
 
     const [view, setView] = useState<ViewType>('table')
-    const [membersVersion, setMembersVersion] = useState(0)
-    const [isTableReady, setIsTableReady] = useState(true)
     const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null)
     const [isProfileOpen, setIsProfileOpen] = useState(false)
     const [isProfileVisible, setIsProfileVisible] = useState(false)
@@ -52,19 +50,6 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
         }
     }, [selectedMember]);
 
-    // Debug: log when members state changes
-    useEffect(() => {
-        console.log('Members state updated, version:', membersVersion, 'first member:', members[0]?.name);
-    }, [members, membersVersion]);
-
-    // Force table remount when version changes
-    useEffect(() => {
-        if (membersVersion > 0) {
-            setIsTableReady(false);
-            const timer = setTimeout(() => setIsTableReady(true), 50);
-            return () => clearTimeout(timer);
-        }
-    }, [membersVersion]);
 
     const closeProfile = () => {
         setIsProfileVisible(false);
@@ -109,23 +94,19 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
     };
 
     const handleEditProfileCta = (action: string, payload: any) => {
-        console.log('handleEditProfileCta called:', action, payload);
         if (action === 'close') {
             closeProfile();
         }
         if (action === 'delete' && payload?.profile) {
             const profileId = payload.profile.id;
             const profileName = payload.profile.name;
-            console.log('Deleting member:', profileId);
             onDeleteMember(profileId);
             closeProfile();
-            setMembersVersion(v => v + 1);
             setToastMessage(`${profileName} has been removed from the team`);
             setToastOpen(true);
         }
         if (action === 'save' && payload?.profile) {
             const updatedProfile = payload.profile;
-            console.log('Updating members with:', updatedProfile);
             onUpdateMember({
                 id: updatedProfile.id,
                 name: updatedProfile.name,
@@ -141,8 +122,6 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
                 profileImage: updatedProfile.profileImage,
             });
             setSelectedMember(prev => prev ? { ...prev, ...updatedProfile } : null);
-            setMembersVersion(v => v + 1);
-            console.log('State updates triggered');
         }
     };
 
@@ -201,14 +180,14 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
             />
         </div>
         <div className="homepage-content-area">
-            {isTableReady && view === 'table' && (
-                <MyopComponent key={`table-v${membersVersion}`} componentId={getComponentId(QUERY_PARAMS.table)} data={{ teamData: members, isMobileView }} on={handleMemberClick as any} />
+            {view === 'table' && (
+                <MyopComponent componentId={getComponentId(QUERY_PARAMS.table)} data={{ teamData: members, isMobileView }} on={handleMemberClick as any} />
             )}
-            {isTableReady && view === 'cards' && (
-                <MyopComponent key={`cards-v${membersVersion}`} componentId={getComponentId(QUERY_PARAMS.cardsView)} data={{ teamMembers: members, isMobileView }} on={handleMemberClick as any} />
+            {view === 'cards' && (
+                <MyopComponent componentId={getComponentId(QUERY_PARAMS.cardsView)} data={{ teamMembers: members, isMobileView }} on={handleMemberClick as any} />
             )}
-            {isTableReady && view === 'tree' && (
-                <MyopComponent key={`tree-v${membersVersion}`} componentId={getComponentId(QUERY_PARAMS.treeView)} data={{ teamMembers: members, isMobileView }} on={handleMemberClick as any} />
+            {view === 'tree' && (
+                <MyopComponent componentId={getComponentId(QUERY_PARAMS.treeView)} data={{ teamMembers: members, isMobileView }} on={handleMemberClick as any} />
             )}
         </div>
 
