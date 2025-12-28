@@ -8,9 +8,10 @@ type ProfilePopoverProps = {
     userData: UserData;
     onClose: () => void;
     onLogout: () => void;
+    isMobileView: boolean;
 }
 
-export const ProfilePopover = ({ userData, onClose, onLogout }: ProfilePopoverProps) => {
+export const ProfilePopover = ({ userData, onClose, onLogout, isMobileView }: ProfilePopoverProps) => {
     const [toastOpen, setToastOpen] = useState(false);
 
     const closeToast = useCallback(() => setToastOpen(false), []);
@@ -33,7 +34,7 @@ export const ProfilePopover = ({ userData, onClose, onLogout }: ProfilePopoverPr
         <div className="profile-popover-container">
             <MyopComponent
                 componentId={getComponentId(QUERY_PARAMS.profilePopover)}
-                data={{ userData }}
+                data={{ userData, isMobileView }}
                 on={handleCta as any}
             />
         </div>

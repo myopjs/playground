@@ -65,6 +65,7 @@ export const SideBar = ({ userData, activeNavItem, onLogout, onNavigate, isMobil
                         userData={userData}
                         onClose={closePopover}
                         onLogout={onLogout}
+                        isMobileView={isMobileView}
                     />
                 </div>
             </>
