@@ -4,16 +4,15 @@ import {useMemo, useCallback, useState} from "react";
 import {Loader} from "./Loader";
 import {PortfolioData} from "./Portfolio";
 import {ProfilePopover} from "./ProfilePopover";
+import {type UserData} from "./App";
 
 interface TopBarProps {
     portfolio: PortfolioData;
-    userName?: string;
-    userInitials?: string;
-    userEmail?: string;
+    userData: UserData;
     isMobileView?: boolean;
 }
 
-export const TopBar = ({ portfolio, userName = "Demo User", userInitials = "DU", userEmail = "demo@example.com", isMobileView }: TopBarProps) => {
+export const TopBar = ({ portfolio, userData, isMobileView }: TopBarProps) => {
     const [showPopover, setShowPopover] = useState(false);
 
     const topBarData = useMemo(() => ({
@@ -23,10 +22,10 @@ export const TopBar = ({ portfolio, userName = "Demo User", userInitials = "DU",
         portfolioValue: portfolio.totalValue,
         dailyChange: portfolio.dailyChange,
         dailyChangePercent: portfolio.dailyChangePercent,
-        userInitials,
-        userName,
+        userInitials: userData.initials,
+        userName: userData.name,
         isMobileView
-    }), [portfolio.cash, portfolio.totalValue, portfolio.dailyChange, portfolio.dailyChangePercent, userName, userInitials, isMobileView]);
+    }), [portfolio.cash, portfolio.totalValue, portfolio.dailyChange, portfolio.dailyChangePercent, userData.name, userData.initials, isMobileView]);
 
     const handleCta = useCallback((action: string, payload: any) => {
         console.log('TopBar CTA:', action, payload);
@@ -64,9 +63,9 @@ export const TopBar = ({ portfolio, userName = "Demo User", userInitials = "DU",
             />
             <ProfilePopover
                 isVisible={showPopover}
-                userName={userName}
-                userEmail={userEmail}
-                userInitials={userInitials}
+                userName={userData.name}
+                userEmail={userData.email}
+                userInitials={userData.initials}
                 onClose={handleClosePopover}
                 onOpenComponent={handleOpenComponent}
                 onShare={handleShare}

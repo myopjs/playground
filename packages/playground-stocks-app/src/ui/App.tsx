@@ -16,6 +16,18 @@ import {BottomNav} from "./BottomNav";
 const INITIAL_CASH = 100000;
 const MOBILE_BREAKPOINT = 700;
 
+export type UserData = {
+    name: string;
+    email: string;
+    initials: string;
+};
+
+const DEFAULT_USER: UserData = {
+    name: 'Demo User',
+    email: 'demo@example.com',
+    initials: 'DU'
+};
+
 export function App() {
 
     const initialMarket = useMemo(() => getMockMarket(), []);
@@ -25,6 +37,7 @@ export function App() {
     const [sellHolding, setSellHolding] = useState<Holding | null>(null);
     const [activeTab, setActiveTab] = useState<string>('home');
     const [isMobileView, setIsMobileView] = useState<boolean>(window.innerWidth <= MOBILE_BREAKPOINT);
+    const [userData] = useState<UserData>(DEFAULT_USER);
     const [portfolio, setPortfolio] = useState<PortfolioData>({
         cash: INITIAL_CASH,
         holdingsValue: 0,
@@ -270,7 +283,7 @@ export function App() {
     return (
         <div className={`app-container mobile-tab-${activeTab}`}>
             <header className="header">
-                <TopBar portfolio={portfolio} isMobileView={isMobileView}/>
+                <TopBar portfolio={portfolio} isMobileView={isMobileView} userData={userData}/>
             </header>
             <main>
                 <div className="main">

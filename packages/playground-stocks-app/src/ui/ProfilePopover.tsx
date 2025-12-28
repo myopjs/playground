@@ -50,16 +50,14 @@ export const ProfilePopover = ({
             profileImage: null
         },
         config: {
-            isVisible: true
-        },
-        selectedComponent: 'stockList',
-        componentId: '',
-        isMobileView
+            isVisible: true,
+            isMobileView: isMobileView ?? false
+        }
     }), [userName, userEmail, userInitials, isMobileView]);
 
     const handleCta = useCallback((action: string, payload: any) => {
         console.log('ProfilePopover CTA:', action, payload);
-        if (action === 'click_outside' || action === 'escape_pressed') {
+        if (action === 'click_outside' || action === 'escape_pressed' || action === 'drag_closed') {
             onClose();
         } else if (action === 'open_clicked' && onOpenComponent) {
             onOpenComponent(payload.componentId, payload.selectedComponent);
