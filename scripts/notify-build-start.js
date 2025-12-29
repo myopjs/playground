@@ -1,13 +1,27 @@
+import { execSync } from 'child_process';
+
 const WEBHOOK_URL = process.env.DISCORD_WEBHOOK;
 const APP_NAME = process.env.AWS_APP_ID || 'Playground';
 const BRANCH = process.env.AWS_BRANCH || 'unknown';
 const COMMIT_ID = process.env.AWS_COMMIT_ID?.slice(0, 7) || '';
+
+function getGitInfo() {
+  try {
+    const message = execSync('git log -1 --format=%s', { encoding: 'utf-8' }).trim();
+    const author = execSync('git log -1 --format=%ae', { encoding: 'utf-8' }).trim();
+    return { message, author };
+  } catch {
+    return { message: '', author: '' };
+  }
+}
 
 async function notify() {
   if (!WEBHOOK_URL) {
     console.log('[Discord] Skipping notification (no webhook)');
     return;
   }
+
+  const { message, author } = getGitInfo();
 
   const payload = {
     embeds: [{
@@ -18,6 +32,8 @@ async function notify() {
         { name: 'App', value: APP_NAME, inline: true },
         { name: 'Branch', value: BRANCH, inline: true },
         ...(COMMIT_ID ? [{ name: 'Commit', value: COMMIT_ID, inline: true }] : []),
+        ...(message ? [{ name: 'Message', value: message, inline: false }] : []),
+        ...(author ? [{ name: 'Author', value: author, inline: true }] : []),
       ],
       timestamp: new Date().toISOString(),
     }]
