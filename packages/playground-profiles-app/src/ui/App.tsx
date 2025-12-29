@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import {MyopComponent, preloadComponents} from "@myop/react";
 import { COMPONENTS_IDS } from '../utils/componentsIds';
 import { getComponentId, QUERY_PARAMS } from '../utils/queryParams';
@@ -25,9 +25,7 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
-  const hasAnalyticsParam = searchParams.has(QUERY_PARAMS.analytics);
-  const activeNavItem = location.pathname === '/analytics' || hasAnalyticsParam ? 'analytics' : 'home';
+  const activeNavItem = location.pathname === '/analytics' ? 'analytics' : 'home';
 
   const handleAddMember = useCallback((newMember: TeamMember) => {
     setMembers(prev => [...prev, newMember]);
