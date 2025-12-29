@@ -10,12 +10,12 @@ import {SideBar} from "./SideBar.tsx";
 import {getRandomUser, type UserData} from "../data/mockUsers.ts";
 import {teamMembersData, type TeamMember} from "../data/teamMembers.ts";
 
-const SESSION_STORAGE_KEY = 'currentUser';
+const LOCAL_STORAGE_KEY = 'currentUser';
 const MOBILE_BREAKPOINT = 700;
 
 function App() {
   const [currentUser, setCurrentUser] = useState<UserData | null>(() => {
-    const savedUser = sessionStorage.getItem(SESSION_STORAGE_KEY);
+    const savedUser = localStorage.getItem(LOCAL_STORAGE_KEY);
     return savedUser ? JSON.parse(savedUser) : null;
   });
   const [donePreload, setDonePreload] = useState(false);
@@ -45,12 +45,12 @@ function App() {
 
     const handleSignIn = () => {
       const user = getRandomUser();
-      sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(user));
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(user));
       setCurrentUser(user);
     };
 
     const handleLogout = () => {
-      sessionStorage.removeItem(SESSION_STORAGE_KEY);
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
       setCurrentUser(null);
     };
 
