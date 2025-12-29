@@ -8,7 +8,7 @@ interface BottomNavProps {
 }
 
 export function BottomNav({onTabChanged, activeTab = 'home'}: BottomNavProps) {
-    const handleCta = (action: string, payload: {tabId: string; label: string}) => {
+    const handleCta = (action: string, payload: any) => {
         if (action === 'tab-changed' && onTabChanged) {
             onTabChanged(payload.tabId, payload.label);
         }
@@ -27,7 +27,7 @@ export function BottomNav({onTabChanged, activeTab = 'home'}: BottomNavProps) {
                     ],
                     activeTabId: activeTab
                 }}
-                on={handleCta as any}
+                on={handleCta}
             />
         </div>
     );

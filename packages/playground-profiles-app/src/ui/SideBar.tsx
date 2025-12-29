@@ -36,15 +36,15 @@ export const SideBar = ({ userData, activeNavItem, onLogout, onNavigate, isMobil
         profileImage: userData.profileImage
     };
 
-    const handleCta = (actionId: string, payload: any) => {
-        console.log('SideBar CTA:', actionId, payload);
-        if (actionId === 'profile_clicked') {
+    const handleCta = (action: string, payload: any): void => {
+        console.log('SideBar CTA:', action, payload);
+        if (action === 'profile_clicked') {
             setIsOpen(true);
         }
-        if (actionId === 'nav_clicked' && payload?.navId) {
+        if (action === 'nav_clicked' && payload?.navId) {
             onNavigate(payload.navId);
         }
-        if (actionId === 'sidebar_toggled' && onSidebarToggle) {
+        if (action === 'sidebar_toggled' && onSidebarToggle) {
             onSidebarToggle(payload?.expanded ?? false);
         }
     };
@@ -70,7 +70,7 @@ export const SideBar = ({ userData, activeNavItem, onLogout, onNavigate, isMobil
         <MyopComponent
             componentId={getComponentId(QUERY_PARAMS.sidebar)}
             data={{ userData: sidebarUserData, activeNavItem, isMobileView }}
-            on={handleCta as any}
+            on={handleCta}
         />
         {isMobileView
             ? popoverContent && createPortal(popoverContent, document.body)

@@ -92,7 +92,7 @@ export const StocksList = ({ stocks, portfolioHoldings, selectedStock, onStockSe
         <MyopComponent
             componentId={getComponentId(QUERY_PARAMS.stockList)}
             data={stocksData}
-            on={handleCta as any}
+            on={handleCta}
             loader={<Loader/>}
         />
     </div>

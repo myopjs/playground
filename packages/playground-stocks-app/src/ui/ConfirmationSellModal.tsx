@@ -46,7 +46,7 @@ export const ConfirmationSellModal = ({
                 <MyopComponent
                     componentId={getComponentId(QUERY_PARAMS.confirmationSellModal)}
                     data={modalData}
-                    on={handleCta as any}
+                    on={handleCta}
                     loader={<Loader/>}
                 />
             </div>

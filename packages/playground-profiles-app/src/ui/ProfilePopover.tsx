@@ -16,14 +16,14 @@ export const ProfilePopover = ({ userData, onClose, onLogout, isMobileView }: Pr
 
     const closeToast = useCallback(() => setToastOpen(false), []);
 
-    const handleCta = (actionId: string, payload?: { componentId?: string; selectedComponent?: string }) => {
-        if (actionId === 'logout_clicked') {
+    const handleCta = (action: string, payload: any): void => {
+        if (action === 'logout_clicked') {
             onLogout();
         }
-        if (actionId === 'click_outside' || actionId === 'escape_pressed' || actionId === 'drag_closed') {
+        if (action === 'click_outside' || action === 'escape_pressed' || action === 'drag_closed') {
             onClose();
         }
-        if (actionId === 'open_clicked' && payload?.componentId && payload?.selectedComponent) {
+        if (action === 'open_clicked' && payload?.componentId && payload?.selectedComponent) {
             const currentUrl = new URL(window.location.href);
             currentUrl.searchParams.set(payload.selectedComponent, payload.componentId);
             window.open(currentUrl.toString(), '_blank');
@@ -35,7 +35,7 @@ export const ProfilePopover = ({ userData, onClose, onLogout, isMobileView }: Pr
             <MyopComponent
                 componentId={getComponentId(QUERY_PARAMS.profilePopover)}
                 data={{ userData, isMobileView }}
-                on={handleCta as any}
+                on={handleCta}
             />
         </div>
         <Toast

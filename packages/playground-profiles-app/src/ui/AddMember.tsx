@@ -19,7 +19,7 @@ export const AddMember = ({members, onAddMember, isMobileView}: AddMemberProps) 
             .map(m => ({ id: m.id, name: `${m.name} - ${m.title}` }));
     }, [members]);
 
-    const handleAddProfileCta = (action: string, payload: any) => {
+    const handleAddProfileCta = (action: string, payload: any): void => {
         if (action === 'cancel' || action === 'back') {
             navigate('/');
         }
@@ -54,7 +54,7 @@ export const AddMember = ({members, onAddMember, isMobileView}: AddMemberProps) 
             <MyopComponent
                 componentId={getComponentId(QUERY_PARAMS.addProfile)}
                 data={{ managersList, isMobileView }}
-                on={handleAddProfileCta as any}
+                on={handleAddProfileCta}
             />
         </div>
     );
