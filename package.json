@@ -7,7 +7,9 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build --workspaces && npm run merge-builds",
+    "build": "npm run build:local",
+    "build:local": "npm run build --workspaces && npm run merge-builds",
+    "build:amplify": "node scripts/build-with-notify.js",
     "build:stocks": "npm run build -w playground-stocks-app",
     "build:profiles": "npm run build -w playground-profiles-app",
     "merge-builds": "node scripts/merge-builds.js",
