@@ -10,8 +10,8 @@ async function notify(status, message) {
     return;
   }
 
-  const emoji = { started: '🔨', success: '✅', failed: '❌' }[status];
-  const color = { started: 0x3498db, success: 0x2ecc71, failed: 0xe74c3c }[status];
+  const emoji = { success: '✅', failed: '❌' }[status];
+  const color = { success: 0x2ecc71, failed: 0xe74c3c }[status];
 
   const payload = {
     embeds: [{
@@ -43,8 +43,6 @@ async function notify(status, message) {
 
 async function run() {
   const startTime = Date.now();
-
-  await notify('started', `Building ${APP_NAME} on branch ${BRANCH}`);
 
   try {
     execSync('npm run build:local', { stdio: 'inherit' });

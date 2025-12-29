@@ -3,6 +3,7 @@ frontend:
   phases:
     preBuild:
       commands:
+        - node scripts/notify-build-start.js
         - nvm install 22
         - nvm use 22
         - rm -rf node_modules packages/*/node_modules package-lock.json
