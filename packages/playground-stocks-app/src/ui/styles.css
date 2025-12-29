@@ -5,8 +5,9 @@
     --portfolio-height: calc(100vh - var(--main-height) - var(--header-height) - var(--footer-height));
 }
 
-body {
+html, body {
     margin: 0;
+    background-color: #1a1a1a;
 }
 
 .header {
