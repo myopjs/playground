@@ -27,7 +27,27 @@ function App() {
 
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const hasAnalyticsParam = searchParams.has(QUERY_PARAMS.analytics);
+
+  const homePageParams = [
+    QUERY_PARAMS.table,
+    QUERY_PARAMS.headerInsights,
+    QUERY_PARAMS.cardsView,
+    QUERY_PARAMS.profilePopover,
+    QUERY_PARAMS.tableHeader,
+    QUERY_PARAMS.editProfile,
+    QUERY_PARAMS.treeView,
+  ];
+  const hasHomeParam = homePageParams.some(param => searchParams.has(param));
+
   const activeNavItem = location.pathname === '/analytics' || hasAnalyticsParam ? 'analytics' : 'home';
+
+  useEffect(() => {
+    if (hasAnalyticsParam && location.pathname !== '/analytics') {
+      navigate(`/analytics${location.search}`, { replace: true });
+    } else if (hasHomeParam && !hasAnalyticsParam && location.pathname !== '/') {
+      navigate(`/${location.search}`, { replace: true });
+    }
+  }, [hasAnalyticsParam, hasHomeParam, location.pathname, location.search, navigate]);
 
   const handleAddMember = useCallback((newMember: TeamMember) => {
     setMembers(prev => [...prev, newMember]);
