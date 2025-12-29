@@ -58,7 +58,7 @@ export const Portfolio = ({ data, onHoldingClicked, isMobileView }: PortfolioPro
         <MyopComponent
             componentId={getComponentId(QUERY_PARAMS.portfolio)}
             data={{...data, isMobileView}}
-            on={handleCta as any}
+            on={handleCta}
             loader={<Loader/>}
         />
     </div>

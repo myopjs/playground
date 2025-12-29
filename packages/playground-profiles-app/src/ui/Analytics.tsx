@@ -15,8 +15,8 @@ export const Analytics = ({members, isMobileView}: AnalyticsProps) => {
 
     const analyticsData = useMemo(() => generateAnalyticsData(members), [members]);
 
-    const handleCta = (actionId: string) => {
-        if (actionId === 'back_clicked') {
+    const handleCta = (action: string): void => {
+        if (action === 'back_clicked') {
             navigate('/');
         }
     };
@@ -26,7 +26,7 @@ export const Analytics = ({members, isMobileView}: AnalyticsProps) => {
             <MyopComponent
                 componentId={getComponentId(QUERY_PARAMS.analytics)}
                 data={{ ...analyticsData, isMobileView }}
-                on={handleCta as any}
+                on={handleCta}
             />
         </div>
     );

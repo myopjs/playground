@@ -114,7 +114,7 @@ export const ProfilePopover = ({
                 <MyopComponent
                     componentId={getComponentId(QUERY_PARAMS.profilePopover)}
                     data={popoverData}
-                    on={handleCta as any}
+                    on={handleCta}
                     loader={<Loader/>}
                 />
             </div>

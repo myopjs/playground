@@ -59,7 +59,7 @@ export const TopBar = ({ portfolio, userData, isMobileView, isCompactView }: Top
             <MyopComponent
                 componentId={getComponentId(QUERY_PARAMS.topBar)}
                 data={topBarData}
-                on={handleCta as any}
+                on={handleCta}
                 loader={<Loader/>}
             />
             <ProfilePopover

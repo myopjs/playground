@@ -27,7 +27,7 @@ export function BottomNav({onTabChanged, activeTab = 'home'}: BottomNavProps) {
                     ],
                     activeTabId: activeTab
                 }}
-                on={handleCta as any}
+                on={handleCta}
             />
         </div>
     );

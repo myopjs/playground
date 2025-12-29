@@ -138,7 +138,7 @@ export const TradeModal = ({ stock, availableCash, ownedShares, onClose, onPurch
                 <MyopComponent
                     componentId={getComponentId(QUERY_PARAMS.tradeModal)}
                     data={modalData}
-                    on={handleCta as any}
+                    on={handleCta}
                     loader={<Loader/>}
                 />
             </div>

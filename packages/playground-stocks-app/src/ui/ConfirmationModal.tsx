@@ -50,7 +50,7 @@ export const ConfirmationModal = ({
                 <MyopComponent
                     componentId={getComponentId(QUERY_PARAMS.confirmationModal)}
                     data={modalData}
-                    on={handleCta as any}
+                    on={handleCta}
                     loader={<Loader/>}
                 />
             </div>

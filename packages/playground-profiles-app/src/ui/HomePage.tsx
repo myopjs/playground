@@ -61,7 +61,7 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
 
     const [headerInsightsAction, setHeaderInsightsAction] = useState<{ action: string } | null>(null);
 
-    const handleHeaderInsightsCta = (action: string, payload: any) => {
+    const handleHeaderInsightsCta = (action: string, payload: any): void => {
         if (action === 'action_clicked') {
             if (payload?.action === 'viewHighlights') {
                 navigate('/analytics');
@@ -78,13 +78,13 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
         }
     };
 
-    const handleCta = (action: string, payload: { view: ViewType }) => {
+    const handleCta = (action: string, payload: { view: ViewType }): void => {
         if (action === 'view-changed' && payload?.view) {
             setView(payload.view);
         }
     };
 
-    const handleMemberClick = (action: string, payload: any) => {
+    const handleMemberClick = (action: string, payload: any): void => {
         if (action === 'member_clicked' && payload?.member) {
             setSelectedMember(payload.member);
         }
@@ -93,7 +93,7 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
         }
     };
 
-    const handleEditProfileCta = (action: string, payload: any) => {
+    const handleEditProfileCta = (action: string, payload: any): void => {
         if (action === 'close') {
             closeProfile();
         }
@@ -167,7 +167,7 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
             <MyopComponent
                 componentId={getComponentId(QUERY_PARAMS.headerInsights)}
                 data={{ userName: userData.name, stats: headerStats, isMobileView, ...headerInsightsAction }}
-                on={handleHeaderInsightsCta as any}
+                on={handleHeaderInsightsCta}
             />
         </div>
 
@@ -176,18 +176,18 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
             <MyopComponent
                 componentId={getComponentId(QUERY_PARAMS.tableHeader)}
                 data={{ title: 'Your Team', activeView: view, isMobileView }}
-                on={handleCta as any}
+                on={handleCta}
             />
         </div>
         <div className="homepage-content-area">
             {view === 'table' && (
-                <MyopComponent componentId={getComponentId(QUERY_PARAMS.table)} data={{ teamData: members, isMobileView }} on={handleMemberClick as any} />
+                <MyopComponent componentId={getComponentId(QUERY_PARAMS.table)} data={{ teamData: members, isMobileView }} on={handleMemberClick} />
             )}
             {view === 'cards' && (
-                <MyopComponent componentId={getComponentId(QUERY_PARAMS.cardsView)} data={{ teamMembers: members, isMobileView }} on={handleMemberClick as any} />
+                <MyopComponent componentId={getComponentId(QUERY_PARAMS.cardsView)} data={{ teamMembers: members, isMobileView }} on={handleMemberClick} />
             )}
             {view === 'tree' && (
-                <MyopComponent componentId={getComponentId(QUERY_PARAMS.treeView)} data={{ teamMembers: members, isMobileView }} on={handleMemberClick as any} />
+                <MyopComponent componentId={getComponentId(QUERY_PARAMS.treeView)} data={{ teamMembers: members, isMobileView }} on={handleMemberClick} />
             )}
         </div>
 
@@ -204,7 +204,7 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
                     <MyopComponent
                         componentId={getComponentId(QUERY_PARAMS.editProfile)}
                         data={{ ...mapMemberToProfile(selectedMember), isMobileView }}
-                        on={handleEditProfileCta as any}
+                        on={handleEditProfileCta}
                     />
                 </div>
             </div>
