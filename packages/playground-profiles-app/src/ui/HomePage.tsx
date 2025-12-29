@@ -78,7 +78,7 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
         }
     };
 
-    const handleCta = (action: string, payload: any): void => {
+    const handleCta = (action: string, payload: { view: ViewType }): void => {
         if (action === 'view-changed' && payload?.view) {
             setView(payload.view);
         }

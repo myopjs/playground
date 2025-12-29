@@ -16,7 +16,7 @@ export const ProfilePopover = ({ userData, onClose, onLogout, isMobileView }: Pr
 
     const closeToast = useCallback(() => setToastOpen(false), []);
 
-    const handleCta = (action: string, payload: any): void => {
+    const handleCta = (action: string, payload?: { componentId?: string; selectedComponent?: string }): void => {
         if (action === 'logout_clicked') {
             onLogout();
         }
