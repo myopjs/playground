@@ -15,7 +15,7 @@ export const Analytics = ({members, isMobileView}: AnalyticsProps) => {
 
     const analyticsData = useMemo(() => generateAnalyticsData(members), [members]);
 
-    const handleCta = (action: string, payload: any): void => {
+    const handleCta = (action: string): void => {
         if (action === 'back_clicked') {
             navigate('/');
         }
