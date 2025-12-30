@@ -64,10 +64,10 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
     const handleHeaderInsightsCta = (action: string, payload: any): void => {
         if (action === 'action_clicked') {
             if (payload?.action === 'viewHighlights') {
-                navigate('/analytics');
+                navigate({ pathname: '/analytics', search: window.location.search });
             }
             if (payload?.action === 'addMember') {
-                navigate('/add-member');
+                navigate({ pathname: '/add-member', search: window.location.search });
             }
             if (payload?.action === 'shareTeam') {
                 navigator.clipboard.writeText(window.location.href).then(() => {
@@ -89,8 +89,8 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
             setSelectedMember(payload.member);
         }
         if (action === 'addMember') {
-            navigate('/add-member');
-        }
+            navigate({ pathname: '/add-member', search: window.location.search });
+        }``
     };
 
     const handleEditProfileCta = (action: string, payload: any): void => {

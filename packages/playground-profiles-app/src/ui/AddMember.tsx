@@ -21,7 +21,7 @@ export const AddMember = ({members, onAddMember, isMobileView}: AddMemberProps) 
 
     const handleAddProfileCta = (action: string, payload: any): void => {
         if (action === 'cancel' || action === 'back') {
-            navigate('/');
+            navigate({ pathname: '/', search: window.location.search });
         }
         if (action === 'submit' && payload?.formData) {
             const formData = payload.formData;
@@ -45,7 +45,7 @@ export const AddMember = ({members, onAddMember, isMobileView}: AddMemberProps) 
                 relationshipType: 'Team member'
             };
             onAddMember(newMember);
-            navigate('/');
+            navigate({ pathname: '/', search: window.location.search });
         }
     };
 

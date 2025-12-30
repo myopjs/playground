@@ -17,7 +17,7 @@ export const Analytics = ({members, isMobileView}: AnalyticsProps) => {
 
     const handleCta = (action: string): void => {
         if (action === 'back_clicked') {
-            navigate('/');
+            navigate({ pathname: '/', search: window.location.search });
         }
     };
 

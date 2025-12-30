@@ -55,11 +55,11 @@ function App() {
     };
 
     const handleNavigate = (navId: string) => {
-        const search = location.search;
+        const search = window.location.search;
         if (navId === 'home') {
-            navigate(`/${search}`);
+            navigate({ pathname: '/', search });
         } else if (navId === 'analytics') {
-            navigate(`/analytics${search}`);
+            navigate({ pathname: '/analytics', search });
         }
     };
 
