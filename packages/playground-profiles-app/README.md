@@ -73,24 +73,17 @@ playground-profiles-app/
 └── index.html                      # HTML entry point
 ```
 
-## Installation
+## Installation & Development
 
-From the monorepo root:
-```bash
-npm install
-```
+Run commands from the monorepo root or this package directory:
 
-Or from this package directory:
-```bash
-npm install
-```
-
-## Development
-
-- **Dev server:** `npm run dev` → http://localhost:5173/profiles/
-- **Build:** `npm run build`
-- **Lint:** `npm run lint`
-- **Preview:** `npm run preview`
+| Command | Description |
+|---------|-------------|
+| `npm install` | Install dependencies |
+| `npm run dev` | Start dev server at http://localhost:5173/profiles/ |
+| `npm run build` | Build for production |
+| `npm run lint` | Run ESLint |
+| `npm run preview` | Preview production build |
 
 ## Dependencies
 

@@ -61,9 +61,9 @@ playground-stocks-app/
 │   │   ├── TradeModal.tsx    # Buy/sell interface
 │   │   ├── TopBar.tsx        # Navigation header
 │   │   ├── BottomNav.tsx     # Mobile navigation
-│   │   ├── ConfirmationModal.tsx
-│   │   ├── ConfirmationSellModal.tsx
-│   │   ├── Loader.tsx
+│   │   ├── ConfirmationModal.tsx  # Buy confirmation dialog
+│   │   ├── ConfirmationSellModal.tsx # Sell confirmation dialog
+│   │   ├── Loader.tsx             # Loading spinner component
 │   │   └── styles.css        # Global styles
 │   └── utils/
 │       ├── market.ts         # Stock & chart data utilities
@@ -75,23 +75,16 @@ playground-stocks-app/
 └── package.json              # Dependencies
 ```
 
-## Installation
+## Installation & Development
 
-From the monorepo root:
-```bash
-npm install
-```
+Run commands from the monorepo root or this package directory:
 
-Or from this package directory:
-```bash
-npm install
-```
-
-## Development
-
-- **Dev server:** `npm run dev` → http://localhost:5173/stocks/
-- **Build:** `npm run build`
-- **Preview:** `npm run preview`
+| Command | Description |
+|---------|-------------|
+| `npm install` | Install dependencies |
+| `npm run dev` | Start dev server at http://localhost:5173/stocks/ |
+| `npm run build` | Build for production |
+| `npm run preview` | Preview production build |
 
 ## Dependencies
 
