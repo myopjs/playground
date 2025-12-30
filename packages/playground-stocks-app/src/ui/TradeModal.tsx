@@ -2,7 +2,6 @@ import {MyopComponent} from "@myop/react";
 import {getComponentId, QUERY_PARAMS} from "../utils/queryParams";
 import {Stock} from "../utils/market";
 import {useMemo, useCallback, useState} from "react";
-import {Loader} from "./Loader";
 import {ConfirmationModal} from "./ConfirmationModal";
 import {ConfirmationSellModal} from "./ConfirmationSellModal";
 
@@ -139,7 +138,6 @@ export const TradeModal = ({ stock, availableCash, ownedShares, onClose, onPurch
                     componentId={getComponentId(QUERY_PARAMS.tradeModal)}
                     data={modalData}
                     on={handleCta}
-                    loader={<Loader/>}
                 />
             </div>
         </div>

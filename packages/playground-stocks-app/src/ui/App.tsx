@@ -7,7 +7,6 @@ import {StocksList} from "./StocksList";
 import {getMockMarket, Stock} from "../utils/market";
 import {StocksGraph} from "../ui/StockGraph";
 import {Portfolio, PortfolioData, Holding} from "../ui/Portfolio";
-import {Loader} from "../ui/Loader";
 import {TradeModal} from "./TradeModal";
 import {TopBar} from "./TopBar";
 import {ConfirmationSellModal} from "./ConfirmationSellModal";
@@ -302,7 +301,7 @@ export function App() {
             <footer className="footer">
                 {isMobileView ?
                     <BottomNav onTabChanged={handleTabChanged} activeTab={activeTab} /> :
-                    <MyopComponent componentId={getComponentId(QUERY_PARAMS.footer)} loader={<Loader/>}/>
+                    <MyopComponent componentId={getComponentId(QUERY_PARAMS.footer)} />
                 }
             </footer>
             {modalStock && (

@@ -1,6 +1,5 @@
 import {MyopComponent} from "@myop/react";
 import {getComponentId, QUERY_PARAMS} from "../utils/queryParams";
-import {Loader} from "./Loader";
 
 interface BottomNavProps {
     onTabChanged?: (tabId: string, label: string) => void;
@@ -18,7 +17,6 @@ export function BottomNav({onTabChanged, activeTab = 'home'}: BottomNavProps) {
         <div className="bottom-nav-container">
             <MyopComponent
                 componentId={getComponentId(QUERY_PARAMS.bottomNav)}
-                loader={<Loader/>}
                 data={{
                     tabs: [
                         {id: 'home', label: 'Home', icon: 'home'},

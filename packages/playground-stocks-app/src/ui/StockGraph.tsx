@@ -3,7 +3,6 @@ import {MyopComponent} from "@myop/react";
 import {getComponentId, QUERY_PARAMS} from "../utils/queryParams";
 import './styles.css';
 import {useMemo} from "react";
-import {Loader} from "../ui/Loader";
 
 interface StocksGraphProps {
     selectedStock: Stock | null;
@@ -20,7 +19,7 @@ export const StocksGraph = ({ selectedStock, isMobileView }: StocksGraphProps) =
     }, [selectedStock, isMobileView]);
 
     return <div className='stock-graph'>
-        <MyopComponent componentId={getComponentId(QUERY_PARAMS.stockGraph)} data={stockData} loader={<Loader/>}/>
+        <MyopComponent componentId={getComponentId(QUERY_PARAMS.stockGraph)} data={stockData}  />
     </div>
 
 }
