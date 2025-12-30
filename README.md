@@ -91,6 +91,10 @@ myop-playground/
 └── README.md
 ```
 
+**Package Documentation:**
+- [Stocks App README](./packages/playground-stocks-app/README.md) - Detailed documentation for the stocks trading demo
+- [Profiles App README](./packages/playground-profiles-app/README.md) - Detailed documentation for the team profiles demo
+
 ## Creating Components with Myop Dashboard
 
 There are two recommended approaches for creating Myop components: using **AI-assisted development with MCP** (recommended for faster development) or using the **Dashboard editor** directly.

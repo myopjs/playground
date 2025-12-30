@@ -619,7 +619,3 @@ The analytics dashboard provides:
 - Experience ranges (0-2, 3-5, 6-10, 10+ years)
 - Tenure distribution analysis
 - Seniority breakdown (Junior, Mid-level, Senior, Lead, Manager)
-
-## License
-
-This project is part of the Myop Playground demonstration suite.
