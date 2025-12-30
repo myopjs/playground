@@ -127,9 +127,9 @@ function App() {
           </aside>
           <main className="app-main">
               <Routes>
-                  <Route path="/*" element={<HomePage userData={currentUser} members={members} onUpdateMember={handleUpdateMember} onDeleteMember={handleDeleteMember} isMobileView={isMobileView} />} />
-                  <Route path="/analytics*" element={<Analytics members={members} isMobileView={isMobileView} />} />
-                  <Route path="/add-member*" element={<AddMember members={members} onAddMember={handleAddMember} isMobileView={isMobileView} />} />
+                  <Route path="/" element={<HomePage userData={currentUser} members={members} onUpdateMember={handleUpdateMember} onDeleteMember={handleDeleteMember} isMobileView={isMobileView} />} />
+                  <Route path="/analytics" element={<Analytics members={members} isMobileView={isMobileView} />} />
+                  <Route path="/add-member" element={<AddMember members={members} onAddMember={handleAddMember} isMobileView={isMobileView} />} />
               </Routes>
           </main>
       </div>
