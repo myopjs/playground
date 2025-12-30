@@ -72,7 +72,7 @@ html, body {
         display: block !important;
     }
     .footer {
-        display: none;
+        height: 80px;
     }
 
     /* Home tab mobile layout - show graph above stocks list */

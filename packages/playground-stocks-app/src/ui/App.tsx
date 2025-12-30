@@ -299,12 +299,12 @@ export function App() {
                 </div>
                 <Portfolio data={portfolio} onHoldingClicked={handleHoldingClicked} isMobileView={isMobileView} key={`portfolio-${isMobileView}`}/>
             </main>
-
-            {isMobileView ? <BottomNav onTabChanged={handleTabChanged} activeTab={activeTab} /> :
-                <footer className="footer">
+            <footer className="footer">
+                {isMobileView ?
+                    <BottomNav onTabChanged={handleTabChanged} activeTab={activeTab} /> :
                     <MyopComponent componentId={getComponentId(QUERY_PARAMS.footer)} loader={<Loader/>}/>
-                </footer>
-            }
+                }
+            </footer>
             {modalStock && (
                 <TradeModal
                     stock={modalStock}
