@@ -1,6 +1,6 @@
 import {MyopComponent} from "@myop/react";
 import {getComponentId, QUERY_PARAMS} from "../utils/queryParams.ts";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 import {useMemo} from "react";
 import type {TeamMember} from '../data/teamMembers.ts';
 
@@ -12,6 +12,7 @@ interface AddMemberProps {
 
 export const AddMember = ({members, onAddMember, isMobileView}: AddMemberProps) => {
     const navigate = useNavigate();
+    const location = useLocation();
 
     const managersList = useMemo(() => {
         return members
@@ -21,7 +22,7 @@ export const AddMember = ({members, onAddMember, isMobileView}: AddMemberProps) 
 
     const handleAddProfileCta = (action: string, payload: any): void => {
         if (action === 'cancel' || action === 'back') {
-            navigate('/');
+            navigate(`/${location.search}`);
         }
         if (action === 'submit' && payload?.formData) {
             const formData = payload.formData;
@@ -45,7 +46,7 @@ export const AddMember = ({members, onAddMember, isMobileView}: AddMemberProps) 
                 relationshipType: 'Team member'
             };
             onAddMember(newMember);
-            navigate('/');
+            navigate(`/${location.search}`);
         }
     };
 
