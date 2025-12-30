@@ -1,6 +1,6 @@
 import {MyopComponent} from "@myop/react";
 import {getComponentId, QUERY_PARAMS} from "../utils/queryParams.ts";
-import {useNavigate, useLocation} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useMemo} from "react";
 import {generateAnalyticsData} from "../data/analyticsData.ts";
 import type {TeamMember} from "../data/teamMembers.ts";
@@ -12,13 +12,12 @@ interface AnalyticsProps {
 
 export const Analytics = ({members, isMobileView}: AnalyticsProps) => {
     const navigate = useNavigate();
-    const location = useLocation();
 
     const analyticsData = useMemo(() => generateAnalyticsData(members), [members]);
 
     const handleCta = (action: string): void => {
         if (action === 'back_clicked') {
-            navigate(`/${location.search}`);
+            navigate({ pathname: '/', search: window.location.search });
         }
     };
 

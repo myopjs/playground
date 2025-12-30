@@ -1,7 +1,7 @@
 import {MyopComponent} from "@myop/react";
 import {getComponentId, QUERY_PARAMS} from "../utils/queryParams.ts";
 import {useState, useEffect, useMemo, useCallback} from "react";
-import {useNavigate, useLocation} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import type {TeamMember} from '../data/teamMembers.ts';
 import type {UserData} from "../data/mockUsers.ts";
 import {Toast} from "./Toast.tsx";
@@ -19,7 +19,6 @@ interface HomePageProps {
 
 export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isMobileView}: HomePageProps) => {
     const navigate = useNavigate();
-    const location = useLocation();
 
     const [view, setView] = useState<ViewType>('table')
     const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null)
@@ -65,10 +64,10 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
     const handleHeaderInsightsCta = (action: string, payload: any): void => {
         if (action === 'action_clicked') {
             if (payload?.action === 'viewHighlights') {
-                navigate(`/analytics${location.search}`);
+                navigate({ pathname: '/analytics', search: window.location.search });
             }
             if (payload?.action === 'addMember') {
-                navigate(`/add-member${location.search}`);
+                navigate({ pathname: '/add-member', search: window.location.search });
             }
             if (payload?.action === 'shareTeam') {
                 navigator.clipboard.writeText(window.location.href).then(() => {
@@ -90,8 +89,8 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
             setSelectedMember(payload.member);
         }
         if (action === 'addMember') {
-            navigate(`/add-member${location.search}`);
-        }
+            navigate({ pathname: '/add-member', search: window.location.search });
+        }``
     };
 
     const handleEditProfileCta = (action: string, payload: any): void => {

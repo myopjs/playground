@@ -55,11 +55,11 @@ function App() {
     };
 
     const handleNavigate = (navId: string) => {
-        const search = location.search;
+        const search = window.location.search;
         if (navId === 'home') {
-            navigate(`/${search}`);
+            navigate({ pathname: '/', search });
         } else if (navId === 'analytics') {
-            navigate(`/analytics${search}`);
+            navigate({ pathname: '/analytics', search });
         }
     };
 
@@ -127,9 +127,9 @@ function App() {
           </aside>
           <main className="app-main">
               <Routes>
-                  <Route path="/" element={<HomePage userData={currentUser} members={members} onUpdateMember={handleUpdateMember} onDeleteMember={handleDeleteMember} isMobileView={isMobileView} />} />
-                  <Route path="/analytics" element={<Analytics members={members} isMobileView={isMobileView} />} />
-                  <Route path="/add-member" element={<AddMember members={members} onAddMember={handleAddMember} isMobileView={isMobileView} />} />
+                  <Route path="/*" element={<HomePage userData={currentUser} members={members} onUpdateMember={handleUpdateMember} onDeleteMember={handleDeleteMember} isMobileView={isMobileView} />} />
+                  <Route path="/analytics*" element={<Analytics members={members} isMobileView={isMobileView} />} />
+                  <Route path="/add-member*" element={<AddMember members={members} onAddMember={handleAddMember} isMobileView={isMobileView} />} />
               </Routes>
           </main>
       </div>
