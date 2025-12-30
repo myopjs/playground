@@ -63,7 +63,6 @@ playground-stocks-app/
 │   │   ├── BottomNav.tsx     # Mobile navigation
 │   │   ├── ConfirmationModal.tsx  # Buy confirmation dialog
 │   │   ├── ConfirmationSellModal.tsx # Sell confirmation dialog
-│   │   ├── Loader.tsx             # Loading spinner component
 │   │   └── styles.css        # Global styles
 │   └── utils/
 │       ├── market.ts         # Stock & chart data utilities
