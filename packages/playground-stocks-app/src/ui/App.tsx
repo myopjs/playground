@@ -32,6 +32,7 @@ export function App() {
 
     const initialMarket = useMemo(() => getMockMarket(), []);
     const [stocks] = useState<Stock[]>(initialMarket);
+    const [donePreload, setDonePreload] = useState(false);
     const [selected, setSelected] = useState<Stock | null>(initialMarket[0] || null);
     const [modalStock, setModalStock] = useState<Stock | null>(null);
     const [sellHolding, setSellHolding] = useState<Holding | null>(null);
@@ -73,7 +74,7 @@ export function App() {
         Promise.all([
             defaultIds.length > 0 ? preloadComponents(defaultIds, 'production') : Promise.resolve(),
             overrideIds.length > 0 ? preloadComponents(overrideIds, 'production', true) : Promise.resolve()
-        ]).then(() => console.log('all components loaded successfully!'));
+        ]).then(() => setDonePreload(true));
     }, [])
 
     useEffect(() => {
@@ -285,6 +286,10 @@ export function App() {
         console.log('Tab changed to:', tabId);
         setActiveTab(tabId);
     }, []);
+
+    if(!donePreload) {
+        return (<div/>)
+    }
 
     return (
         <div className={`app-container mobile-tab-${activeTab}`}>
