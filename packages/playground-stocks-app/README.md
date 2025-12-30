@@ -100,27 +100,42 @@ Run commands from the monorepo root or this package directory:
 
 ## Myop Component Integration
 
-The app uses the `@myop/react` package to render dynamic, customizable components. Each major UI section is rendered via `<MyopComponent>`:
+The app uses the `@myop/react` package to render dynamic, customizable components:
 
 ```tsx
-import { MyopComponent, preloadComponents } from '@myop/react';
+import {MyopComponent, preloadComponents} from '@myop/react';
+import {useEffect} from "react";
+import {COMPONENTS_IDS} from "../utils/componentsIds";
 
-// Preload components on startup
-useEffect(() => {
-  preloadComponents([
-    { componentId: stockListId, preview: false },
-    { componentId: stockGraphId, preview: false },
+export const CustomComponent = () => {
+
+    const [donePreload, setDonePreload] = useState<boolean>(false);
     // ...
-  ]);
-}, []);
+    // ...
 
-// Render component with data and event handlers
-<MyopComponent
-  componentId={getComponentId(QUERY_PARAMS.stockList)}
-  data={stocksListData}
-  on={handleCtaEvent}
-/>
+
+    // Preload components on startup
+    useEffect(() => {
+        Promise.resolve(preloadComponents([stocksListId, graphId, ...]))
+            .then(() => setDonePreload(true));
+    }, []);
+
+
+    if (!donePreload) {
+        return (<div/>)
+    }
+
+    // Render component with data and event handlers after preload
+    return <MyopComponent
+        componentId={COMPONENTS_IDS.stocksListId}
+        data={data}
+        on={handleCtaEvents}
+    />
+}
+
 ```
+
+
 
 ### Data Flow
 ```

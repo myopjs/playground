@@ -36,7 +36,13 @@ The Profiles App is part of the Myop Playground monorepo and showcases:
 ### Dynamic Component System
 - 11 different component slots can be overridden via URL parameters
 - Support for component preview mode
-- Example: `?signup=custom-id&table=another-id`
+- Example: 
+
+### Dynamic Component Customization
+Override any UI component via URL query parameters:
+```
+`?signup=custom-id&table=another-id`
+```
 
 ### Responsive Design
 - Mobile-first approach with 700px breakpoint
@@ -51,7 +57,7 @@ playground-profiles-app/
 ├── src/
 │   ├── main.tsx                    # React root with Router
 │   ├── index.css                   # Global styles
-│   ├── ui/
+│   ├── ui/                         # UI Components
 │   │   ├── App.tsx                 # Main app container
 │   │   ├── HomePage.tsx            # Team view + edit modal
 │   │   ├── Analytics.tsx           # Analytics dashboard
@@ -112,40 +118,43 @@ Run commands from the monorepo root or this package directory:
 The app uses the `@myop/react` package to render dynamic, customizable components:
 
 ```tsx
-import { MyopComponent, preloadComponents } from '@myop/react';
+import {MyopComponent, preloadComponents} from '@myop/react';
+import {useEffect} from "react";
+import {COMPONENTS_IDS} from "../utils/componentsIds";
 
-// Preload components on startup
-useEffect(() => {
-  preloadComponents([
-    { componentId: signupId, preview: false },
-    { componentId: tableId, preview: false },
+export const CustomComponent = () => {
+
+    const [donePreload, setDonePreload] = useState<boolean>(false);
     // ...
-  ]);
-}, []);
+    // ...
 
-// Render component with data and event handlers
-<MyopComponent
-  componentId={getComponentId(QUERY_PARAMS.table)}
-  data={{ teamData: members, isMobileView }}
-  on={handleMemberClick}
-/>
+
+    // Preload components on startup
+    useEffect(() => {
+        Promise.resolve(preloadComponents([tableId, headerInsightsId, ...]))
+            .then(() => setDonePreload(true));
+    }, []);
+
+
+    if (!donePreload) {
+        return (<div/>)
+    }
+
+    // Render component with data and event handlers after preload
+    return <MyopComponent
+        componentId={COMPONENTS_IDS.tableId}
+        data={data}
+        on={handleCtaEvents}
+    />
+}
 ```
+
+
 
 ### Data Flow
 ```
-User Sign-in
-    ↓
-localStorage + App State
-    ↓
-Child Components (HomePage/Analytics/AddMember)
-    ↓
-MyopComponent instances
-    ↓
-User Interactions (CTA events)
-    ↓
-App State Updates (add/edit/delete)
-    ↓
-Re-render & localStorage persistence
+React App → myop_init_interface(data) → Myop Component
+Myop Component → myop_cta_handler(action) → React App
 ```
 
 ## MyopComponent Reference
@@ -595,21 +604,6 @@ Diverse team covering roles:
 - **Content**: Content Strategy, SEO, Copywriting, etc.
 - **Leadership**: Team Management, Mentoring, etc.
 
-## Configuration
-
-### Build Configuration (vite.config.ts)
-```typescript
-export default defineConfig({
-  plugins: [react()],
-  base: '/profiles/'
-})
-```
-
-### TypeScript Configuration
-- Target: ES2022
-- Strict mode enabled
-- JSX: react-jsx
-- Module: ESNext
 
 ## Analytics Insights
 
@@ -619,3 +613,18 @@ The analytics dashboard provides:
 - Experience ranges (0-2, 3-5, 6-10, 10+ years)
 - Tenure distribution analysis
 - Seniority breakdown (Junior, Mid-level, Senior, Lead, Manager)
+
+## Utility Functions
+
+### queryParams.ts
+- `getComponentId(key)` - Resolves component IDs from URL params or defaults to built-in component IDs
+- `QUERY_PARAMS` - Object mapping component keys to their URL query parameter names
+
+### componentsIds.ts
+- `COMPONENTS_IDS` - Object mapping component keys to their default Myop component UUIDs
+
+### analyticsData.ts
+- `generateAnalyticsData(members)` - Generates complete analytics data from team members array
+- `parseYears(str)` - Parses year strings (e.g., "5y") to numbers
+- `getSkillCategory(skill)` - Maps skills to categories (Design, Research, Development, Content, Leadership)
+- `getSeniorityLevel(experience)` - Determines seniority level (Junior, Mid-Level, Senior, Lead) based on years
