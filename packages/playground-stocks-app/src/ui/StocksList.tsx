@@ -68,7 +68,8 @@ export const StocksList = ({ stocks, portfolioHoldings, selectedStock, onStockSe
             portfolioStocks,
             selectedSymbol: selectedStock?.ticker || '',
             showTabsAndSearch,
-            isMobileView
+            isMobileView,
+            activeTab: showTabsAndSearch ? undefined : 'all'
         };
     }, [stocks, portfolioHoldings, selectedStock, showTabsAndSearch, isMobileView]);
 
