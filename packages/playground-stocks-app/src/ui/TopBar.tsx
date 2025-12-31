@@ -1,7 +1,6 @@
 import {MyopComponent} from "@myop/react";
 import {getComponentId, QUERY_PARAMS} from "../utils/queryParams";
 import {useMemo, useCallback, useState} from "react";
-import {Loader} from "./Loader";
 import {PortfolioData} from "./Portfolio";
 // import {ProfilePopover} from "./ProfilePopover";
 import {type UserData} from "./App";
@@ -46,7 +45,6 @@ export const TopBar = ({ portfolio, userData, isMobileView, isCompactView }: Top
                 componentId={getComponentId(QUERY_PARAMS.topBar)}
                 data={topBarData}
                 // on={handleCta}
-                loader={<Loader/>}
             />
             {/*<ProfilePopover*/}
             {/*    isVisible={showPopover}*/}

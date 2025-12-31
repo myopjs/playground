@@ -1,7 +1,6 @@
 import {MyopComponent} from "@myop/react";
 import {getComponentId, QUERY_PARAMS} from "../utils/queryParams";
 import './styles.css';
-import {Loader} from "../ui/Loader";
 import {useCallback} from "react";
 
 export interface Holding {
@@ -59,7 +58,6 @@ export const Portfolio = ({ data, onHoldingClicked, isMobileView }: PortfolioPro
             componentId={getComponentId(QUERY_PARAMS.portfolio)}
             data={{...data, isMobileView}}
             on={handleCta}
-            loader={<Loader/>}
         />
     </div>
 

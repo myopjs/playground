@@ -3,7 +3,6 @@ import {getComponentId, QUERY_PARAMS} from "../utils/queryParams";
 import {Stock} from "../utils/market";
 import {useMemo, useCallback} from "react";
 import './styles.css';
-import {Loader} from "../ui/Loader";
 import {Holding} from "./Portfolio";
 
 // Format expected by stocksList.html
@@ -94,7 +93,6 @@ export const StocksList = ({ stocks, portfolioHoldings, selectedStock, onStockSe
             componentId={getComponentId(QUERY_PARAMS.stockList)}
             data={stocksData}
             on={handleCta}
-            loader={<Loader/>}
         />
     </div>
 

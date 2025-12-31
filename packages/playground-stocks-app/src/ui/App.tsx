@@ -7,7 +7,6 @@ import {StocksList} from "./StocksList";
 import {getMockMarket, Stock} from "../utils/market";
 import {StocksGraph} from "../ui/StockGraph";
 import {Portfolio, PortfolioData, Holding} from "../ui/Portfolio";
-import {Loader} from "../ui/Loader";
 import {TradeModal} from "./TradeModal";
 import {TopBar} from "./TopBar";
 import {ConfirmationSellModal} from "./ConfirmationSellModal";
@@ -33,6 +32,7 @@ export function App() {
 
     const initialMarket = useMemo(() => getMockMarket(), []);
     const [stocks] = useState<Stock[]>(initialMarket);
+    const [donePreload, setDonePreload] = useState(false);
     const [selected, setSelected] = useState<Stock | null>(initialMarket[0] || null);
     const [modalStock, setModalStock] = useState<Stock | null>(null);
     const [sellHolding, setSellHolding] = useState<Holding | null>(null);
@@ -74,7 +74,7 @@ export function App() {
         Promise.all([
             defaultIds.length > 0 ? preloadComponents(defaultIds, 'production') : Promise.resolve(),
             overrideIds.length > 0 ? preloadComponents(overrideIds, 'production', true) : Promise.resolve()
-        ]).then(() => console.log('all components loaded successfully!'));
+        ]).then(() => setDonePreload(true));
     }, [])
 
     useEffect(() => {
@@ -287,6 +287,10 @@ export function App() {
         setActiveTab(tabId);
     }, []);
 
+    if(!donePreload) {
+        return (<div/>)
+    }
+
     return (
         <div className={`app-container mobile-tab-${activeTab}`}>
             <header className="header">
@@ -302,7 +306,7 @@ export function App() {
             <footer className="footer">
                 {isMobileView ?
                     <BottomNav onTabChanged={handleTabChanged} activeTab={activeTab} /> :
-                    <MyopComponent componentId={getComponentId(QUERY_PARAMS.footer)} loader={<Loader/>}/>
+                    <MyopComponent componentId={getComponentId(QUERY_PARAMS.footer)} />
                 }
             </footer>
             {modalStock && (

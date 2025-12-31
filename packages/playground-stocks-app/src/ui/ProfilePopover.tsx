@@ -1,7 +1,6 @@
 import {MyopComponent} from "@myop/react";
 import {getComponentId, QUERY_PARAMS} from "../utils/queryParams";
 import {useMemo, useCallback, useEffect, useRef, useState} from "react";
-import {Loader} from "./Loader";
 import './styles.css';
 
 interface ProfilePopoverProps {
@@ -115,7 +114,6 @@ export const ProfilePopover = ({
                     componentId={getComponentId(QUERY_PARAMS.profilePopover)}
                     data={popoverData}
                     on={handleCta}
-                    loader={<Loader/>}
                 />
             </div>
         </>

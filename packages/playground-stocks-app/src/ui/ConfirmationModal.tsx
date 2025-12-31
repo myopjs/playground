@@ -1,7 +1,6 @@
 import {MyopComponent} from "@myop/react";
 import {getComponentId, QUERY_PARAMS} from "../utils/queryParams";
 import {useMemo, useCallback} from "react";
-import {Loader} from "./Loader";
 
 interface ConfirmationModalProps {
     stockSymbol: string;
@@ -51,7 +50,6 @@ export const ConfirmationModal = ({
                     componentId={getComponentId(QUERY_PARAMS.confirmationModal)}
                     data={modalData}
                     on={handleCta}
-                    loader={<Loader/>}
                 />
             </div>
         </div>
