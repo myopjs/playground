@@ -26,7 +26,7 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
     const [isProfileVisible, setIsProfileVisible] = useState(false);
     const [toastOpen, setToastOpen] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
-    const [headerInsightsHeight, setHeaderInsightsHeight] = useState(isMobileView ? 280 : 244);
+    const [headerInsightsHeight, setHeaderInsightsHeight] = useState(isMobileView ? 214 : 244);
     const headerInsightRef = useRef<IMyopComponent>(null);
 
 
@@ -77,7 +77,7 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
                 }
                 break;
             }
-            case'action_clicked': {
+            case 'action_clicked': {
                 if (payload?.action === 'viewHighlights') {
                     navigate({ pathname: '/analytics', search: window.location.search });
                 }
