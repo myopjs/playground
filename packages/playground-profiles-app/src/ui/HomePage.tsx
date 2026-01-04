@@ -1,6 +1,6 @@
-import {MyopComponent} from "@myop/react";
+import {MyopComponent, type IMyopComponent} from "@myop/react";
 import {getComponentId, QUERY_PARAMS} from "../utils/queryParams.ts";
-import {useState, useEffect, useMemo, useCallback} from "react";
+import {useState, useEffect, useMemo, useCallback, useRef} from "react";
 import {useNavigate} from "react-router-dom";
 import type {TeamMember} from '../data/teamMembers.ts';
 import type {UserData} from "../data/mockUsers.ts";
@@ -20,14 +20,17 @@ interface HomePageProps {
 export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isMobileView}: HomePageProps) => {
     const navigate = useNavigate();
 
-    const [view, setView] = useState<ViewType>('table')
-    const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null)
-    const [isProfileOpen, setIsProfileOpen] = useState(false)
-    const [isProfileVisible, setIsProfileVisible] = useState(false)
-    const [toastOpen, setToastOpen] = useState(false)
-    const [toastMessage, setToastMessage] = useState('')
+    const [view, setView] = useState<ViewType>('table');
+    const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [isProfileVisible, setIsProfileVisible] = useState(false);
+    const [toastOpen, setToastOpen] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+    const [headerInsightsHeight, setHeaderInsightsHeight] = useState(isMobileView ? 280 : 244);
+    const headerInsightRef = useRef<IMyopComponent>(null);
 
-    const closeToast = useCallback(() => setToastOpen(false), [])
+
+    const closeToast = useCallback(() => setToastOpen(false), []);
 
     const headerStats = useMemo(() => {
         const totalExperience = members.reduce((sum, m) => sum + parseFloat(m.experience), 0);
@@ -62,18 +65,32 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
     const [headerInsightsAction, setHeaderInsightsAction] = useState<{ action: string } | null>(null);
 
     const handleHeaderInsightsCta = (action: string, payload: any): void => {
-        if (action === 'action_clicked') {
-            if (payload?.action === 'viewHighlights') {
-                navigate({ pathname: '/analytics', search: window.location.search });
+
+        switch (action) {
+            case 'size-requested': {
+                if (payload?.height) {
+                    setHeaderInsightsHeight(payload.height);
+                    if(headerInsightRef.current) {
+                        // @ts-ignore
+                        headerInsightRef.current.element.style.height = `${payload.height}px`;
+                    }
+                }
+                break;
             }
-            if (payload?.action === 'addMember') {
-                navigate({ pathname: '/add-member', search: window.location.search });
-            }
-            if (payload?.action === 'shareTeam') {
-                navigator.clipboard.writeText(window.location.href).then(() => {
-                    setHeaderInsightsAction({ action: 'showShareCopied' });
-                    setTimeout(() => setHeaderInsightsAction(null), 100);
-                });
+            case'action_clicked': {
+                if (payload?.action === 'viewHighlights') {
+                    navigate({ pathname: '/analytics', search: window.location.search });
+                }
+                if (payload?.action === 'addMember') {
+                    navigate({ pathname: '/add-member', search: window.location.search });
+                }
+                if (payload?.action === 'shareTeam') {
+                    navigator.clipboard.writeText(window.location.href).then(() => {
+                        setHeaderInsightsAction({ action: 'showShareCopied' });
+                        setTimeout(() => setHeaderInsightsAction(null), 100);
+                    });
+                }
+
             }
         }
     };
@@ -163,11 +180,14 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
 
     return  <div className="homepage-container">
         {/* Header Insights */}
-        <div className="homepage-header-insights">
+        <div style={{ height: `${headerInsightsHeight}px`}}>
             <MyopComponent
                 componentId={getComponentId(QUERY_PARAMS.headerInsights)}
                 data={{ userName: userData.name, stats: headerStats, isMobileView, ...headerInsightsAction }}
                 on={handleHeaderInsightsCta}
+                onLoad={(c)=> {
+                    headerInsightRef.current = c;
+                }}
             />
         </div>
 
