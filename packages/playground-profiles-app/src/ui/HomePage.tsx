@@ -77,7 +77,7 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
                 }
                 break;
             }
-            case 'action_clicked': {
+            case 'action-clicked': {
                 if (payload?.action === 'viewHighlights') {
                     navigate({ pathname: '/analytics', search: window.location.search });
                 }
