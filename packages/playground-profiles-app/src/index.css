@@ -69,12 +69,6 @@ body {
   background-color: #ffffff;
 }
 
-.homepage-header-insights {
-  height: 244px;
-  padding-right: 24px;
-  padding-left: 24px;
-}
-
 .homepage-content-header {
   padding-right: 24px;
   padding-left: 24px;
@@ -239,11 +233,6 @@ body {
     flex: 1;
     width: calc(100% - 48px);
     background-color: #ffffff;
-  }
-
-  .homepage-header-insights {
-    height: 280px;
-    padding: 0;
   }
 
   .homepage-content-header {
