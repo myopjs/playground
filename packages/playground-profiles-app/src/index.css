@@ -70,7 +70,7 @@ body {
 }
 
 .homepage-content-header {
-  height: 40px;
+  height: 76px;
 }
 
 .homepage-content-area {
@@ -212,6 +212,10 @@ body {
     z-index: 1000;
   }
 
+  .homepage-content-header {
+    height: 62px;
+  }
+
   .app-sidebar > *,
   .app-sidebar iframe {
     width: 48px !important;
@@ -229,8 +233,6 @@ body {
     width: calc(100% - 48px);
     background-color: #ffffff;
   }
-
-
 
   .homepage-modal-panel {
     width: 100%;
