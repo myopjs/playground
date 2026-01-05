@@ -79,7 +79,6 @@ body {
 .homepage-content-area {
   flex: 1;
   overflow: auto;
-  padding: 0 24px 24px;
 }
 
 .homepage-modal-overlay {
@@ -238,9 +237,6 @@ body {
     padding: 0 16px 12px;
   }
 
-  .homepage-content-area {
-    padding: 0 16px 16px;
-  }
 
   .homepage-modal-panel {
     width: 100%;
