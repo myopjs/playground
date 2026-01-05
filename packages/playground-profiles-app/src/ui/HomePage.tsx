@@ -26,7 +26,7 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
     const [isProfileVisible, setIsProfileVisible] = useState(false);
     const [toastOpen, setToastOpen] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
-    const [headerInsightsHeight, setHeaderInsightsHeight] = useState(isMobileView ? 214 : 244);
+    const [headerInsightsHeight, setHeaderInsightsHeight] = useState(isMobileView ? 260 : 244);
     const headerInsightRef = useRef<IMyopComponent>(null);
 
 
