@@ -200,7 +200,6 @@ body {
   display: flex;
   flex-direction: column;
   overflow: auto;
-  padding: 24px;
 }
 
 /* Mobile Layout */
@@ -251,10 +250,5 @@ body {
 
   .homepage-modal-panel.visible {
     transform: translateX(0);
-  }
-
-
-  .add-member-container {
-    padding: 16px;
   }
 }
