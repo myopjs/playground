@@ -111,8 +111,11 @@ function App() {
         <MyopComponent
           componentId={getComponentId(QUERY_PARAMS.signup)}
           on={(actionId: string) => {
-            if (actionId === 'google_signin' || actionId === 'email_signin' ||
-                actionId === 'google_signup' || actionId === 'email_signup') {
+            if (actionId === 'google_signin' || actionId === 'google-signin' ||
+                actionId === 'email_signin'  || actionId === 'email-signin'  ||
+                actionId === 'google_signup' || actionId === 'google-signup' ||
+                actionId === 'email_signup'  || actionId === 'email-signup' )
+            {
               handleSignIn()
             }
           }}
