@@ -6,3 +6,4 @@ dist
 .claude
 /packages/playground-profiles-app/myopComponents
 /packages/playground-stocks-app/myopComponents/
+/.idea/
