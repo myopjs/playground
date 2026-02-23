@@ -115,8 +115,13 @@ function App() {
     }
 
   if (!currentUser) {
-
     return (<div className="app-signup-container">
+        <button
+          className="quick-signin-btn"
+          onClick={() => handleSignIn(getCurrentUser())}
+        >
+          Quick Sign In
+        </button>
         <MyopComponent
           componentId={getComponentId(QUERY_PARAMS.signup)}
           on={(actionId: string, payload?: { email: string; password: string; name: string }) => {
