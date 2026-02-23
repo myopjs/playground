@@ -40,7 +40,7 @@ Override any UI component via URL query parameters:
 ```
 
 ### Responsive Design
-- Mobile-first approach with 700px breakpoint
+- Mobile-first approach with 792px breakpoint
 - Collapsible sidebar on mobile
 - Portal-based rendering for mobile modals
 - Adaptive layouts for all views
@@ -66,11 +66,13 @@ playground-hr-app/
 │   │   └── analyticsData.ts        # Analytics data generation
 │   └── utils/
 │       ├── componentsIds.ts        # Myop component ID mappings
-│       └── queryParams.ts          # URL parameter handling
+│       ├── queryParams.ts          # URL parameter handling
+│       └── helpers.ts              # Shared utility functions (getInitials, getRandomAvatarColor)
 ├── package.json                    # Package configuration
 ├── vite.config.ts                  # Vite build config (base: /hr-app/)
 ├── tsconfig.json                   # TypeScript references
 ├── tsconfig.app.json               # App TypeScript config
+├── tsconfig.node.json              # Node TypeScript config
 └── index.html                      # HTML entry point
 ```
 
