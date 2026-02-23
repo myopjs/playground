@@ -363,18 +363,99 @@ This section documents each `<MyopComponent>` used in the app, including the dat
 
 ---
 
-## Component Slots Summary
+## Components to Implement
 
-| Slot | Query Param | Description |
-|------|-------------|-------------|
-| Signup | `signup` | Sign-in page |
-| Sidebar | `sidebar` | Navigation sidebar |
-| Header Insights | `headerInsights` | Welcome header with stats |
-| Main Content | `mainContent` | Team members display |
-| Edit Profile | `editProfile` | Profile editor modal |
-| Profile Popover | `profilePopover` | User dropdown menu |
-| Analytics | `analytics` | Analytics dashboard |
-| Add Profile | `addProfile` | Add member form |
+The following two components need to be implemented. Copy the type definitions below and use them as the API contract when building your Myop component.
+
+### Signup Component
+
+This component handles user sign-in. It should fire a `signin` CTA, optionally with user credentials.
+
+```typescript
+/**
+ * Data structure passed to myop_init_interface(data)
+ */
+interface MyopInitData {}
+
+/**
+ * Actions and payloads for myop_cta_handler(action, payload)
+ */
+interface MyopCtaPayloads {
+  'signin': void | { email: string; password: string; name: string };
+}
+
+declare function myop_init_interface(): MyopInitData;
+declare function myop_init_interface(data: MyopInitData): void;
+
+declare function myop_cta_handler<K extends keyof MyopCtaPayloads>(
+  action: K,
+  payload: MyopCtaPayloads[K]
+): void;
+```
+
+**Behavior:**
+- The component should provide a way for the user to sign in
+- The `signin` CTA can be fired without a payload (the host app will assign a random mock user)
+- Or it can be fired with `{ email, password, name }` to create a user from the provided data
+
+---
+
+### Main Content Component
+
+This component displays team members and allows interaction with them. It receives an array of `TeamMember` objects and should fire CTAs when a member is clicked or when the user wants to add a new member.
+
+```typescript
+interface TeamMember {
+  id: string;
+  initials: string;
+  name: string;
+  title: string;
+  location: string;
+  tenure: string;
+  experience: string;
+  skills: string[];
+  role: string;
+  avatarColor: string;
+  profileImage: string | null;
+  email: string;
+  phone: string;
+  about: string;
+  relationship: string;
+  relationshipType: string;
+}
+
+/**
+ * Data structure passed to myop_init_interface(data)
+ */
+interface MyopInitData {
+  members: TeamMember[];
+  isMobileView?: boolean;
+}
+
+/**
+ * Actions and payloads for myop_cta_handler(action, payload)
+ */
+interface MyopCtaPayloads {
+  'add-member': {};
+  'member-clicked': { member: TeamMember };
+}
+
+declare function myop_init_interface(): MyopInitData;
+declare function myop_init_interface(data: MyopInitData): void;
+
+declare function myop_cta_handler<K extends keyof MyopCtaPayloads>(
+  action: K,
+  payload: MyopCtaPayloads[K]
+): void;
+```
+
+**Behavior:**
+- Receives `members` array and optional `isMobileView` flag via `myop_init_interface(data)`
+- Should display the team members in a visual layout (table, cards, grid, etc.)
+- Fire `member-clicked` with the full `TeamMember` object when a member is clicked (the host app opens an edit profile modal)
+- Fire `add-member` when the user wants to add a new team member (the host app navigates to the add member page)
+
+---
 
 ## Data Types
 
@@ -440,6 +521,10 @@ Diverse team covering roles: Managers, Designers, Researchers, Content specialis
 
 ### componentsIds.ts
 - `COMPONENTS_IDS` - Object mapping component keys to their default Myop component UUIDs
+
+### helpers.ts
+- `getInitials(name)` - Extracts initials from a full name (e.g., "John Doe" → "JD")
+- `getRandomAvatarColor()` - Returns a random hex color from a predefined palette
 
 ### analyticsData.ts
 - `generateAnalyticsData(members)` - Generates complete analytics data from team members array
