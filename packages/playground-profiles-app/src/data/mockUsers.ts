@@ -7,33 +7,33 @@ export type UserData = {
 
 export const mockUsers: UserData[] = [
     {
-        name: 'Alex Rivera',
-        email: 'alex.rivera@company.com',
-        initials: 'AR',
+        name: 'Maya Chen',
+        email: 'maya.chen@company.com',
+        initials: 'MC',
         profileImage: null
     },
     {
-        name: 'Jamie Park',
-        email: 'jamie.park@company.com',
-        initials: 'JP',
+        name: 'Liam Ortega',
+        email: 'liam.ortega@company.com',
+        initials: 'LO',
         profileImage: null
     },
     {
-        name: 'Sam Foster',
-        email: 'sam.foster@company.com',
-        initials: 'SF',
+        name: 'Priya Nair',
+        email: 'priya.nair@company.com',
+        initials: 'PN',
         profileImage: null
     },
     {
-        name: 'Riley Kim',
-        email: 'riley.kim@company.com',
-        initials: 'RK',
+        name: 'Dylan Webb',
+        email: 'dylan.webb@company.com',
+        initials: 'DW',
         profileImage: null
     },
     {
-        name: 'Taylor Brooks',
-        email: 'taylor.brooks@company.com',
-        initials: 'TB',
+        name: 'Nora Sato',
+        email: 'nora.sato@company.com',
+        initials: 'NS',
         profileImage: null
     }
 ];
