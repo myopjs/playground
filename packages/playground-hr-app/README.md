@@ -1,14 +1,14 @@
-# Playground Profiles App
+# Playground HR App
 
-A React-based team management and profile system built with the Myop component. This application demonstrates how to build dynamic, customizable applications with authentication, CRUD operations, and analytics dashboards.
+A React-based HR team management application built with Myop components. This application demonstrates how to build dynamic, customizable applications with authentication, CRUD operations, and analytics dashboards.
 
 ## Overview
 
-The Profiles App is part of the Myop Playground monorepo and showcases:
+The HR App is part of the Myop Playground monorepo and showcases:
 
 - User authentication with session persistence
 - Team member management (view, add, edit, delete)
-- Multiple view layouts (table, cards, organizational tree)
+- Main content component for team display
 - Analytics dashboard with team insights
 - Dynamic component customization via URL parameters
 - Responsive design with mobile-first approach
@@ -16,12 +16,12 @@ The Profiles App is part of the Myop Playground monorepo and showcases:
 ## Features
 
 ### User Authentication
-- Mock authentication with 5 predefined demo users
+- Sign-in component with optional payload (email, password, name)
+- Falls back to mock users when no payload provided
 - Session persistence via localStorage
-- Sign-in/Logout flow with user data display
 
 ### Team Management
-- **View Members**: Switch between table, cards, and organizational tree views
+- **View Members**: Main content component displays team members
 - **Add Members**: Full form with role selection, manager assignment, and skill tags
 - **Edit Profiles**: Modal-based profile editing with instant updates
 - **Delete Members**: Remove team members with confirmation notifications
@@ -33,15 +33,10 @@ The Profiles App is part of the Myop Playground monorepo and showcases:
 - Seniority level distribution
 - Performance summary generation
 
-### Dynamic Component System
-- 11 different component slots can be overridden via URL parameters
-- Support for component preview mode
-- Example: 
-
 ### Dynamic Component Customization
 Override any UI component via URL query parameters:
 ```
-`?signup=custom-id&table=another-id`
+?signup=custom-id&sidebar=another-id
 ```
 
 ### Responsive Design
@@ -53,13 +48,13 @@ Override any UI component via URL query parameters:
 ## Project Structure
 
 ```
-playground-profiles-app/
+playground-hr-app/
 ├── src/
-│   ├── main.tsx                    # React root with Router
+│   ├── main.tsx                    # React root with Router (basename: /hr-app)
 │   ├── index.css                   # Global styles
 │   ├── ui/                         # UI Components
 │   │   ├── App.tsx                 # Main app container
-│   │   ├── HomePage.tsx            # Team view + edit modal
+│   │   ├── HomePage.tsx            # Header insights + main content + edit modal
 │   │   ├── Analytics.tsx           # Analytics dashboard
 │   │   ├── AddMember.tsx           # Add member form
 │   │   ├── SideBar.tsx             # Navigation sidebar
@@ -67,13 +62,13 @@ playground-profiles-app/
 │   │   └── Toast.tsx               # Notification component
 │   ├── data/
 │   │   ├── mockUsers.ts            # Auth mock users (5 users)
-│   │   ├── teamMembers.ts          # Team data (12 members)
+│   │   ├── teamMembers.ts          # Team data
 │   │   └── analyticsData.ts        # Analytics data generation
 │   └── utils/
 │       ├── componentsIds.ts        # Myop component ID mappings
 │       └── queryParams.ts          # URL parameter handling
 ├── package.json                    # Package configuration
-├── vite.config.ts                  # Vite build config
+├── vite.config.ts                  # Vite build config (base: /hr-app/)
 ├── tsconfig.json                   # TypeScript references
 ├── tsconfig.app.json               # App TypeScript config
 └── index.html                      # HTML entry point
@@ -86,7 +81,7 @@ Run commands from the monorepo root or this package directory:
 | Command | Description |
 |---------|-------------|
 | `npm install` | Install dependencies |
-| `npm run dev` | Start dev server at http://localhost:5173/profiles/ |
+| `npm run dev` | Start dev server at http://localhost:5173/hr-app/ |
 | `npm run build` | Build for production |
 | `npm run lint` | Run ESLint |
 | `npm run preview` | Preview production build |
@@ -109,7 +104,7 @@ Run commands from the monorepo root or this package directory:
 
 | Route | Component | Description |
 |-------|-----------|-------------|
-| `/` | HomePage | Team members view with table/cards/tree |
+| `/` | HomePage | Header insights + main content + edit profile modal |
 | `/analytics` | Analytics | Team analytics dashboard |
 | `/add-member` | AddMember | Form to add new team members |
 
@@ -125,16 +120,12 @@ import {COMPONENTS_IDS} from "../utils/componentsIds";
 export const CustomComponent = () => {
 
     const [donePreload, setDonePreload] = useState<boolean>(false);
-    // ...
-    // ...
-
 
     // Preload components on startup
     useEffect(() => {
         Promise.resolve(preloadComponents([tableId, headerInsightsId, ...]))
             .then(() => setDonePreload(true));
     }, []);
-
 
     if (!donePreload) {
         return (<div/>)
@@ -148,8 +139,6 @@ export const CustomComponent = () => {
     />
 }
 ```
-
-
 
 ### Data Flow
 ```
@@ -173,10 +162,7 @@ This section documents each `<MyopComponent>` used in the app, including the dat
 
 | Action | Payload | Description |
 |--------|---------|-------------|
-| `google_signin` | None | User clicked Google sign-in |
-| `email_signin` | None | User clicked email sign-in |
-| `google_signup` | None | User clicked Google sign-up |
-| `email_signup` | None | User clicked email sign-up |
+| `signin` | `void` or `{ email: string; password: string; name: string }` | User clicked sign in (payload optional) |
 
 ---
 
@@ -188,9 +174,9 @@ This section documents each `<MyopComponent>` used in the app, including the dat
 ```typescript
 {
   userData: {
-    name: string;           // User display name
-    role: string;           // "Settings"
-    initials: string;       // User initials (e.g., "JD")
+    name: string;
+    role: string;
+    initials: string;
     profileImage: string | null;
   };
   activeNavItem: string;    // 'home' | 'analytics'
@@ -202,9 +188,9 @@ This section documents each `<MyopComponent>` used in the app, including the dat
 
 | Action | Payload | Description |
 |--------|---------|-------------|
-| `profile_clicked` | None | User clicked profile area (opens popover) |
-| `nav_clicked` | `{ navId: string }` | User clicked navigation item |
-| `sidebar_toggled` | `{ expanded: boolean }` | Sidebar expand/collapse state changed |
+| `profile-clicked` | `{ userData: UserData }` | User clicked profile area (opens popover) |
+| `nav-clicked` | `{ navId: string; navItem: NavItem }` | User clicked navigation item |
+| `sidebar-toggled` | `{ expanded: boolean }` | Sidebar expand/collapse state changed |
 
 ---
 
@@ -215,15 +201,15 @@ This section documents each `<MyopComponent>` used in the app, including the dat
 **Data Structure:**
 ```typescript
 {
-  userName: string;         // Current user's name
+  userName: string;
   stats: {
-    experience: { value: string; label: string };  // e.g., "5.2 yrs", "Avg Experience"
-    members: { value: number; label: string };     // e.g., 12, "Members"
-    skills: { value: number; label: string };      // e.g., 25, "Skills"
-    projects: { value: number; label: string };    // e.g., 23, "Projects"
+    experience: { value: string; label: string };
+    members: { value: number; label: string };
+    skills: { value: number; label: string };
+    projects: { value: number; label: string };
   };
   isMobileView: boolean;
-  action?: { action: string };  // Optional action trigger (e.g., { action: 'showShareCopied' })
+  action?: { action: string };  // e.g., { action: 'showShareCopied' }
 }
 ```
 
@@ -231,21 +217,21 @@ This section documents each `<MyopComponent>` used in the app, including the dat
 
 | Action | Payload | Description |
 |--------|---------|-------------|
-| `action_clicked` | `{ action: 'viewHighlights' }` | User clicked to view analytics |
-| `action_clicked` | `{ action: 'addMember' }` | User clicked to add member |
-| `action_clicked` | `{ action: 'shareTeam' }` | User clicked to share team URL |
+| `action-clicked` | `{ action: 'viewHighlights' }` | User clicked to view analytics |
+| `action-clicked` | `{ action: 'addMember' }` | User clicked to add member |
+| `action-clicked` | `{ action: 'shareTeam' }` | User clicked to share team URL |
+| `size-requested` | `{ height: number }` | Component requests size change |
 
 ---
 
-### 4. Table Header (`tableHeader`)
+### 4. Main Content (`mainContent`)
 
-**Query Param:** `tableHeader`
+**Query Param:** `mainContent`
 
 **Data Structure:**
 ```typescript
 {
-  title: string;            // "Your Team"
-  activeView: ViewType;     // 'table' | 'cards' | 'tree'
+  members: TeamMember[];
   isMobileView: boolean;
 }
 ```
@@ -254,93 +240,12 @@ This section documents each `<MyopComponent>` used in the app, including the dat
 
 | Action | Payload | Description |
 |--------|---------|-------------|
-| `view-changed` | `{ view: 'table' / 'cards' / 'tree' }` | User switched view mode |
+| `member-clicked` | `{ member: TeamMember }` | User clicked a team member |
+| `add-member` | `{}` | User clicked add member button |
 
 ---
 
-### 5. Table View (`table`)
-
-**Query Param:** `table`
-
-**Data Structure:**
-```typescript
-{
-  teamData: TeamMember[];   // Array of team members
-  isMobileView: boolean;
-}
-
-interface TeamMember {
-  id: string;
-  initials: string;
-  name: string;
-  title: string;
-  location: string;
-  tenure: string;
-  experience: string;
-  skills: string[];
-  role: string;
-  avatarColor: string;
-  profileImage: string | null;
-  email: string;
-  phone: string;
-  about: string;
-  relationship: string;
-  relationshipType: string;
-}
-```
-
-**CTA Handlers:**
-
-| Action | Payload | Description |
-|--------|---------|-------------|
-| `member_clicked` | `{ member: TeamMember }` | User clicked a team member row |
-| `addMember` | None | User clicked add member button |
-
----
-
-### 6. Cards View (`cardsView`)
-
-**Query Param:** `cardsView`
-
-**Data Structure:**
-```typescript
-{
-  teamMembers: TeamMember[];  // Array of team members
-  isMobileView: boolean;
-}
-```
-
-**CTA Handlers:**
-
-| Action | Payload | Description |
-|--------|---------|-------------|
-| `member_clicked` | `{ member: TeamMember }` | User clicked a member card |
-| `addMember` | None | User clicked add member button |
-
----
-
-### 7. Tree View (`treeView`)
-
-**Query Param:** `treeView`
-
-**Data Structure:**
-```typescript
-{
-  teamMembers: TeamMember[];  // Array of team members
-  isMobileView: boolean;
-}
-```
-
-**CTA Handlers:**
-
-| Action | Payload | Description |
-|--------|---------|-------------|
-| `member_clicked` | `{ member: TeamMember }` | User clicked a member in the org tree |
-| `addMember` | None | User clicked add member button |
-
----
-
-### 8. Edit Profile (`editProfile`)
+### 5. Edit Profile (`editProfile`)
 
 **Query Param:** `editProfile`
 
@@ -358,16 +263,16 @@ interface TeamMember {
     skills: string[];
     profileImage: string | null;
     avatarColor: string;
-    badge: string;              // Role badge (e.g., "Manager")
+    badge: string;
     email: string;
     phone: string;
     about: string;
     relationship: string;
     relationshipType: string;
-    teamSize: number;           // Number of direct reports
-    tenureRank: number;         // Tenure ranking (1 = longest)
+    teamSize: number;
+    tenureRank: number;
   };
-  isEditing: boolean;           // Edit mode flag
+  isEditing: boolean;
   isMobileView: boolean;
 }
 ```
@@ -378,11 +283,11 @@ interface TeamMember {
 |--------|---------|-------------|
 | `close` | None | User closed the modal |
 | `delete` | `{ profile: { id, name, ... } }` | User deleted the profile |
-| `save` | `{ profile: { id, name, title, initials, email, phone, location, skills, about, experience, tenure, profileImage } }` | User saved profile changes |
+| `save` | `{ profile: { id, name, title, ... } }` | User saved profile changes |
 
 ---
 
-### 9. Profile Popover (`profilePopover`)
+### 6. Profile Popover (`profilePopover`)
 
 **Query Param:** `profilePopover`
 
@@ -403,56 +308,27 @@ interface TeamMember {
 
 | Action | Payload | Description |
 |--------|---------|-------------|
-| `logout_clicked` | None | User clicked logout |
-| `click_outside` | None | User clicked outside popover |
-| `escape_pressed` | None | User pressed Escape key |
-| `drag_closed` | None | User dragged to close (mobile) |
-| `open_clicked` | `{ componentId: string, selectedComponent: string }` | User clicked to open component in new tab |
+| `logout-clicked` | `{}` | User clicked logout |
+| `click-outside` | `{}` | User clicked outside popover |
+| `escape-pressed` | `{}` | User pressed Escape key |
+| `drag-closed` | `{}` | User dragged to close (mobile) |
 
 ---
 
-### 10. Analytics (`analytics`)
+### 7. Analytics (`analytics`)
 
 **Query Param:** `analytics`
 
 **Data Structure:**
 ```typescript
 {
-  stats: Array<{
-    type: string;       // 'members' | 'experience' | 'skills' | 'tenure'
-    value: string;
-    label: string;
-    color: string;      // 'purple' | 'blue' | 'orange' | 'green'
-  }>;
-  topSkills: Array<{
-    name: string;
-    count: number;
-  }>;
-  experienceDistribution: Array<{
-    label: string;      // '0-3' | '3-5' | '5-7' | '7-10' | '10+'
-    value: number;
-  }>;
-  tenureDistribution: Array<{
-    label: string;      // '0-1' | '1-2' | '2-3' | '3-5' | '5+'
-    value: number;
-  }>;
-  skillsDistribution: Array<{
-    name: string;       // Category name
-    percentage: number;
-    members: string;    // e.g., "15 skills"
-    color: string;
-    colorClass: string;
-  }>;
-  seniority: Array<{
-    level: string;      // 'Junior' | 'Mid-Level' | 'Senior' | 'Lead'
-    range: string;      // e.g., "0-3 years"
-    count: number;
-    color: string;
-  }>;
-  performance: {
-    title: string;
-    description: string;
-  };
+  stats: Array<{ type: string; value: string; label: string; color: string }>;
+  topSkills: Array<{ name: string; count: number }>;
+  experienceDistribution: Array<{ label: string; value: number }>;
+  tenureDistribution: Array<{ label: string; value: number }>;
+  skillsDistribution: Array<{ name: string; percentage: number; members: string; color: string; colorClass: string }>;
+  seniority: Array<{ level: string; range: string; count: number; color: string }>;
+  performance: { title: string; description: string };
   isMobileView: boolean;
 }
 ```
@@ -461,21 +337,18 @@ interface TeamMember {
 
 | Action | Payload | Description |
 |--------|---------|-------------|
-| `back_clicked` | None | User clicked back button |
+| `back-clicked` | `{}` | User clicked back button |
 
 ---
 
-### 11. Add Profile (`addProfile`)
+### 8. Add Profile (`addProfile`)
 
 **Query Param:** `addProfile`
 
 **Data Structure:**
 ```typescript
 {
-  managersList: Array<{
-    id: string;
-    name: string;       // Format: "Name - Title"
-  }>;
+  managersList: Array<{ id: string; name: string }>;
   isMobileView: boolean;
 }
 ```
@@ -488,37 +361,18 @@ interface TeamMember {
 | `back` | None | User clicked back button |
 | `submit` | `{ formData: FormData }` | User submitted new member form |
 
-**FormData Structure:**
-```typescript
-{
-  fullName: string;
-  jobTitle: string;
-  email: string;
-  phone: string;
-  location: string;
-  yearsExperience: number;
-  companyTenure: number;
-  skills: string[];
-  reportsTo: string;        // Manager ID
-  profilePicture: string | null;
-}
-```
-
 ---
 
 ## Component Slots Summary
 
 | Slot | Query Param | Description |
 |------|-------------|-------------|
-| Signup | `signup` | Authentication page |
-| Table | `table` | Team table view |
-| Header Insights | `headerInsights` | Welcome header with stats |
+| Signup | `signup` | Sign-in page |
 | Sidebar | `sidebar` | Navigation sidebar |
-| Cards View | `cardsView` | Cards team view |
-| Tree View | `treeView` | Organizational tree view |
-| Profile Popover | `profilePopover` | User dropdown menu |
-| Table Header | `tableHeader` | View toggle controls |
+| Header Insights | `headerInsights` | Welcome header with stats |
+| Main Content | `mainContent` | Team members display |
 | Edit Profile | `editProfile` | Profile editor modal |
+| Profile Popover | `profilePopover` | User dropdown menu |
 | Analytics | `analytics` | Analytics dashboard |
 | Add Profile | `addProfile` | Add member form |
 
@@ -545,7 +399,7 @@ interface TeamMember {
   tenure: string;
   experience: string;
   skills: string[];
-  role: string;           // 'Manager' | 'Team' | 'Senior Member'
+  role: string;
   avatarColor: string;
   profileImage: string | null;
   email: string;
@@ -553,19 +407,6 @@ interface TeamMember {
   about: string;
   relationship: string;
   relationshipType: string;
-}
-```
-
-### AnalyticsData
-```typescript
-interface AnalyticsData {
-  stats: { label: string; value: string | number }[];
-  topSkills: { skill: string; count: number; color: string }[];
-  experienceDistribution: { range: string; count: number }[];
-  tenureDistribution: { range: string; count: number }[];
-  skillsByCategory: { category: string; skills: string[]; color: string }[];
-  seniorityLevels: { level: string; count: number; percentage: number }[];
-  performanceSummary: { metric: string; value: string }[];
 }
 ```
 
@@ -578,41 +419,18 @@ interface AnalyticsData {
 - `isSidebarExpanded`: Mobile sidebar toggle
 
 ### HomePage.tsx
-- `view`: Current view type ('table' | 'cards' | 'tree')
 - `selectedMember`: Member selected for profile modal
 - `isProfileOpen`: Modal visibility state
 - `toastOpen`: Toast notification state
+- `headerInsightsHeight`: Dynamic header height
 
 ## Mock Data
 
 ### Users (5 predefined)
-Mock users for authentication simulation with random selection via `getRandomUser()`.
+Mock users for authentication simulation with random selection via `getRandomUser()`. Each user has a profile image via pravatar.cc.
 
-### Team Members (12 predefined)
-Diverse team covering roles:
-- Managers
-- Designers
-- Researchers
-- Content specialists
-- Engineers
-- Strategists
-
-### Skill Categories
-- **Design**: UI, Visual Design, Prototyping, etc.
-- **Research**: User Research, Data Analysis, etc.
-- **Development**: React, TypeScript, CSS, etc.
-- **Content**: Content Strategy, SEO, Copywriting, etc.
-- **Leadership**: Team Management, Mentoring, etc.
-
-
-## Analytics Insights
-
-The analytics dashboard provides:
-- Team size and average experience metrics
-- Skills distribution with category grouping
-- Experience ranges (0-2, 3-5, 6-10, 10+ years)
-- Tenure distribution analysis
-- Seniority breakdown (Junior, Mid-level, Senior, Lead, Manager)
+### Team Members
+Diverse team covering roles: Managers, Designers, Researchers, Content specialists, Engineers, Strategists.
 
 ## Utility Functions
 
@@ -625,6 +443,3 @@ The analytics dashboard provides:
 
 ### analyticsData.ts
 - `generateAnalyticsData(members)` - Generates complete analytics data from team members array
-- `parseYears(str)` - Parses year strings (e.g., "5y") to numbers
-- `getSkillCategory(skill)` - Maps skills to categories (Design, Research, Development, Content, Leadership)
-- `getSeniorityLevel(experience)` - Determines seniority level (Junior, Mid-Level, Senior, Lead) based on years
