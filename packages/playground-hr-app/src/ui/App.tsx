@@ -11,7 +11,7 @@ import {getRandomUser, type UserData} from "../data/mockUsers.ts";
 import {teamMembersData, type TeamMember} from "../data/teamMembers.ts";
 
 const LOCAL_STORAGE_KEY = 'currentUser';
-const MOBILE_BREAKPOINT = 700;
+const MOBILE_BREAKPOINT = 792;
 
 function App() {
   const [currentUser, setCurrentUser] = useState<UserData | null>(() => {

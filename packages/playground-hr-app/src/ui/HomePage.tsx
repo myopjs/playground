@@ -25,6 +25,10 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
     const headerInsightRef = useRef<IMyopComponent>(null);
 
 
+    useEffect(() => {
+        setHeaderInsightsHeight(isMobileView ? 260 : 244);
+    }, [isMobileView]);
+
     const closeToast = useCallback(() => setToastOpen(false), []);
 
     const headerStats = useMemo(() => {
@@ -180,11 +184,13 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
         </div>
 
         {/* Main Content */}
-        <MyopComponent
-            componentId={getComponentId(QUERY_PARAMS.mainContent)}
-            data={{ members, isMobileView }}
-            on={handleMainContentCta}
-        />
+        <div style={{ height: `calc(100vh - ${headerInsightsHeight}px)` }}>
+            <MyopComponent
+                componentId={getComponentId(QUERY_PARAMS.mainContent)}
+                data={{ members, isMobileView }}
+                on={handleMainContentCta}
+            />
+        </div>
 
         {/* Edit Profile Modal */}
         {isProfileOpen && selectedMember && (
