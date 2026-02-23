@@ -38,4 +38,35 @@ const indexHtml = readFileSync(join(__dirname, 'index-template.html'), 'utf-8');
 writeFileSync(join(distDir, 'index.html'), indexHtml);
 console.log('Created root index.html');
 
+// Copy favicon files from public to dist
+const publicDir = join(rootDir, 'public');
+if (existsSync(publicDir)) {
+  const faviconFiles = [
+    'favicon.ico',
+    'favicon-16x16.png',
+    'favicon-32x32.png',
+    'favicon-57x57.png',
+    'favicon-60x60.png',
+    'favicon-72x72.png',
+    'favicon-76x76.png',
+    'favicon-96x96.png',
+    'favicon-114x114.png',
+    'favicon-120x120.png',
+    'favicon-144x144.png',
+    'favicon-152x152.png',
+    'favicon-180x180.png',
+    'favicon-192x192.png'
+  ];
+
+  faviconFiles.forEach(file => {
+    const src = join(publicDir, file);
+    if (existsSync(src)) {
+      cpSync(src, join(distDir, file));
+    }
+  });
+  console.log('Copied favicon files to dist');
+} else {
+  console.warn('Public directory not found, skipping favicon copy');
+}
+
 console.log('Build merge complete!');
