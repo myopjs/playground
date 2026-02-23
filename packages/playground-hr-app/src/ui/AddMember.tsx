@@ -3,6 +3,7 @@ import {getComponentId, QUERY_PARAMS} from "../utils/queryParams.ts";
 import {useNavigate} from "react-router-dom";
 import {useMemo} from "react";
 import type {TeamMember} from '../data/teamMembers.ts';
+import {getInitials, getRandomAvatarColor} from '../utils/helpers.ts';
 
 interface AddMemberProps {
     members: TeamMember[];
@@ -45,6 +46,7 @@ export const AddMember = ({members, onAddMember, isMobileView}: AddMemberProps) 
                 relationshipType: 'Team member'
             };
             onAddMember(newMember);
+            console.log('new member was added: ', newMember);
             navigate({ pathname: '/', search: window.location.search });
         }
     };
@@ -59,20 +61,3 @@ export const AddMember = ({members, onAddMember, isMobileView}: AddMemberProps) 
         </div>
     );
 };
-
-function getInitials(name: string): string {
-    const parts = name.trim().split(/\s+/);
-    if (parts.length >= 2) {
-        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-    }
-    return name.substring(0, 2).toUpperCase();
-}
-
-function getRandomAvatarColor(): string {
-    const colors = [
-        '#9B59B6', '#3498DB', '#1ABC9C', '#E74C3C', '#F39C12',
-        '#F1C40F', '#2ECC71', '#E67E22', '#16A085', '#8E44AD',
-        '#D35400', '#27AE60'
-    ];
-    return colors[Math.floor(Math.random() * colors.length)];
-}

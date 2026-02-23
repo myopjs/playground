@@ -9,6 +9,7 @@ import {AddMember} from "./AddMember.tsx";
 import {SideBar} from "./SideBar.tsx";
 import {getRandomUser, type UserData} from "../data/mockUsers.ts";
 import {teamMembersData, type TeamMember} from "../data/teamMembers.ts";
+import {getInitials} from "../utils/helpers.ts";
 
 const LOCAL_STORAGE_KEY = 'currentUser';
 const MOBILE_BREAKPOINT = 792;
@@ -45,7 +46,9 @@ function App() {
 
     const getCurrentUser = (payload?: { email: string; name: string }): UserData => {
       if (payload) {
-        return { name: payload.name, email: payload.email, initials: payload.name.split(' ').map(w => w[0]).join('').toUpperCase(), profileImage: null };
+          const { name, email } = payload;
+          const initials = getInitials(name);
+          return { name, email, initials, profileImage: null };
       }
       return getRandomUser();
     };
