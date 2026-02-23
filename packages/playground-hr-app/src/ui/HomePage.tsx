@@ -48,7 +48,6 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
         }
     }, [selectedMember]);
 
-
     const closeProfile = () => {
         setIsProfileVisible(false);
         setTimeout(() => {
@@ -90,14 +89,14 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
         }
     };
 
-    // const handleMemberClick = (action: string, payload: any): void => {
-    //     if (action === 'member_clicked' && payload?.member) {
-    //         setSelectedMember(payload.member);
-    //     }
-    //     if (action === 'addMember') {
-    //         navigate({ pathname: '/add-member', search: window.location.search });
-    //     }
-    // };
+    const handleMainContentCta = (action: string, payload: any): void => {
+        if (action === 'member-clicked' && payload?.member) {
+            setSelectedMember(payload.member);
+        }
+        if (action === 'add-member') {
+            navigate({ pathname: '/add-member', search: window.location.search });
+        }
+    };
 
     const handleEditProfileCta = (action: string, payload: any): void => {
         if (action === 'close') {
@@ -181,11 +180,11 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
         </div>
 
         {/* Main Content */}
-        {/*<MyopComponent*/}
-        {/*    componentId={getComponentId(QUERY_PARAMS.mainContent)}*/}
-        {/*    data={{ members, isMobileView }}*/}
-        {/*    on={handleMemberClick}*/}
-        {/*/>*/}
+        <MyopComponent
+            componentId={getComponentId(QUERY_PARAMS.mainContent)}
+            data={{ members, isMobileView }}
+            on={handleMainContentCta}
+        />
 
         {/* Edit Profile Modal */}
         {isProfileOpen && selectedMember && (
