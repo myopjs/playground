@@ -10,31 +10,31 @@ export const mockUsers: UserData[] = [
         name: 'Maya Chen',
         email: 'maya.chen@company.com',
         initials: 'MC',
-        profileImage: null
+        profileImage: 'https://i.pravatar.cc/150?u=maya.chen'
     },
     {
         name: 'Liam Ortega',
         email: 'liam.ortega@company.com',
         initials: 'LO',
-        profileImage: null
+        profileImage: 'https://i.pravatar.cc/150?u=liam.ortega'
     },
     {
         name: 'Priya Nair',
         email: 'priya.nair@company.com',
         initials: 'PN',
-        profileImage: null
+        profileImage: 'https://i.pravatar.cc/150?u=priya.nair'
     },
     {
         name: 'Dylan Webb',
         email: 'dylan.webb@company.com',
         initials: 'DW',
-        profileImage: null
+        profileImage: 'https://i.pravatar.cc/150?u=dylan.webb'
     },
     {
         name: 'Nora Sato',
         email: 'nora.sato@company.com',
         initials: 'NS',
-        profileImage: null
+        profileImage: 'https://i.pravatar.cc/150?u=nora.sato'
     }
 ];
 
