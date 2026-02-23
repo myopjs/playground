@@ -6,5 +6,5 @@ export const COMPONENTS_IDS = {
     profilePopover: '0615f61d-faa2-4847-a9be-f8000f5d85c5',
     sidebar: 'b5eb8ca4-7bce-438d-b38b-f8bfa5a6f211',
     signup: 'd449194b-2b6c-4fb9-801e-1756cc6635b8',
-    mainContent: 'DEV',
+    mainContent: '7e846e35-1bcd-4658-bd39-e9d5303c98bc',
 }
