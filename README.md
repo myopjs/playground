@@ -11,7 +11,7 @@ Myop enables you to create dynamic UI components that can be customized and swap
 
 ## Demo Applications
 
-This repository includes two fully-functional demo applications:
+This repository includes three demo applications:
 
 ### [Stocks Manager](https://playground.myop.dev/stocks/)
 
@@ -24,13 +24,20 @@ A stock trading simulation app featuring:
 
 ### [Team Profiles Manager](https://playground.myop.dev/profiles/)
 
-A team management app featuring:
+Re-design existing UI components. A team management app with all components already implemented:
 - User authentication with session persistence
 - Team members display (table/cards view)
 - Add new team members with full profile details
 - Profile editing with slide-in modals
-- Analytics dashboard with team insights (dynamically updates with team changes)
+- Analytics dashboard with team insights
 - Navigation sidebar with user profile menu
+
+### [HR Application](https://playground.myop.dev/hr-app/)
+
+Build missing components from scratch. An HR team management app with 3 components to implement:
+- **Signup** — Create a sign-in flow for user authentication
+- **Main Content** — Build a team member display (table, cards, grid, etc.)
+- **Analytics** — Build an analytics dashboard with team insights
 
 ## Getting Started
 
@@ -55,6 +62,9 @@ npm run dev:stocks
 
 # Profiles app
 npm run dev:profiles
+
+# HR app
+npm run dev:hr-app
 ```
 
 ### Build
@@ -70,6 +80,7 @@ Build individual apps:
 ```bash
 npm run build:stocks
 npm run build:profiles
+npm run build:hr-app
 ```
 
 ### Preview Production Build
@@ -84,7 +95,8 @@ npm run start
 myop-playground/
 ├── packages/
 │   ├── playground-stocks-app/    # Stocks trading demo
-│   └── playground-profiles-app/  # Team profiles demo
+│   ├── playground-profiles-app/  # Team profiles demo (re-design)
+│   └── playground-hr-app/        # HR app demo (build from scratch)
 ├── scripts/
 │   └── merge-builds.js           # Build merge utility
 ├── package.json                  # Workspace configuration
@@ -94,6 +106,7 @@ myop-playground/
 **Package Documentation:**
 - [Stocks App README](./packages/playground-stocks-app/README.md) - Detailed documentation for the stocks trading demo
 - [Profiles App README](./packages/playground-profiles-app/README.md) - Detailed documentation for the team profiles demo
+- [HR App README](./packages/playground-hr-app/README.md) - Detailed documentation for the HR app demo
 
 ## Creating Components with Myop Dashboard
 
@@ -242,7 +255,7 @@ http://localhost:5173/profiles/?sidebar=your-component-id
 | `confirmationSellModal` | Sale confirmation |
 | `footer` | Footer disclaimer |
 
-**Profiles App:**
+**Profiles App (re-design):**
 | Query Param | Component |
 |-------------|-----------|
 | `signup` | Authentication page |
@@ -255,6 +268,13 @@ http://localhost:5173/profiles/?sidebar=your-component-id
 | `addProfile` | Add new member form |
 | `analytics` | Analytics dashboard |
 | `profilePopover` | User profile dropdown |
+
+**HR App (build from scratch):**
+| Query Param | Component |
+|-------------|-----------|
+| `signup` | Sign-in flow |
+| `mainContent` | Team member display |
+| `analytics` | Analytics dashboard |
 
 
 
