@@ -1,6 +1,6 @@
 import {useState, useCallback} from "react";
 import {MyopComponent} from "@myop/react";
-import {getComponentId, QUERY_PARAMS} from "../utils/queryParams.ts";
+import {COMPONENTS_IDS} from "../utils/componentsIds.ts";
 import {type UserData} from "../data/mockUsers.ts";
 import {Toast} from "./Toast.tsx";
 
@@ -28,7 +28,7 @@ export const ProfilePopover = ({ userData, onClose, onLogout, isMobileView }: Pr
     return <>
         <div className="profile-popover-container">
             <MyopComponent
-                componentId={getComponentId(QUERY_PARAMS.profilePopover)}
+                componentId={COMPONENTS_IDS.profilePopover}
                 data={{ userData, isMobileView }}
                 on={handleCta}
             />

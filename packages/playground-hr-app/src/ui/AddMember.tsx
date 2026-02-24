@@ -1,5 +1,5 @@
 import {MyopComponent} from "@myop/react";
-import {getComponentId, QUERY_PARAMS} from "../utils/queryParams.ts";
+import {COMPONENTS_IDS} from "../utils/componentsIds.ts";
 import {useNavigate} from "react-router-dom";
 import {useMemo} from "react";
 import type {TeamMember} from '../data/teamMembers.ts';
@@ -54,7 +54,7 @@ export const AddMember = ({members, onAddMember, isMobileView}: AddMemberProps) 
     return (
         <div className="add-member-container">
             <MyopComponent
-                componentId={getComponentId(QUERY_PARAMS.addProfile)}
+                componentId={COMPONENTS_IDS.addProfile}
                 data={{ managersList, isMobileView }}
                 on={handleAddProfileCta}
             />

@@ -34,10 +34,11 @@ The HR App is part of the Myop Playground monorepo and showcases:
 - Performance summary generation
 
 ### Dynamic Component Customization
-Override any UI component via URL query parameters:
+Override the "to implement" components via URL query parameters:
 ```
-?signup=custom-id&sidebar=another-id
+?signup=custom-id&mainContent=another-id&analytics=another-id
 ```
+Only three components support URL overrides: `signup`, `mainContent`, and `analytics`. All other components use fixed IDs.
 
 ### Responsive Design
 - Mobile-first approach with 792px breakpoint
@@ -147,223 +148,6 @@ export const CustomComponent = () => {
 React App → myop_init_interface(data) → Myop Component
 Myop Component → myop_cta_handler(action) → React App
 ```
-
-## MyopComponent Reference
-
-This section documents each `<MyopComponent>` used in the app, including the data structures they receive and the CTA (Call-to-Action) events they emit.
-
----
-
-### 1. Signup (`signup`)
-
-**Query Param:** `signup`
-
-**Data Structure:** None
-
-**CTA Handlers:**
-
-| Action | Payload | Description |
-|--------|---------|-------------|
-| `signin` | `void` or `{ email: string; password: string }` | User clicked sign in (payload optional) |
-
----
-
-### 2. Sidebar (`sidebar`)
-
-**Query Param:** `sidebar`
-
-**Data Structure:**
-```typescript
-{
-  userData: {
-    name: string;
-    role: string;
-    initials: string;
-    profileImage: string | null;
-  };
-  activeNavItem: string;    // 'home' | 'analytics'
-  isMobileView: boolean;
-}
-```
-
-**CTA Handlers:**
-
-| Action | Payload | Description |
-|--------|---------|-------------|
-| `profile-clicked` | `{ userData: UserData }` | User clicked profile area (opens popover) |
-| `nav-clicked` | `{ navId: string; navItem: NavItem }` | User clicked navigation item |
-| `sidebar-toggled` | `{ expanded: boolean }` | Sidebar expand/collapse state changed |
-
----
-
-### 3. Header Insights (`headerInsights`)
-
-**Query Param:** `headerInsights`
-
-**Data Structure:**
-```typescript
-{
-  userName: string;
-  stats: {
-    experience: { value: string; label: string };
-    members: { value: number; label: string };
-    skills: { value: number; label: string };
-    projects: { value: number; label: string };
-  };
-  isMobileView: boolean;
-  action?: { action: string };  // e.g., { action: 'showShareCopied' }
-}
-```
-
-**CTA Handlers:**
-
-| Action | Payload | Description |
-|--------|---------|-------------|
-| `action-clicked` | `{ action: 'viewHighlights' }` | User clicked to view analytics |
-| `action-clicked` | `{ action: 'addMember' }` | User clicked to add member |
-| `action-clicked` | `{ action: 'shareTeam' }` | User clicked to share team URL |
-| `size-requested` | `{ height: number }` | Component requests size change |
-
----
-
-### 4. Main Content (`mainContent`)
-
-**Query Param:** `mainContent`
-
-**Data Structure:**
-```typescript
-{
-  members: TeamMember[];
-  isMobileView: boolean;
-}
-```
-
-**CTA Handlers:**
-
-| Action | Payload | Description |
-|--------|---------|-------------|
-| `member-clicked` | `{ member: TeamMember }` | User clicked a team member |
-| `add-member` | `{}` | User clicked add member button |
-
----
-
-### 5. Edit Profile (`editProfile`)
-
-**Query Param:** `editProfile`
-
-**Data Structure:**
-```typescript
-{
-  profile: {
-    id: string;
-    initials: string;
-    name: string;
-    title: string;
-    experience: string;
-    tenure: string;
-    location: string;
-    skills: string[];
-    profileImage: string | null;
-    avatarColor: string;
-    badge: string;
-    email: string;
-    phone: string;
-    about: string;
-    relationship: string;
-    relationshipType: string;
-    teamSize: number;
-    tenureRank: number;
-  };
-  isEditing: boolean;
-  isMobileView: boolean;
-}
-```
-
-**CTA Handlers:**
-
-| Action | Payload | Description |
-|--------|---------|-------------|
-| `close` | None | User closed the modal |
-| `delete` | `{ profile: { id, name, ... } }` | User deleted the profile |
-| `save` | `{ profile: { id, name, title, ... } }` | User saved profile changes |
-
----
-
-### 6. Profile Popover (`profilePopover`)
-
-**Query Param:** `profilePopover`
-
-**Data Structure:**
-```typescript
-{
-  userData: {
-    name: string;
-    email: string;
-    initials: string;
-    profileImage: string | null;
-  };
-  isMobileView: boolean;
-}
-```
-
-**CTA Handlers:**
-
-| Action | Payload | Description |
-|--------|---------|-------------|
-| `logout-clicked` | `{}` | User clicked logout |
-| `click-outside` | `{}` | User clicked outside popover |
-| `escape-pressed` | `{}` | User pressed Escape key |
-| `drag-closed` | `{}` | User dragged to close (mobile) |
-
----
-
-### 7. Analytics (`analytics`)
-
-**Query Param:** `analytics`
-
-**Data Structure:**
-```typescript
-{
-  stats: Array<{ type: string; value: string; label: string; color: string }>;
-  topSkills: Array<{ name: string; count: number }>;
-  experienceDistribution: Array<{ label: string; value: number }>;
-  tenureDistribution: Array<{ label: string; value: number }>;
-  skillsDistribution: Array<{ name: string; percentage: number; members: string; color: string; colorClass: string }>;
-  seniority: Array<{ level: string; range: string; count: number; color: string }>;
-  performance: { title: string; description: string };
-  isMobileView: boolean;
-}
-```
-
-**CTA Handlers:**
-
-| Action | Payload | Description |
-|--------|---------|-------------|
-| `back-clicked` | `{}` | User clicked back button |
-
----
-
-### 8. Add Profile (`addProfile`)
-
-**Query Param:** `addProfile`
-
-**Data Structure:**
-```typescript
-{
-  managersList: Array<{ id: string; name: string }>;
-  isMobileView: boolean;
-}
-```
-
-**CTA Handlers:**
-
-| Action | Payload | Description |
-|--------|---------|-------------|
-| `cancel` | None | User cancelled adding member |
-| `back` | None | User clicked back button |
-| `submit` | `{ formData: FormData }` | User submitted new member form |
-
----
 
 ## Components to Implement
 
@@ -604,11 +388,11 @@ Diverse team covering roles: Managers, Designers, Researchers, Content specialis
 ## Utility Functions
 
 ### queryParams.ts
-- `getComponentId(key)` - Resolves component IDs from URL params or defaults to built-in component IDs
-- `QUERY_PARAMS` - Object mapping component keys to their URL query parameter names
+- `getComponentId(key)` - Resolves component IDs from URL params or defaults to built-in component IDs (only for overridable components: `signup`, `analytics`, `mainContent`)
+- `QUERY_PARAMS` - Object mapping the three overridable component keys to their URL query parameter names
 
 ### componentsIds.ts
-- `COMPONENTS_IDS` - Object mapping component keys to their default Myop component UUIDs
+- `COMPONENTS_IDS` - Object mapping all component keys to their default Myop component UUIDs. Non-overridable components (sidebar, headerInsights, editProfile, profilePopover, addProfile) are referenced directly via this object.
 
 ### helpers.ts
 - `getInitials(name)` - Extracts initials from a full name (e.g., "John Doe" → "JD")

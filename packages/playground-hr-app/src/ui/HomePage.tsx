@@ -1,5 +1,6 @@
 import {MyopComponent, type IMyopComponent} from "@myop/react";
 import {getComponentId, QUERY_PARAMS} from "../utils/queryParams.ts";
+import {COMPONENTS_IDS} from "../utils/componentsIds.ts";
 import {useState, useEffect, useMemo, useCallback, useRef} from "react";
 import {useNavigate} from "react-router-dom";
 import type {TeamMember} from '../data/teamMembers.ts';
@@ -174,7 +175,7 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
         {/* Header Insights */}
         <div style={{ height: `${headerInsightsHeight}px`}}>
             <MyopComponent
-                componentId={getComponentId(QUERY_PARAMS.headerInsights)}
+                componentId={COMPONENTS_IDS.headerInsights}
                 data={{ userName: userData.name, stats: headerStats, isMobileView, ...headerInsightsAction }}
                 on={handleHeaderInsightsCta}
                 onLoad={(c)=> {
@@ -203,7 +204,7 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
                     onClick={(e) => e.stopPropagation()}
                 >
                     <MyopComponent
-                        componentId={getComponentId(QUERY_PARAMS.editProfile)}
+                        componentId={COMPONENTS_IDS.editProfile}
                         data={{ ...mapMemberToProfile(selectedMember), isMobileView }}
                         on={handleEditProfileCta}
                     />

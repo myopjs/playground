@@ -1,13 +1,8 @@
 import {COMPONENTS_IDS} from "./componentsIds.ts";
 
 export const QUERY_PARAMS = {
-    addProfile: 'addProfile',
-    analytics: 'analytics',
-    editProfile: 'editProfile',
-    headerInsights: 'headerInsights',
-    profilePopover: 'profilePopover',
-    sidebar: 'sidebar',
     signup: 'signup',
+    analytics: 'analytics',
     mainContent: 'mainContent',
 } as const;
 
