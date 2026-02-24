@@ -367,7 +367,7 @@ This section documents each `<MyopComponent>` used in the app, including the dat
 
 ## Components to Implement
 
-The following two components need to be implemented. Copy the type definitions below and use them as the API contract when building your Myop component.
+The following three components need to be implemented. Copy the type definitions below and use them as the API contract when building your Myop component.
 
 ### Signup Component
 
@@ -398,7 +398,7 @@ declare function myop_cta_handler<K extends keyof MyopCtaPayloads>(
 **Behavior:**
 - The component should provide a way for the user to sign in
 - The `signin` CTA can be fired without a payload (the host app will assign a random mock user)
-- Or it can be fired with `{ email, password, name }` to create a user from the provided data
+- Or it can be fired with `{ email, password }` to create a user from the provided data (the host app derives the name from the email)
 
 ---
 
@@ -456,6 +456,92 @@ declare function myop_cta_handler<K extends keyof MyopCtaPayloads>(
 - Should display the team members in a visual layout (table, cards, grid, etc.)
 - Fire `member-clicked` with the full `TeamMember` object when a member is clicked (the host app opens an edit profile modal)
 - Fire `add-member` when the user wants to add a new team member (the host app navigates to the add member page)
+
+---
+
+### Analytics Component
+
+This component displays team analytics including stats, skill charts, experience/tenure distributions, and seniority breakdowns. It receives analytics data and should fire a CTA when the user clicks back.
+
+```typescript
+interface StatItem {
+  type: 'members' | 'experience' | 'skills' | 'tenure';
+  value: string;
+  label: string;
+  color: 'purple' | 'blue' | 'orange' | 'green';
+}
+
+interface SkillItem {
+  name: string;
+  count: number;
+}
+
+interface DistributionItem {
+  label: string;
+  value: number;
+}
+
+interface SkillsDistributionItem {
+  name: string;
+  percentage: number;
+  members: string;
+  color: string;
+  colorClass: string;
+}
+
+interface SeniorityItem {
+  level: string;
+  range: string;
+  count: number;
+  color: 'purple' | 'blue' | 'orange' | 'green';
+}
+
+/**
+ * Data structure passed to myop_init_interface(data)
+ */
+interface MyopInitData {
+  stats?: StatItem[];
+  topSkills?: SkillItem[];
+  experienceDistribution?: DistributionItem[];
+  tenureDistribution?: DistributionItem[];
+  skillsDistribution?: SkillsDistributionItem[];
+  seniority?: SeniorityItem[];
+  performance?: { title: string; description: string };
+  isMobileView?: boolean;
+  action?: 'setAnalyticsData';
+  payload?: MyopInitData;
+}
+
+/**
+ * Actions and payloads for myop_cta_handler(action, payload)
+ */
+interface MyopCtaPayloads {
+  'back-clicked': {};
+  'size-requested': {
+    width?: number | null;
+    height?: number | null;
+    minWidth?: number | null;
+    maxWidth?: number | null;
+    minHeight?: number | null;
+    maxHeight?: number | null;
+    required?: boolean;
+  };
+}
+
+declare function myop_init_interface(): MyopInitData;
+declare function myop_init_interface(data: MyopInitData): void;
+
+declare function myop_cta_handler<K extends keyof MyopCtaPayloads>(
+  action: K,
+  payload: MyopCtaPayloads[K]
+): void;
+```
+
+**Behavior:**
+- Receives analytics data (stats, skills, distributions, seniority, performance) via `myop_init_interface(data)`
+- Should display team analytics in a visual dashboard layout
+- Fire `back-clicked` when the user clicks a back/navigation button (the host app navigates back to home)
+- Supports `action: 'setAnalyticsData'` for updating data without full re-initialization
 
 ---
 
