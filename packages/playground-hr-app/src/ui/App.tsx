@@ -76,25 +76,25 @@ function App() {
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
 
-        // Separate IDs into default (from COMPONENTS_IDS) and override (from URL params)
-        const defaultIds: string[] = [];
         const overrideIds: string[] = [];
+        const overridableKeys = new Set(Object.keys(QUERY_PARAMS));
 
-        Object.entries(QUERY_PARAMS).forEach(([key, paramName]) => {
+        // Overridable components: check URL params for overrides
+        Object.entries(QUERY_PARAMS).forEach(([_key, paramName]) => {
             const overrideId = params.get(paramName);
             if (overrideId) {
                 overrideIds.push(overrideId);
-            } else {
-                const defaultId = COMPONENTS_IDS[key as keyof typeof COMPONENTS_IDS];
-                if (defaultId) {
-                    defaultIds.push(defaultId);
-                }
             }
         });
 
-        // Preload default IDs without preview, override IDs with preview=true
+        // Fixed components + non-overridden defaults
+        const fixedIds: string[] = Object.entries(COMPONENTS_IDS)
+            .filter(([key, id]) => Boolean(id) && (!overridableKeys.has(key) || !params.get(QUERY_PARAMS[key as keyof typeof QUERY_PARAMS])))
+            .map(([, id]) => id);
+
+        // Preload fixed IDs without preview, override IDs with preview=true
         Promise.all([
-            defaultIds.length > 0 ? preloadComponents(defaultIds, 'production') : Promise.resolve(),
+            fixedIds.length > 0 ? preloadComponents(fixedIds, 'production') : Promise.resolve(),
             overrideIds.length > 0 ? preloadComponents(overrideIds, 'production', true) : Promise.resolve()
         ]).then(() => setDonePreload(true));
     }, [])
