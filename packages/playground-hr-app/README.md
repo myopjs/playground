@@ -164,7 +164,7 @@ This section documents each `<MyopComponent>` used in the app, including the dat
 
 | Action | Payload | Description |
 |--------|---------|-------------|
-| `signin` | `void` or `{ email: string; password: string; name: string }` | User clicked sign in (payload optional) |
+| `signin` | `void` or `{ email: string; password: string }` | User clicked sign in (payload optional) |
 
 ---
 
@@ -383,7 +383,7 @@ interface MyopInitData {}
  * Actions and payloads for myop_cta_handler(action, payload)
  */
 interface MyopCtaPayloads {
-  'signin': void | { email: string; password: string; name: string };
+  'signin': void | { email: string; password: string };
 }
 
 declare function myop_init_interface(): MyopInitData;

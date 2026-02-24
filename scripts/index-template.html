@@ -129,7 +129,7 @@
     /* Container */
     .container {
       width: 100%;
-      max-width: 800px;
+      max-width: 1100px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -242,13 +242,13 @@
       display: flex;
       gap: 24px;
       justify-content: center;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
     }
 
     /* Area Card */
     .area-card {
       display: flex;
-      width: 320px;
+      width: 100%;
       max-width: 100%;
       padding: 24px;
       flex-direction: column;
@@ -407,7 +407,8 @@
     .area-card-link {
       text-decoration: none;
       color: inherit;
-      max-width: 100%;
+      flex: 1;
+      min-width: 0;
     }
 
     /* Footer */
@@ -456,11 +457,13 @@
       }
 
       .cards-grid {
+        flex-wrap: wrap;
         gap: 16px;
         width: 100%;
       }
 
       .area-card-link {
+        flex: unset;
         width: 100%;
       }
 
@@ -660,7 +663,7 @@
       }
 
       return `
-                    <a href="/${area.id}" class="area-card-link">
+                    <a href="/${area.id}/" class="area-card-link">
                         <div class="area-card" data-id="${area.id}">
                             <div class="area-card-preview">${previewContent}</div>
                             <div class="area-card-content">
@@ -748,7 +751,14 @@
       {
         id: 'profiles',
         name: 'Profiles',
-        description: 'Create a user management system with signup flows, profile cards, analytics dashboards, and more.',
+        description: 'Re-design existing UI components. Customize signup flows, profile cards, analytics dashboards, and more.',
+        icon: 'profile',
+        previewImage: 'https://user-components-assets.s3.eu-south-1.amazonaws.com/myop2/1766309198372-profiles-app.png'
+      },
+      {
+        id: 'hr-app',
+        name: 'HR Application',
+        description: 'Build missing components from scratch. Create a signup flow, team member display, and more for an HR app.',
         icon: 'profile',
         previewImage: 'https://user-components-assets.s3.eu-south-1.amazonaws.com/myop2/1766309198372-profiles-app.png'
       }

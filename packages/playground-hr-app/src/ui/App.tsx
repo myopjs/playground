@@ -44,9 +44,10 @@ function App() {
     setMembers(prev => prev.filter(member => String(member.id) !== String(memberId)));
   }, []);
 
-    const getCurrentUser = (payload?: { email: string; name: string }): UserData => {
+    const getCurrentUser = (payload?: { email: string }): UserData => {
       if (payload) {
-          const { name, email } = payload;
+          const { email } = payload;
+          const name = email.split('@')[0];
           const initials = getInitials(name);
           return { name, email, initials, profileImage: null };
       }
@@ -124,7 +125,7 @@ function App() {
         </button>
         <MyopComponent
           componentId={getComponentId(QUERY_PARAMS.signup)}
-          on={(actionId: string, payload?: { email: string; password: string; name: string }) => {
+          on={(actionId: string, payload?: { email: string; password: string }) => {
             if (actionId === 'signin') {
               handleSignIn(getCurrentUser(payload));
             }
