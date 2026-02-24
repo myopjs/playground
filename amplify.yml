@@ -20,6 +20,7 @@ frontend:
       - node_modules/**/*
       - packages/playground-stocks-app/node_modules/**/*
       - packages/playground-profiles-app/node_modules/**/*
+      - packages/playground-hr-app/node_modules/**/*
 
 customHeaders:
   - pattern: '**/*'
@@ -34,4 +35,5 @@ customHeaders:
 # Rewrites for SPA routing - configure in Amplify Console:
 # /stocks/<*> -> /stocks/index.html (200 rewrite)
 # /profiles/<*> -> /profiles/index.html (200 rewrite)
+# /hr-app/<*> -> /hr-app/index.html (200 rewrite)
 # Or use the customRules below (note: these go in Amplify Console Rewrites/Redirects settings)
