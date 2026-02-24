@@ -33,6 +33,16 @@ if (existsSync(profilesDist)) {
   process.exit(1);
 }
 
+// Copy hr-app to dist/hr-app
+const hrAppDist = join(rootDir, 'packages/playground-hr-app/dist');
+if (existsSync(hrAppDist)) {
+  cpSync(hrAppDist, join(distDir, 'hr-app'), { recursive: true });
+  console.log('Copied hr-app to dist/hr-app');
+} else {
+  console.error('HR app dist not found');
+  process.exit(1);
+}
+
 // Copy index.html template to dist root
 const indexHtml = readFileSync(join(__dirname, 'index-template.html'), 'utf-8');
 writeFileSync(join(distDir, 'index.html'), indexHtml);
