@@ -34,7 +34,7 @@ export const HomePage = ({userData, members, onUpdateMember, onDeleteMember, isM
 
     const headerStats = useMemo(() => {
         const totalExperience = members.reduce((sum, m) => sum + parseFloat(m.experience), 0);
-        const avgExperience = (totalExperience / members.length).toFixed(1);
+        const avgExperience = members.length > 0 ? (totalExperience / members.length).toFixed(1) : '0';
         const allSkills = new Set(members.flatMap(m => m.skills));
         return {
             experience: { value: `${avgExperience} yrs`, label: 'Avg Experience' },
