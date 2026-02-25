@@ -215,6 +215,7 @@ interface TeamMember {
  */
 interface MyopInitData {
   members: TeamMember[];
+  searchTerm?: string;
   isMobileView?: boolean;
 }
 
