@@ -237,7 +237,7 @@ declare function myop_cta_handler<K extends keyof MyopCtaPayloads>(
 ```
 
 **Behavior:**
-- Receives `members` array and optional `isMobileView` flag via `myop_init_interface(data)`
+- Receives `members` array, optional `searchTerm` string and optional `isMobileView` flag via `myop_init_interface(data)`
 - Should display the team members in a visual layout (table, cards, grid, etc.)
 - Fire `member-clicked` with the full `TeamMember` object when a member is clicked (the host app opens an edit profile modal)
 - Fire `add-member` when the user wants to add a new team member (the host app navigates to the add member page)
