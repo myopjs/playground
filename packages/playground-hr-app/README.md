@@ -191,6 +191,14 @@ declare function myop_cta_handler<K extends keyof MyopCtaPayloads>(
 This component displays team members and allows interaction with them. It receives an array of `TeamMember` objects and should fire CTAs when a member is clicked or when the user wants to add a new member.
 
 ```typescript
+type DesignSkill = 'UI Design' | 'UX Design' | 'Visual Design' | 'Product Design' | 'Interaction Design' | 'Motion Design' | 'Branding' | 'Illustration' | 'Animation' | 'Design Systems' | 'Design Leadership';
+type ResearchSkill = 'User Research' | 'Data Analysis' | 'Usability Testing' | 'Qualitative Research' | 'Ethnography' | 'UX Strategy' | 'Service Design' | 'Business Analysis';
+type DevelopmentSkill = 'Front-end Development' | 'React' | 'CSS' | 'Prototyping' | 'Figma' | 'Wireframing';
+type ContentSkill = 'UX Writing' | 'Content Strategy' | 'Voice & Tone';
+type LeadershipSkill = 'Strategy' | 'Team Management' | 'Product Strategy' | 'Roadmapping' | 'Stakeholder Management' | 'Workshop Facilitation' | 'Workshops' | 'Information Architecture' | 'Accessibility' | 'Micro-interactions';
+
+type Skill = DesignSkill | ResearchSkill | DevelopmentSkill | ContentSkill | LeadershipSkill;
+
 interface TeamMember {
   id: string;
   initials: string;
@@ -199,7 +207,7 @@ interface TeamMember {
   location: string;
   tenure: string;
   experience: string;
-  skills: string[];
+  skills: Skill[];
   role: string;
   avatarColor: string;
   profileImage: string | null;
@@ -344,6 +352,14 @@ interface UserData {
 
 ### TeamMember
 ```typescript
+type DesignSkill = 'UI Design' | 'UX Design' | 'Visual Design' | 'Product Design' | 'Interaction Design' | 'Motion Design' | 'Branding' | 'Illustration' | 'Animation' | 'Design Systems' | 'Design Leadership';
+type ResearchSkill = 'User Research' | 'Data Analysis' | 'Usability Testing' | 'Qualitative Research' | 'Ethnography' | 'UX Strategy' | 'Service Design' | 'Business Analysis';
+type DevelopmentSkill = 'Front-end Development' | 'React' | 'CSS' | 'Prototyping' | 'Figma' | 'Wireframing';
+type ContentSkill = 'UX Writing' | 'Content Strategy' | 'Voice & Tone';
+type LeadershipSkill = 'Strategy' | 'Team Management' | 'Product Strategy' | 'Roadmapping' | 'Stakeholder Management' | 'Workshop Facilitation' | 'Workshops' | 'Information Architecture' | 'Accessibility' | 'Micro-interactions';
+
+type Skill = DesignSkill | ResearchSkill | DevelopmentSkill | ContentSkill | LeadershipSkill;
+
 interface TeamMember {
   id: string;
   initials: string;
@@ -352,7 +368,7 @@ interface TeamMember {
   location: string;
   tenure: string;
   experience: string;
-  skills: string[];
+  skills: Skill[];
   role: string;
   avatarColor: string;
   profileImage: string | null;

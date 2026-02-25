@@ -1,30 +1,71 @@
-import { teamMembersData, type TeamMember } from './teamMembers';
+import { type TeamMember, type Skill, type SkillCategory } from './teamMembers';
+export type { Skill, SkillCategory } from './teamMembers';
+
+export interface StatItem {
+    type: 'members' | 'experience' | 'skills' | 'tenure';
+    value: string;
+    label: string;
+    color: 'purple' | 'blue' | 'orange' | 'green';
+}
+
+export interface SkillItem {
+    name: string;
+    count: number;
+}
+
+export type ExperienceRange = '0-3' | '3-5' | '5-7' | '7-10' | '10+';
+export type TenureRange = '0-1' | '1-2' | '2-3' | '3-5' | '5+';
+
+export interface DistributionItem<T extends string = string> {
+    label: T;
+    value: number;
+}
+
+export interface SkillsDistributionItem {
+    name: SkillCategory;
+    percentage: number;
+    members: string;
+    color: string;
+    colorClass: string;
+}
+
+export interface SeniorityItem {
+    level: string;
+    range: string;
+    count: number;
+    color: 'purple' | 'blue' | 'orange' | 'green';
+}
+
+export interface PerformanceItem {
+    title: string;
+    description: string;
+}
 
 export type AnalyticsData = {
-    stats: { type: string; value: string; label: string; color: string }[];
-    topSkills: { name: string; count: number }[];
-    experienceDistribution: { label: string; value: number }[];
-    tenureDistribution: { label: string; value: number }[];
-    skillsDistribution: { name: string; percentage: number; members: string; color: string; colorClass: string }[];
-    seniority: { level: string; range: string; count: number; color: string }[];
-    performance: { title: string; description: string };
+    stats: StatItem[];
+    topSkills: SkillItem[];
+    experienceDistribution: DistributionItem<ExperienceRange>[];
+    tenureDistribution: DistributionItem<TenureRange>[];
+    skillsDistribution: SkillsDistributionItem[];
+    seniority: SeniorityItem[];
+    performance: PerformanceItem;
 };
 
 const parseYears = (str: string): number => {
     return parseFloat(str.replace('y', '')) || 0;
 };
 
-const getSkillCategory = (skill: string): string => {
-    const categories: Record<string, string[]> = {
-        'Design': ['UI Design', 'UX Design', 'Visual Design', 'Product Design', 'Interaction Design', 'Motion Design', 'Branding', 'Illustration', 'Animation', 'Design Systems', 'Design Leadership'],
-        'Research': ['User Research', 'Data Analysis', 'Usability Testing', 'Qualitative Research', 'Ethnography', 'UX Strategy', 'Service Design', 'Business Analysis'],
-        'Development': ['Front-end Development', 'React', 'CSS', 'Prototyping', 'Figma', 'Wireframing'],
-        'Content': ['UX Writing', 'Content Strategy', 'Voice & Tone'],
-        'Leadership': ['Strategy', 'Team Management', 'Product Strategy', 'Roadmapping', 'Stakeholder Management', 'Workshop Facilitation', 'Workshops', 'Information Architecture', 'Accessibility', 'Micro-interactions']
-    };
+const SKILL_CATEGORIES: Record<Exclude<SkillCategory, 'Other'>, Skill[]> = {
+    'Design': ['UI Design', 'UX Design', 'Visual Design', 'Product Design', 'Interaction Design', 'Motion Design', 'Branding', 'Illustration', 'Animation', 'Design Systems', 'Design Leadership'],
+    'Research': ['User Research', 'Data Analysis', 'Usability Testing', 'Qualitative Research', 'Ethnography', 'UX Strategy', 'Service Design', 'Business Analysis'],
+    'Development': ['Front-end Development', 'React', 'CSS', 'Prototyping', 'Figma', 'Wireframing'],
+    'Content': ['UX Writing', 'Content Strategy', 'Voice & Tone'],
+    'Leadership': ['Strategy', 'Team Management', 'Product Strategy', 'Roadmapping', 'Stakeholder Management', 'Workshop Facilitation', 'Workshops', 'Information Architecture', 'Accessibility', 'Micro-interactions']
+};
 
-    for (const [category, skills] of Object.entries(categories)) {
-        if (skills.includes(skill)) {
+const getSkillCategory = (skill: string): SkillCategory => {
+    for (const [category, skills] of Object.entries(SKILL_CATEGORIES) as [SkillCategory, Skill[]][]) {
+        if (skills.includes(skill as Skill)) {
             return category;
         }
     }
@@ -46,7 +87,7 @@ export const generateAnalyticsData = (members: TeamMember[]): AnalyticsData => {
     const uniqueSkills = new Set(allSkills).size;
     const avgTenure = members.reduce((sum, m) => sum + parseYears(m.tenure), 0) / totalMembers;
 
-    const stats = [
+    const stats: StatItem[] = [
         { type: 'members', value: totalMembers.toString(), label: 'Team Members', color: 'purple' },
         { type: 'experience', value: avgExperience.toFixed(1), label: 'Avg Years Experience', color: 'blue' },
         { type: 'skills', value: uniqueSkills.toString(), label: 'Unique Skills', color: 'orange' },
@@ -65,7 +106,7 @@ export const generateAnalyticsData = (members: TeamMember[]): AnalyticsData => {
         .map(([name, count]) => ({ name, count }));
 
     // Experience Distribution
-    const expRanges = [
+    const expRanges: { label: ExperienceRange; min: number; max: number }[] = [
         { label: '0-3', min: 0, max: 3 },
         { label: '3-5', min: 3, max: 5 },
         { label: '5-7', min: 5, max: 7 },
@@ -82,7 +123,7 @@ export const generateAnalyticsData = (members: TeamMember[]): AnalyticsData => {
     }));
 
     // Tenure Distribution
-    const tenureRanges = [
+    const tenureRanges: { label: TenureRange; min: number; max: number }[] = [
         { label: '0-1', min: 0, max: 1 },
         { label: '1-2', min: 1, max: 2 },
         { label: '2-3', min: 2, max: 3 },
@@ -99,7 +140,7 @@ export const generateAnalyticsData = (members: TeamMember[]): AnalyticsData => {
     }));
 
     // Skills Distribution by Category
-    const categoryColors: Record<string, { color: string; colorClass: string }> = {
+    const categoryColors: Record<Exclude<SkillCategory, 'Other'>, { color: string; colorClass: string }> = {
         'Design': { color: '#f59e0b', colorClass: 'purple' },
         'Research': { color: '#3b82f6', colorClass: 'blue' },
         'Development': { color: '#14b8a6', colorClass: 'green' },
@@ -111,31 +152,35 @@ export const generateAnalyticsData = (members: TeamMember[]): AnalyticsData => {
         const category = getSkillCategory(skill);
         acc[category] = (acc[category] || 0) + 1;
         return acc;
-    }, {} as Record<string, number>);
+    }, {} as Record<SkillCategory, number>);
 
     const totalCategoryCount = Object.values(categoryCounts).reduce((a, b) => a + b, 0);
 
-    const skillsDistribution = Object.entries(categoryCounts)
+    const top4Categories = (Object.entries(categoryCounts) as [SkillCategory, number][])
         .filter(([cat]) => cat !== 'Other')
         .sort((a, b) => b[1] - a[1])
-        .slice(0, 4)
+        .slice(0, 4);
+
+    const top4Total = top4Categories.reduce((sum, [, count]) => sum + count, 0);
+
+    const skillsDistribution = top4Categories
         .map(([name, count]) => ({
             name,
-            percentage: Math.round((count / totalCategoryCount) * 100),
+            percentage: Math.round((count / top4Total) * 100),
             members: `${count} skills`,
-            color: categoryColors[name]?.color || '#9ca3af',
-            colorClass: categoryColors[name]?.colorClass || 'gray'
+            color: categoryColors[name as Exclude<SkillCategory, 'Other'>]?.color || '#9ca3af',
+            colorClass: categoryColors[name as Exclude<SkillCategory, 'Other'>]?.colorClass || 'gray'
         }));
 
     // Seniority Breakdown
     const seniorityLevels = [
-        { level: 'Junior', range: '0-3 years', color: 'purple' },
-        { level: 'Mid-Level', range: '3-6 years', color: 'blue' },
-        { level: 'Senior', range: '6-9 years', color: 'orange' },
-        { level: 'Lead', range: '9+ years', color: 'green' }
+        { level: 'Junior', range: '0-3 years', color: 'purple' as const },
+        { level: 'Mid-Level', range: '3-6 years', color: 'blue' as const },
+        { level: 'Senior', range: '6-9 years', color: 'orange' as const },
+        { level: 'Lead', range: '9+ years', color: 'green' as const }
     ];
 
-    const seniority = seniorityLevels.map(level => ({
+    const seniority: SeniorityItem[] = seniorityLevels.map(level => ({
         ...level,
         count: members.filter(m => getSeniorityLevel(parseYears(m.experience)) === level.level).length
     }));
@@ -156,5 +201,3 @@ export const generateAnalyticsData = (members: TeamMember[]): AnalyticsData => {
         performance
     };
 };
-
-export const analyticsData = generateAnalyticsData(teamMembersData);
