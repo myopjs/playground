@@ -28,17 +28,6 @@ body {
   position: relative;
 }
 
-.quick-signin-btn {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  z-index: 10;
-  background: transparent;
-  color: transparent;
-  border: none;
-  cursor: default;
-}
-
 .app-layout {
   display: flex;
   width: 100vw;
