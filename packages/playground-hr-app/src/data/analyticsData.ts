@@ -154,8 +154,6 @@ export const generateAnalyticsData = (members: TeamMember[]): AnalyticsData => {
         return acc;
     }, {} as Record<SkillCategory, number>);
 
-    const totalCategoryCount = Object.values(categoryCounts).reduce((a, b) => a + b, 0);
-
     const top4Categories = (Object.entries(categoryCounts) as [SkillCategory, number][])
         .filter(([cat]) => cat !== 'Other')
         .sort((a, b) => b[1] - a[1])
